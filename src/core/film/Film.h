@@ -1,0 +1,30 @@
+//
+// Created by Bear on 2021/12/3.
+//
+
+#ifndef BEART_SRC_CORE_FILM_FILM_H_
+#define BEART_SRC_CORE_FILM_FILM_H_
+
+#include "common.h"
+namespace beart {
+template<typename T>
+class Film {
+ public:
+  Film(const unsigned int width, const unsigned int height) : width_(width), height_(height) {
+    buffer_ = std::make_unique<T[]>(width_ * height_);
+  }
+  void SetColor(const int &x, const int &y, const T &c) {
+    this->buffer_[x * width_ + y] = c;
+  }
+  [[nodiscard]] T GetColor(const int &x, const int &y) const {
+    return buffer_[x * width_ + y];
+  };
+
+ private:
+  unsigned int width_;
+  unsigned int height_;
+  std::unique_ptr<T[]> buffer_;
+};
+}
+
+#endif //BEART_SRC_CORE_FILM_FILM_H_
