@@ -5,7 +5,7 @@
 
 #include <iostream>
 int main() {
-  std::shared_ptr<beart::Primitive> sphere = std::make_shared<beart::Sphere>(beart::Vec3f{0.f, 0.f, -8.f}, 0.5f);
+  auto sphere = std::make_unique<const beart::Sphere>(beart::Vec3f{0.f, 0.f, -8.f}, 0.5f);
   beart::PerspectiveCamera camera{400, 300};
   FILE *fp = fopen("sphere_normal.ppm", "wb");
   (void) fprintf(fp, "P3\n%d %d\n255\n", 400, 300);
@@ -13,9 +13,8 @@ int main() {
     for (unsigned int i = 0; i < camera.GetImageWidth(); ++i) {
 
       beart::Ray r = camera.GenerateRay(i, j, beart::PixelSample{0.f, 0.f});
-      std::shared_ptr<beart::IntersectionInfo> info = std::make_shared<beart::IntersectionInfo>();
-      sphere->IntersectInfo(r, info);
-      if (info->happened) {
+      auto info = std::make_unique<beart::IntersectionInfo>();
+      if (sphere->IntersectInfo(r, info.get())) {
         beart::Vec3f nor = (info->Ns + beart::Vec3f(1, 1, 1)) * 0.5;
         (void) fprintf(fp,
                        "%d %d %d\n",

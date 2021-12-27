@@ -21,19 +21,6 @@ class Ray {
     return ori_ + dir_ * t;
   }
 
-  [[nodiscard]] const Vec3f &GetOri() const {
-    return ori_;
-  }
-  [[nodiscard]] const Vec3f &GetDir() const {
-    return dir_;
-  }
-  void SetOri(const Vec3f &ori) {
-    ori_ = ori;
-  }
-  void SetDir(const Vec3f &dir) {
-    dir_ = dir;
-  }
- private:
   Vec3f ori_;
   Vec3f dir_;
   unsigned int depth_;

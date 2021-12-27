@@ -13,7 +13,7 @@ class Sphere : public Primitive {
  public:
   explicit Sphere(Vec3f ori = Vec3f{0.f, 0.f, 0.f}, float radius = 1.0f);
   [[nodiscard]] bool Intersect(const Ray &ray) const override;
-  [[nodiscard]] bool IntersectInfo(const Ray &ray, std::shared_ptr<IntersectionInfo> info) const override;
+  [[nodiscard]] bool IntersectInfo(const Ray &ray, IntersectionInfo *) const override;
  private:
   Vec3f center_;
   float radius_;

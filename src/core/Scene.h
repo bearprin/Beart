@@ -11,22 +11,37 @@
 #include "Accelerator.h"
 
 #include "common.h"
+#include "AABB.h"
 namespace beart {
 class Scene {
  public:
   Scene() = default;
-  void AddPrimitive(const std::shared_ptr<Primitive> &primitive) {
+  void AddPrimitive(Primitive *primitive) {
     this->primitives_.emplace_back(primitive);
   }
-  void AddLight(const std::shared_ptr<Light> &light) {
+  void AddLight(Light *light) {
     this->lights_.emplace_back(light);
+  }
+  void Prepare() {
+    auto generateAABB = [](const std::vector<std::unique_ptr<const Primitive>> &primitive) {
+      AABB box;
+      for (const auto &item : primitive) {
+        box.Union(item->GetBBox());
+      }
+      return box;
+    };
+    world_aabb_ = generateAABB(primitives_);
+  }
+  void BuildAccelerationStructure() {
+    accelerator_->Build(&primitives_, &world_aabb_);
   }
 
  private:
-  std::vector<std::shared_ptr<Light>> lights_;
-  std::vector<std::shared_ptr<Primitive>> primitives_;
-  std::shared_ptr<Camera> camera_;
-  std::shared_ptr<Accelerator> accelerator_;
+  std::vector<std::unique_ptr<const Light>> lights_;
+  std::vector<std::unique_ptr<const Primitive>> primitives_;
+  std::unique_ptr<Camera> camera_;
+  std::unique_ptr<Accelerator> accelerator_;
+  AABB world_aabb_;
 
 };
 }
