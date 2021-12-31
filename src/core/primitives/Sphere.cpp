@@ -10,17 +10,17 @@ beart::Sphere::Sphere(beart::Vec3f center, float radius) : center_(std::move(cen
   radius_sq_ = radius_ * radius_;
 }
 bool beart::Sphere::Intersect(const beart::Ray &ray) const {
-  Vec3f L = ray.dir_ - this->center_;
-  float a = Dot(ray.dir_, ray.dir_);
-  float b = 2.f * Dot(ray.dir_, L);
+  Vec3f L = ray.dir() - this->center_;
+  float a = Dot(ray.dir(), ray.dir());
+  float b = 2.f * Dot(ray.dir(), L);
   float c = Dot(L, L) - radius_sq_;
   auto[interect, t0, t1] = SolveQuadratic(a, b, c);
   return interect;
 }
 bool beart::Sphere::IntersectInfo(const beart::Ray &ray, IntersectionInfo *info) const {
-  Vec3f L = ray.ori_ - this->center_;
-  float a = Dot(ray.dir_, ray.dir_);
-  float b = 2.f * Dot(ray.dir_, L);
+  Vec3f L = ray.ori() - this->center_;
+  float a = Dot(ray.dir(), ray.dir());
+  float b = 2.f * Dot(ray.dir(), L);
   float c = Dot(L, L) - radius_sq_;
   auto[interect, t_0, t_1] = SolveQuadratic(a, b, c);
   if (!interect) {

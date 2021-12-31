@@ -13,10 +13,10 @@ class Film {
   Film(const unsigned int width, const unsigned int height) : width_(width), height_(height) {
     buffer_ = std::make_unique<T[]>(width_ * height_);
   }
-  void SetColor(const int &x, const int &y, const T &c) {
+  void set_color(const int &x, const int &y, const T &c) {
     this->buffer_[x * width_ + y] = c;
   }
-  [[nodiscard]] T GetColor(const int &x, const int &y) const {
+  [[nodiscard]] T color(const int &x, const int &y) const {
     return buffer_[x * width_ + y];
   };
 

@@ -7,6 +7,7 @@
 
 #include "Vec.h"
 #include "Ray.h"
+
 namespace beart {
 class AABB {
  public:
@@ -17,13 +18,16 @@ class AABB {
 
   [[nodiscard]] bool IsInBox(const Vec3f &p) const;
 
-  [[nodiscard]] Vec3f Diagonal() const;
+  [[nodiscard]] Vec3f Centroid() const;
+
+  [[nodiscard]] float HalfSurfaceArea() const;
+
+  [[nodiscard]] float SurfaceArea() const;
 
   [[nodiscard]] bool Intersect(const Ray &ray) const;
 
  private:
-  Vec3f max_point_;
-  Vec3f min_point_;
+  Vec3f bounds[2];  // min_point: 0, max_point: 1
 };
 }
 

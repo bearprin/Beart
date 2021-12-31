@@ -3,85 +3,83 @@
 //
 
 #include "AABB.h"
-
 #include "common.h"
 beart::AABB::AABB() {
-  max_point_ =
-      Vec3f{kMaxFloat, kMaxFloat, kMaxFloat};
-  min_point_ =
+  bounds[0] =
       Vec3f{kMinFloat, kMinFloat, kMinFloat};
+  bounds[1] =
+      Vec3f{kMaxFloat, kMaxFloat, kMaxFloat};
 }
 beart::AABB::AABB(const beart::Vec3f &p_0, const beart::Vec3f &p_1) {
-  auto[min_x, max_x] = std::minmax(p_0.x(), p_1.x());
-  min_point_.x() = min_x;
-  max_point_.x() = max_x;
-
-  auto[min_y, max_y] = std::minmax(p_0.y(), p_1.y());
-  min_point_.y() = min_y;
-  max_point_.y() = max_y;
-
-  auto[min_z, max_z] = std::minmax(p_0.z(), p_1.z());
-  min_point_.z() = min_z;
-  max_point_.z() = max_z;
+  for (unsigned int i = 0; i < 3; ++i) {
+    auto[min_v, max_v] = std::minmax(p_0.data()[i], p_1.data()[i]);
+    bounds[0].data()[i] = min_v;
+    bounds[1].data()[i] = max_v;
+  }
 }
 bool beart::AABB::IsInBox(const beart::Vec3f &p) const {
-  if (p.x() > min_point_.x() && p.x() < max_point_.x()) {
-    if (p.y() > min_point_.y() && p.y() < max_point_.y()) {
-      if (p.z() > min_point_.z() && p.z() < max_point_.z()) {
-        return true;
-      }
+  for (unsigned int i = 0; i < 3; ++i) {
+    if (!(p.data()[i] > bounds[0].data()[i] && p.data()[i] < bounds[1].data()[i])) {
+      return false;
     }
   }
-  return false;
+  return true;
 }
 void beart::AABB::Union(const beart::AABB &rhs) {
-  max_point_.x() = std::max(this->max_point_.x(), rhs.max_point_.x());
-  max_point_.y() = std::max(this->max_point_.y(), rhs.max_point_.y());
-  max_point_.z() = std::max(this->max_point_.z(), rhs.max_point_.z());
-
-  min_point_.x() = std::min(this->min_point_.x(), rhs.min_point_.x());
-  min_point_.y() = std::min(this->min_point_.y(), rhs.min_point_.y());
-  min_point_.z() = std::min(this->min_point_.z(), rhs.min_point_.z());
+  for (unsigned int i = 0; i < 3; ++i) {
+    bounds[0].data()[i] = std::fmin(bounds[0].data()[i], rhs.bounds[0].data()[i]);
+    bounds[1].data()[i] = std::fmax(bounds[1].data()[i], rhs.bounds[1].data()[i]);
+  }
 }
-beart::Vec3f beart::AABB::Diagonal() const {
-  return max_point_ - min_point_;
-}
+// Williams et al. <<An Efﬁcient and Robust Ray-Box Intersection Algorithm>>
 bool beart::AABB::Intersect(const beart::Ray &ray) const {
-  float t_x_min = 0;
-  float t_x_max = 0;
-  float t_y_min = 0;
-  float t_y_max = 0;
-  float t_z_min = 0;
-  float t_z_max = 0;
+  float t_min{};
+  float t_max{};
+  float t_x_min{};
+  float t_x_max{};
+  float t_y_min{};
+  float t_y_max{};
+  float t_z_min{};
+  float t_z_max{};
 
-  Vec3f inv_dir = Vec3f{1.f / ray.dir_.x(), 1.f / ray.dir_.y(), 1.f / ray.dir_.z()};
+  Vec3f inv_dir = ray.inv_dir();
   // x case
-  if (inv_dir.x() >= 0) {
-    t_x_min = (min_point_.x() - ray.ori_.x()) * inv_dir.x();
-    t_x_max = (max_point_.x() - ray.ori_.x()) * inv_dir.x();
-  } else {
-    t_x_min = (max_point_.x() - ray.ori_.x()) * inv_dir.x();
-    t_x_max = (min_point_.x() - ray.ori_.x()) * inv_dir.x();
-  }
+  t_x_min = (bounds[ray.sign()[0]].x() - ray.ori().x()) * inv_dir.x();
+  t_x_max = (bounds[1 - ray.sign()[0]].x() - ray.ori().x()) * inv_dir.x();
   // y case
-  if (inv_dir.y() >= 0) {
-    t_y_min = (min_point_.y() - ray.ori_.y()) * inv_dir.y();
-    t_y_max = (max_point_.y() - ray.ori_.y()) * inv_dir.y();
-  } else {
-    t_y_min = (max_point_.y() - ray.ori_.y()) * inv_dir.y();
-    t_y_max = (min_point_.y() - ray.ori_.y()) * inv_dir.y();
-  }
-  // z case
-  if (inv_dir.z() >= 0) {
-    t_z_min = (min_point_.z() - ray.ori_.z()) * inv_dir.z();
-    t_z_max = (max_point_.z() - ray.ori_.z()) * inv_dir.z();
-  } else {
-    t_z_min = (max_point_.z() - ray.ori_.z()) * inv_dir.z();
-    t_z_max = (min_point_.z() - ray.ori_.z()) * inv_dir.z();
-  }
+  t_y_min = (bounds[ray.sign()[1]].y() - ray.ori().y()) * inv_dir.y();
+  t_y_max = (bounds[1 - ray.sign()[1]].y() - ray.ori().y()) * inv_dir.y();
 
-  // is overlap with the valid range of three axis?
-  return !(t_x_min > t_y_max || t_x_min > t_z_max || t_y_min > t_x_max || t_y_min > t_z_max || t_z_min > t_x_max
-      || t_z_min > t_y_max);
+  // is valid?
+  if (t_x_min > t_y_max || t_y_min > t_x_max) {
+    return false;
+  }
+  // update max and min (more compact)
+  t_min = std::fmax(t_x_min, t_y_min);
+  t_max = std::fmin(t_x_max, t_y_max);
+
+  t_z_min = (bounds[ray.sign()[2]].z() - ray.ori().z()) * inv_dir.z();
+  t_z_max = (bounds[1 - ray.sign()[2]].z() - ray.ori().z()) * inv_dir.z();
+
+  // is valid?
+  if (t_min > t_z_max || t_z_min > t_max) {
+    return false;
+  }
+  // update max and min (more compact)
+  t_min = std::fmax(t_min, t_z_min);
+  t_max = std::fmin(t_max, t_z_max);
+
+  return t_min < ray.t_max() && t_max > ray.t_min();
+
+}
+float beart::AABB::HalfSurfaceArea() const {
+  Vec3f offset = bounds[1] - bounds[0];
+  return offset.x() * offset.y() + offset.y() * offset.z() + offset.z() * offset.x();
+}
+float beart::AABB::SurfaceArea() const {
+  return HalfSurfaceArea() * 2;
+}
+beart::Vec3f beart::AABB::Centroid() const {
+  return 0.5f * (bounds[0] + bounds[1]);
 }
 
