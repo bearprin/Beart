@@ -2,15 +2,14 @@
 // Created by Bear on 2021/12/3.
 //
 
-#ifndef BEART_SRC_CORE_CAMERA_CAMERA_H_
-#define BEART_SRC_CORE_CAMERA_CAMERA_H_
+#pragma once
 
-#include "Vec.h"
-#include "Transform.h"
-#include "Film.h"
-#include "Ray.h"
-#include "Spectrum.h"
-#include "Samples.h"
+#include "vec.h"
+#include "transform.h"
+#include "film.h"
+#include "ray.h"
+#include "spectrum.h"
+#include "samples.h"
 
 namespace beart {
 class Camera {
@@ -53,5 +52,3 @@ class Camera {
   std::unique_ptr<Film<RGBSpectrum>> normal_ptr_;
 };
 }
-
-#endif //BEART_SRC_CORE_CAMERA_CAMERA_H_

@@ -2,8 +2,7 @@
 // Created by Bear on 2021/12/3.
 //
 
-#ifndef BEART_SRC_CORE_FILM_FILM_H_
-#define BEART_SRC_CORE_FILM_FILM_H_
+#pragma once
 
 #include "common.h"
 namespace beart {
@@ -27,4 +26,3 @@ class Film {
 };
 }
 
-#endif //BEART_SRC_CORE_FILM_FILM_H_

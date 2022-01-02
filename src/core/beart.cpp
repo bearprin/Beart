@@ -1,7 +1,7 @@
-#include "Primitive.h"
-#include "Sphere.h"
-#include "PerspectiveCamera.h"
-#include "Samples.h"
+#include "primitive.h"
+#include "sphere.h"
+#include "perspective_camera.h"
+#include "samples.h"
 
 #include <iostream>
 int main() {
@@ -13,7 +13,7 @@ int main() {
     for (unsigned int i = 0; i < camera.GetImageWidth(); ++i) {
 
       beart::Ray r = camera.GenerateRay(i, j, beart::PixelSample{0.f, 0.f});
-      auto info = std::make_unique<beart::IntersectionInfo>();
+      auto info = std::make_unique<beart::intersectionInfo>();
       if (sphere->IntersectInfo(r, info.get())) {
         beart::Vec3f nor = (info->Ns + beart::Vec3f(1, 1, 1)) * 0.5;
         (void) fprintf(fp,

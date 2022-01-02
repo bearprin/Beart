@@ -2,7 +2,7 @@
 // Created by Bear on 2021/12/6.
 //
 
-#include "PerspectiveCamera.h"
+#include "perspective_camera.h"
 
 beart::PerspectiveCamera::PerspectiveCamera(unsigned int image_width,
                                             unsigned int image_height,

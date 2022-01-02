@@ -2,8 +2,7 @@
 // Created by Bear on 2021/12/6.
 //
 
-#ifndef BEART_SRC_CORE_SAMPLER_SAMPLES_H_
-#define BEART_SRC_CORE_SAMPLER_SAMPLES_H_
+#pragma once
 
 namespace beart {
 
@@ -14,4 +13,3 @@ class PixelSample {
 };
 
 }
-#endif //BEART_SRC_CORE_SAMPLER_SAMPLES_H_

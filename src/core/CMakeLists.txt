@@ -2,26 +2,26 @@ project(Core)
 
 add_executable(${PROJECT_NAME}
         common.h
-        math/Vec.h
-        math/Ray.h
-        math/Mat.h
-        math/Transform.h
-        math/Quadratic.h
-        math/AABB.h math/AABB.cpp
-        primitives/IntersectionInfo.h primitives/IntersectionInfo.cpp
-        primitives/Primitive.h
-        primitives/Sphere.cpp primitives/Sphere.h
-        camera/Camera.h
-        Scene.h
-        film/Film.cpp film/Film.h
-        light/Light.cpp light/Light.h
-        integrators/Integrator.cpp integrators/Integrator.h
-        accel/Accelerator.h
-        spectrum/Spectrum.cpp spectrum/Spectrum.h
-        camera/PerspectiveCamera.cpp camera/PerspectiveCamera.h
-        sampler/Samples.h
-        Beart.cpp
-        accel/BVH.cpp accel/BVH.h)
+        math/vec.h
+        math/ray.h
+        math/mat.h
+        math/transform.h
+        math/quadratic.h
+        math/aabb.h math/aabb.cpp
+        primitives/intersectionInfo.h primitives/intersectionInfo.cpp
+        primitives/primitive.h
+        primitives/sphere.cpp primitives/sphere.h
+        camera/camera.h
+        scene.h
+        film/film.cpp film/film.h
+        light/light.cpp light/light.h
+        integrators/integrator.cpp integrators/integrator.h
+        accel/accelerator.h
+        spectrum/spectrum.cpp spectrum/spectrum.h
+        camera/perspective_camera.cpp camera/perspective_camera.h
+        sampler/samples.h
+        beart.cpp
+        accel/bvh.cpp accel/bvh.h accel/bvh_util.h)
 
 target_include_directories(${PROJECT_NAME} PUBLIC
         .

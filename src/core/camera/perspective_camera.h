@@ -2,10 +2,9 @@
 // Created by Bear on 2021/12/6.
 //
 
-#ifndef BEART_SRC_CORE_CAMERA_PERSPECTIVECAMERA_H_
-#define BEART_SRC_CORE_CAMERA_PERSPECTIVECAMERA_H_
+#pragma once
 
-#include "Camera.h"
+#include "camera.h"
 namespace beart {
 class PerspectiveCamera : public Camera {
  public:
@@ -38,5 +37,3 @@ class PerspectiveCamera : public Camera {
   Transform world2raster_;
 };
 }
-
-#endif //BEART_SRC_CORE_CAMERA_PERSPECTIVECAMERA_H_

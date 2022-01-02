@@ -2,9 +2,7 @@
 // Created by Bear on 2021/12/3.
 //
 
-#include "Sphere.h"
-
-#include "Quadratic.h"
+#include "sphere.h"
 
 beart::Sphere::Sphere(beart::Vec3f center, float radius) : center_(std::move(center)), radius_(radius) {
   radius_sq_ = radius_ * radius_;
@@ -17,7 +15,7 @@ bool beart::Sphere::Intersect(const beart::Ray &ray) const {
   auto[interect, t0, t1] = SolveQuadratic(a, b, c);
   return interect;
 }
-bool beart::Sphere::IntersectInfo(const beart::Ray &ray, IntersectionInfo *info) const {
+bool beart::Sphere::IntersectInfo(const beart::Ray &ray, intersectionInfo *info) const {
   Vec3f L = ray.ori() - this->center_;
   float a = Dot(ray.dir(), ray.dir());
   float b = 2.f * Dot(ray.dir(), L);

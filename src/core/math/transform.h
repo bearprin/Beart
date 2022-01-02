@@ -2,10 +2,9 @@
 // Created by Bear on 2021/12/3.
 //
 
-#ifndef BEART_SRC_CORE_MATH_TRANSFORM_H_
-#define BEART_SRC_CORE_MATH_TRANSFORM_H_
+#pragma once
 
-#include "Mat.h"
+#include "mat.h"
 namespace beart {
 
 using Transform = Mat4f;
@@ -53,4 +52,3 @@ static inline Transform Perspective(const float &scale_x, const float &scale_y, 
   return std::move(camera2screen_perspective);
 }
 }
-#endif //BEART_SRC_CORE_MATH_TRANSFORM_H_

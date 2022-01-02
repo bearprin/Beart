@@ -2,4 +2,8 @@
 // Created by Bear on 2021/12/3.
 //
 
-#include "Light.h"
+#pragma once
+
+class Light {
+
+};

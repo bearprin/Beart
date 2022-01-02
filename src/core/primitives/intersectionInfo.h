@@ -2,14 +2,13 @@
 // Created by Bear on 2021/12/3.
 //
 
-#ifndef BEART_SRC_CORE_PRIMITIVES_INTERSECTIONINFO_H_
-#define BEART_SRC_CORE_PRIMITIVES_INTERSECTIONINFO_H_
+#pragma once
 
-#include "Vec.h"
+#include "vec.h"
 
 namespace beart {
 class Primitive;
-class IntersectionInfo {
+class intersectionInfo {
  public:
   bool happened = false;
   float t_curr = 0.0;
@@ -21,5 +20,3 @@ class IntersectionInfo {
 
 };
 }
-
-#endif //BEART_SRC_CORE_PRIMITIVES_INTERSECTIONINFO_H_

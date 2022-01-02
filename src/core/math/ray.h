@@ -2,11 +2,10 @@
 // Created by Bear on 2021/12/3.
 //
 
-#ifndef BEART_SRC_CORE_MATH_RAY_H_
-#define BEART_SRC_CORE_MATH_RAY_H_
+#pragma once
 
-#include "Vec.h"
-#include "Transform.h"
+#include "vec.h"
+#include "transform.h"
 
 namespace beart {
 class Ray {
@@ -60,5 +59,3 @@ class Ray {
   bool is_primary_ray_;
 };
 }
-
-#endif //BEART_SRC_CORE_MATH_RAY_H_

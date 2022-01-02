@@ -2,8 +2,7 @@
 // Created by Bear on 2021/12/4.
 //
 
-#ifndef BEART_SRC_CORE_MATH_QUADRATIC_H_
-#define BEART_SRC_CORE_MATH_QUADRATIC_H_
+#pragma once
 
 #include "common.h"
 
@@ -25,5 +24,3 @@ inline std::tuple<bool, float, float> SolveQuadratic(const float &a, const float
   }
 };
 }
-
-#endif //BEART_SRC_CORE_MATH_QUADRATIC_H_
