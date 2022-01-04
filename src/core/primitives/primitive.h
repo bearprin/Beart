@@ -13,14 +13,12 @@ namespace beart {
 class Primitive {
  public:
   virtual ~Primitive() = default;
-  [[nodiscard]] const AABB &GetBBox() const {
-    return bbox_;
-  }
+  virtual const AABB &Bbox() const = 0;
   virtual bool Intersect(const Ray &ray) const = 0;
   [[nodiscard]] virtual bool IntersectInfo(const Ray &ray, intersectionInfo *info) const = 0;
  protected:
   Transform model_transform_;
-  AABB bbox_;
+  mutable std::unique_ptr<AABB> bbox_ptr;
 };
 }
 

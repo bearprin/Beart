@@ -32,13 +32,13 @@ class Camera {
 
     world2camera_ = camera2world_.inverse();
   }
-  [[nodiscard]] unsigned int GetImageWidth() const {
+  [[nodiscard]] unsigned int image_width() const {
     return image_width_;
   }
-  [[nodiscard]] unsigned int GetImageHeight() const {
+  [[nodiscard]] unsigned int image_height() const {
     return image_height_;
   }
-  [[nodiscard]] std::tuple<unsigned int, unsigned int> GetImageResolution() const {
+  [[nodiscard]] std::tuple<unsigned int, unsigned int> imageResolution() const {
     return {image_width_, image_height_};
   }
   virtual Ray GenerateRay(const float &x, const float &y, const PixelSample &pixel_sample) const noexcept = 0;

@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "common.h"
 #include "vec.h"
 
 namespace beart {
@@ -11,12 +12,11 @@ class Primitive;
 class intersectionInfo {
  public:
   bool happened = false;
-  float t_curr = 0.0;
+  float t_curr = kMaxFloat;
   Vec3f corrds;
   Vec3f Ng;
   Vec3f Ns;
 
   const Primitive *obj = nullptr;
-
 };
 }

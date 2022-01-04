@@ -7,10 +7,10 @@
 #include "common.h"
 
 namespace beart {
-inline std::tuple<bool, float, float> SolveQuadratic(const float &a, const float &b, const float &c) {
+constexpr std::tuple<bool, float, float> SolveQuadratic(const float &a, const float &b, const float &c) {
   float discr = b * b - 4.f * a * c;
   if (discr < 0) {
-    return {false, std::numeric_limits<float>::infinity(), std::numeric_limits<float>::infinity()};
+    return {false, kInfinity, kInfinity};
   } else if (discr == 0) {
     return {true, -0.5 * b / a, -0.5 * b / a};
   } else {

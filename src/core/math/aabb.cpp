@@ -37,7 +37,7 @@ void beart::AABB::Union(const beart::Vec3f &point) {
     bounds_[1].data()[i] = std::fmax(bounds_[1].data()[i], point.data()[i]);
   }
 }
-// Williams et al. <<An Efﬁcient and Robust Ray-Box Intersection Algorithm>>
+// Williams et al. <<An Efficient and Robust Ray-Box Intersection Algorithm>>
 bool beart::AABB::Intersect(const beart::Ray &ray) const {
   float t_min{};
   float t_max{};
@@ -76,7 +76,6 @@ bool beart::AABB::Intersect(const beart::Ray &ray) const {
   t_max = std::fmin(t_max, t_z_max);
 
   return t_min < ray.t_max() && t_max > ray.t_min();
-
 }
 float beart::AABB::HalfSurfaceArea() const {
   Vec3f offset = bounds_[1] - bounds_[0];
@@ -105,4 +104,7 @@ const beart::Vec3f *beart::AABB::bounds() const {
 }
 void beart::AABB::set_bounds(const unsigned int min_max_id, const unsigned int axis, const float value) {
   bounds_[min_max_id][axis] = value;
+}
+void beart::AABB::set_bounds(unsigned int min_max_id, const beart::Vec3f &p) {
+  bounds_[min_max_id] = p;
 }

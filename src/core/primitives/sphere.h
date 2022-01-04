@@ -11,6 +11,7 @@ namespace beart {
 class Sphere : public Primitive {
  public:
   explicit Sphere(Vec3f ori = Vec3f{0.f, 0.f, 0.f}, float radius = 1.0f);
+  const AABB &Bbox() const override;
   [[nodiscard]] bool Intersect(const Ray &ray) const override;
   [[nodiscard]] bool IntersectInfo(const Ray &ray, intersectionInfo *) const override;
  private:
