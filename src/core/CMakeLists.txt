@@ -8,7 +8,7 @@ add_executable(${PROJECT_NAME}
         math/transform.h
         math/quadratic.h
         math/aabb.h math/aabb.cpp
-        primitives/intersectionInfo.h primitives/intersectionInfo.cpp
+        primitives/intersection_info.h
         primitives/primitive.h
         primitives/sphere.cpp primitives/sphere.h
         camera/camera.h
@@ -21,7 +21,8 @@ add_executable(${PROJECT_NAME}
         camera/perspective_camera.cpp camera/perspective_camera.h
         sampler/samples.h
         beart.cpp
-        accel/bvh.cpp accel/bvh.h accel/bvh_util.h)
+        accel/bvh.cpp accel/bvh.h accel/bvh_util.h
+        )
 
 target_include_directories(${PROJECT_NAME} PUBLIC
         .
@@ -34,4 +35,10 @@ target_include_directories(${PROJECT_NAME} PUBLIC
         spectrum
         sampler
         )
+
 target_link_libraries(Core PUBLIC eigen)
+if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+    target_sources(${PROJECT_NAME} PUBLIC ${BACKWARD_ENABLE})
+    add_backward(Core)
+endif ()
+

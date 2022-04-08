@@ -15,7 +15,7 @@ class Accelerator {
     primitives_ = primitives;
     world_aabb_ = bbox;
   };
-  virtual bool IntersectInfo(const Ray &ray, intersectionInfo *info) const = 0;
+  virtual bool IntersectInfo(const Ray &ray, IntersectionInfo *info) const = 0;
  protected:
   const std::vector<const Primitive *> *primitives_ = nullptr;
   const AABB *world_aabb_ = nullptr;

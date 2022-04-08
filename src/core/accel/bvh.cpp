@@ -79,7 +79,7 @@ void beart::BVH::MakeLeafNode(beart::BVH::BvhNode *node, const unsigned int star
   node->prim_offset = start;
 }
 
-bool beart::BVH::IntersectInfo(const beart::Ray &ray, beart::intersectionInfo *info) const {
+bool beart::BVH::IntersectInfo(const beart::Ray &ray, beart::IntersectionInfo *info) const {
   if (!is_valid_) {
     return false;
   }
@@ -92,7 +92,7 @@ bool beart::BVH::IntersectInfo(const beart::Ray &ray, beart::intersectionInfo *i
 bool beart::BVH::TraverseNode(const BvhNode *node,
                               const beart::Ray &ray,
                               const float t_min,
-                              beart::intersectionInfo *info) const {
+                              beart::IntersectionInfo *info) const {
   if (t_min < 0.f) {
     return false;
   }

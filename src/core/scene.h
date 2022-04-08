@@ -40,7 +40,7 @@ class Scene {
   void set_camera(const Camera *camera) {
     camera_ = camera;
   }
-  bool IntersectInfo(const Ray &ray, intersectionInfo *info) {
+  bool IntersectInfo(const Ray &ray, IntersectionInfo *info) {
     return accelerator_->IntersectInfo(ray, info);
   }
 

@@ -5,7 +5,7 @@
 #pragma once
 
 #include "ray.h"
-#include "intersectionInfo.h"
+#include "intersection_info.h"
 #include "transform.h"
 #include "aabb.h"
 
@@ -15,7 +15,7 @@ class Primitive {
   virtual ~Primitive() = default;
   virtual const AABB &Bbox() const = 0;
   virtual bool Intersect(const Ray &ray) const = 0;
-  [[nodiscard]] virtual bool IntersectInfo(const Ray &ray, intersectionInfo *info) const = 0;
+  [[nodiscard]] virtual bool IntersectInfo(const Ray &ray, IntersectionInfo *info) const = 0;
  protected:
   Transform model_transform_;
   mutable std::unique_ptr<AABB> bbox_ptr;

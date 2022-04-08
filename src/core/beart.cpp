@@ -23,16 +23,12 @@ int main() {
   for (unsigned j = scene.camera()->image_height(); j > 0; --j) {
     for (unsigned int i = 0; i < scene.camera()->image_width(); ++i) {
       // TODO: generate sample by i, j
-      if (j == 87 && i == 237) {
-
-      }
       beart::Ray r = scene.camera()->GenerateRay(i, j, beart::PixelSample{0.f, 0.f});
-      auto info = std::make_unique<beart::intersectionInfo>();
+      auto info = std::make_unique<beart::IntersectionInfo>();
       if (scene.IntersectInfo(r, info.get())) {
 //      if (sphere1->IntersectInfo(r, info.get())) {
 //        beart::Vec3f nor = (info->Ns + beart::Vec3f(1, 1, 1)) * 0.5;
 //        auto nor = beart::Vec3f{1.f, 0.f, 0.f};
-        std::cout << j << " " << i << std::endl;
         beart::Vec3f nor = (info->Ns + beart::Vec3f(1, 1, 1)) * 0.5;
         (void) fprintf(fp,
                        "%d %d %d\n",

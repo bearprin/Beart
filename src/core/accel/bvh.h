@@ -18,7 +18,7 @@ class BVH : public Accelerator {
     std::unique_ptr<BvhNode> right = nullptr;
   };
   void Build(const std::vector<const Primitive *> *primitives, const AABB *bbox) override;
-  bool IntersectInfo(const Ray &ray, intersectionInfo *info) const override;
+  bool IntersectInfo(const Ray &ray, IntersectionInfo *info) const override;
  private:
   std::unique_ptr<BvhNode> root_;
   std::unique_ptr<BvhPrimitive[]> bvh_prims_;
@@ -28,7 +28,7 @@ class BVH : public Accelerator {
   void SplitNode(BvhNode *node, unsigned int start, unsigned int end, unsigned int depth);
   void MakeLeafNode(BvhNode *node, unsigned int start, unsigned int end);
 
-  bool TraverseNode(const BvhNode *node, const Ray &ray, const float t_min, intersectionInfo *info) const;
+  bool TraverseNode(const BvhNode *node, const Ray &ray, const float t_min, IntersectionInfo *info) const;
 
 };
 }

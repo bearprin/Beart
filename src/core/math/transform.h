@@ -11,7 +11,7 @@ using Transform = Mat4f;
 static Vec3f TransformPoint(const Transform &trans, const Vec3f &point) {
   Vec4f p{point.x(), point.y(), point.z(), 1.0f};
   Vec4f res = (trans * p);
-  return std::move(Vec3f{res.x(), res.y(), res.z()});
+  return Vec3f{res.x(), res.y(), res.z()};
 }
 static Transform Scale(const float &x, const float &y, const float &z) {
   Transform scale{
@@ -20,7 +20,7 @@ static Transform Scale(const float &x, const float &y, const float &z) {
       {0.0f, 0.0f, z, 0.0f},
       {0.0f, 0.0f, 0.0f, 1.0f},
   };
-  return std::move(scale);
+  return scale;
 }
 static Transform Translate(const float &x, const float &y, const float &z) {
   Transform translate{
@@ -29,7 +29,7 @@ static Transform Translate(const float &x, const float &y, const float &z) {
       {0.0f, 0.0f, 1.0f, z},
       {0.0f, 0.0f, 0.0f, 1.0f},
   };
-  return std::move(translate);
+  return translate;
 }
 static Transform LookAt(const Vec3f &pos, const Vec3f &up, const Vec3f &dir) {
   Vec3f z = dir.normalized();
@@ -42,13 +42,13 @@ static Transform LookAt(const Vec3f &pos, const Vec3f &up, const Vec3f &dir) {
       {x.z(), y.z(), z.z(), pos.z()},
       {0.0f, 0.0f, 0.0f, 1.0f}
   };
-  return std::move(camera_2_world);
+  return camera_2_world;
 }
 static Transform Perspective(const float &scale_x, const float &scale_y, const float &near, const float &far) {
   Transform camera2screen_perspective{{scale_x, 0.0f, 0.0f, 0.0f},
                                       {0.0f, scale_y, 0.0f, 0.0f},
                                       {0.0f, 0.0f, far / (far - near), -far * near / (far - near)},
                                       {0.0f, 0.0f, 1.0f, 0.0f}};
-  return std::move(camera2screen_perspective);
+  return camera2screen_perspective;
 }
 }
