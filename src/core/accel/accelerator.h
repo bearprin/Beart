@@ -11,6 +11,7 @@ namespace beart {
 class Accelerator {
  public:
   Accelerator() = default;
+  ~Accelerator() = default;
   virtual void Build(const std::vector<const Primitive *> *primitives, const AABB *bbox) {
     primitives_ = primitives;
     world_aabb_ = bbox;

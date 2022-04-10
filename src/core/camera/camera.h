@@ -32,6 +32,7 @@ class Camera {
 
     world2camera_ = camera2world_.inverse();
   }
+  ~Camera() = default;;
   [[nodiscard]] unsigned int image_width() const {
     return image_width_;
   }
@@ -40,6 +41,19 @@ class Camera {
   }
   [[nodiscard]] std::tuple<unsigned int, unsigned int> imageResolution() const {
     return {image_width_, image_height_};
+  }
+  [[nodiscard]] const Transform &camera2world() const {
+    return camera2world_;
+  }
+  [[nodiscard]] const Transform &world2camera() const {
+    return world2camera_;
+  }
+
+  [[nodiscard]] const Film<RGBSpectrum> &image() const {
+    return *image_ptr_;
+  }
+  [[nodiscard]] const Film<RGBSpectrum> &normal() const {
+    return *normal_ptr_;
   }
   virtual Ray GenerateRay(const float &x, const float &y, const PixelSample &pixel_sample) const noexcept = 0;
  protected:

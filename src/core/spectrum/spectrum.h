@@ -8,5 +8,6 @@
 namespace beart {
 
 using RGBSpectrum = Vec3f;
+using Spectrum = RGBSpectrum;
 
 }

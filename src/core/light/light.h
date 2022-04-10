@@ -4,6 +4,13 @@
 
 #pragma once
 
+#include "spectrum.h"
+namespace beart {
 class Light {
+ public:
+  ~Light() = default;
+ protected:
+  Spectrum intensity_;
 
 };
+}

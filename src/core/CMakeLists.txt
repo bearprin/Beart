@@ -22,7 +22,8 @@ add_executable(${PROJECT_NAME}
         sampler/samples.h
         beart.cpp
         accel/bvh.cpp accel/bvh.h accel/bvh_util.h
-        )
+        light/point_light.h
+        light/area_light.h)
 
 target_include_directories(${PROJECT_NAME} PUBLIC
         .

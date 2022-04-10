@@ -56,6 +56,17 @@ static inline float Dot(const Vec3f &lhs, const Vec3f &rhs) {
 }
 static inline Vec3f Cross(const Vec3f &lhs, const Vec3f &rhs) {
   Vec3f res = lhs.cross(rhs);
-  return std::move(res);
+  return res;
+}
+inline void CoordinateSystem(const Vec3f &v1, Vec3f *v2, Vec3f *v3) {
+  v1.normalized();
+  // Construct linear independent vector v2
+  if (std::abs(v1.x()) > std::abs(v1.y())) {
+    *v2 = Vec3f(-v1.z(), 0, v1.x()) / std::sqrt(v1.x() * v1.x() + v1.z() * v1.z());
+  } else {
+    *v2 = Vec3f(0, v1.z(), -v1.y()) / std::sqrt(v1.y() * v1.y() + v1.z() * v1.z());
+  }
+  *v3 = Cross(v1, *v2);
+  v3->normalized();
 }
 }
