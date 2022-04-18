@@ -1,6 +1,9 @@
-[submodule "third_party/Eigen"]
-	path = third_party/Eigen
-	url = https://gitlab.com/libeigen/eigen
 [submodule "third_party/backward-cpp"]
 	path = third_party/backward-cpp
 	url = https://github.com/bombela/backward-cpp
+[submodule "third_party/Catch2"]
+	path = third_party/Catch2
+	url = https://github.com/catchorg/Catch2/
+[submodule "third_party/Eigen"]
+	path = third_party/Eigen
+	url = https://gitlab.com/libeigen/eigen

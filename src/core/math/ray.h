@@ -21,6 +21,18 @@ class Ray {
     sign_[1] = inv_dir_.y() < 0;
     sign_[2] = inv_dir_.z() < 0;
   }
+  Ray(Vec3f ori, Vec3f dir, unsigned int depth, float t_min, float t_max, bool is_primary_ray = false)
+      : ori_(std::move(ori)),
+        dir_(std::move(dir)),
+        depth_(depth),
+        t_min_(t_min),
+        t_max_(t_max),
+        is_primary_ray_(is_primary_ray) {
+    inv_dir_ = Vec3f{1.f / dir_.x(), 1.f / dir_.y(), 1.f / dir_.z()};
+    sign_[0] = inv_dir_.x() < 0;
+    sign_[1] = inv_dir_.y() < 0;
+    sign_[2] = inv_dir_.z() < 0;
+  }
   Vec3f operator()(const float &t) const {
     return ori_ + dir_ * t;
   }
@@ -42,6 +54,9 @@ class Ray {
   [[nodiscard]] const float &t_max() const {
     return t_max_;
   };
+  [[nodiscard]] unsigned int depth() const {
+    return depth_;
+  }
   void set_dir(const Vec3f &dir) {
     dir_ = dir;
     inv_dir_ = Vec3f{1.f / dir_.x(), 1.f / dir_.y(), 1.f / dir_.z()};
@@ -55,8 +70,8 @@ class Ray {
   Vec3f inv_dir_;
   int sign_[3];
   unsigned int depth_;
-  float t_min_;  // the range of the ray
-  float t_max_;  // the range of the ray
+  float t_min_ = 0.f;  // the range of the ray
+  float t_max_ = kMaxFloat;  // the range of the ray
   bool is_primary_ray_;
 };
 }

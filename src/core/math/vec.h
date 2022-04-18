@@ -69,4 +69,8 @@ inline void CoordinateSystem(const Vec3f &v1, Vec3f *v2, Vec3f *v3) {
   *v3 = Cross(v1, *v2);
   v3->normalized();
 }
+static inline Vec3f Normalize(const Vec3f &v) {
+  Vec3f res = v.normalized();
+  return res;
+}
 }

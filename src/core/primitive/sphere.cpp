@@ -4,6 +4,7 @@
 
 #include "sphere.h"
 #include "quadratic.h"
+#include "intersection_info.h"
 beart::Sphere::Sphere(beart::Vec3f center, float radius) : center_(std::move(center)), radius_(radius) {
   radius_sq_ = radius_ * radius_;
 }
@@ -44,16 +45,17 @@ bool beart::Sphere::IntersectInfo(const beart::Ray &ray, IntersectionInfo *info)
     info->happened = true;
     info->t_curr = t;
     info->corrds = ray(t);
-    info->Ns = (info->corrds - this->center_).normalized();
+    info->view = -ray.dir();
+    info->Ns = Normalize((info->corrds - this->center_));
     info->Ng = info->Ns;  // Ng eq Ns since this is an implicit equation
-    info->obj = static_cast<const Primitive *>(this);
+    Vec3f v1;
+    Vec3f v2;
+    CoordinateSystem(info->Ns, &v1, &v2); // build local coordinate system with shading normal
+    info->tangent = v1;
   }
   return interect;
 }
-const beart::AABB &beart::Sphere::Bbox() const {
-  // TODO: Consider model transform
-//  Point center = m_transform.TransformPoint( Point( 0.0f , 0.0f , 0.0f ) );
-//  auto center = Vec3f{0, 0, 0};
+const beart::AABB &beart::Sphere::bbox() const {
   if (!bbox_ptr) {
     bbox_ptr = std::make_unique<beart::AABB>();
     auto vec_r = Vec3f{radius_, radius_, radius_};

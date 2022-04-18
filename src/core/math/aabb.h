@@ -45,8 +45,8 @@ class AABB {
 static AABB Union(const AABB &lhs, const AABB &rhs) {
   AABB res;
   for (unsigned int i = 0; i < 3; ++i) {
-    res.set_bounds(0, i, std::fmin(lhs.bounds()[0].data()[i], rhs.bounds()[0].data()[i]));
-    res.set_bounds(1, i, std::fmax(lhs.bounds()[1].data()[i], rhs.bounds()[1].data()[i]));
+    res.set_bounds(0, i, std::fmin(lhs.bounds()[0][i], rhs.bounds()[0][i]));
+    res.set_bounds(1, i, std::fmax(lhs.bounds()[1][i], rhs.bounds()[1][i]));
   }
   return res;
 }

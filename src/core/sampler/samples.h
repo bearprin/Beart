@@ -6,10 +6,24 @@
 
 namespace beart {
 
-class PixelSample {
+struct LightSample {
+  float t_{};  // 1d sample
+
+  // 2d sample
+  float u_{};
+  float v_{};
+};
+struct BsdfSample {
+  float t_{};  // 1d sample
+
+  // 2d sample
+  float u_{};
+  float v_{};
+};
+struct PixelSample {
  public:
-  float image_u = 0.f;
-  float image_v = 0.f;
+  float image_u_ = 0.f;
+  float image_v_ = 0.f;
 };
 
 }

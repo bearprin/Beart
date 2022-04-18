@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "primitive.h"
+#include "shape.h"
 #include "common.h"
 
 namespace beart {
@@ -16,10 +16,10 @@ struct BvhPrimitive {
     primitives_ = prim;
   }
   [[nodiscard]] const AABB &Box() const {
-    return primitives_->Bbox();
+    return primitives_->bbox();
   }
   [[nodiscard]] Vec3f Centroid() const {
-    return primitives_->Bbox().Centroid();
+    return primitives_->bbox().Centroid();
   }
 
 };

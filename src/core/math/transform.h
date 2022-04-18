@@ -8,11 +8,27 @@
 namespace beart {
 
 using Transform = Mat4f;
+static Vec4f TransformPoint(const Transform &trans, const Vec4f &point) {
+  Vec4f res = (trans * point);
+  if (res.w() == 1) {
+    return res;
+  }
+  return res / res.w();
+}
 static Vec3f TransformPoint(const Transform &trans, const Vec3f &point) {
   Vec4f p{point.x(), point.y(), point.z(), 1.0f};
   Vec4f res = (trans * p);
-  return Vec3f{res.x(), res.y(), res.z()};
+  if (res.w() == 1) {
+    return {res.x(), res.y(), res.z()};
+  }
+  return Vec3f{res.x() / res.w(), res.y() / res.w(), res.z() / res.w()};
 }
+//static Vec3f TransformVector(const Transform &trans, const Vec3f &v) {
+//  float x = v.x * trans[0][0] + v.y * trans[0][1] + v.z * trans[0][2];
+//  float y = v.x * trans[1][0] + v.y * trans[1][0] + v.z * trans[1][6];
+//  float z = v.x * trans[2][0] + v.y * trans[2][0] + v.z * trans[2][10];
+//  return Vec3f{x, y, z};
+//}
 static Transform Scale(const float &x, const float &y, const float &z) {
   Transform scale{
       {x, 0.0f, 0.0f, 0.0f},
@@ -31,10 +47,19 @@ static Transform Translate(const float &x, const float &y, const float &z) {
   };
   return translate;
 }
+static Transform Translate(const Vec3f &v) {
+  Transform translate{
+      {1.0f, 0.0f, 0.0f, v.x()},
+      {0.0f, 1.0f, 0.0f, v.y()},
+      {0.0f, 0.0f, 1.0f, v.z()},
+      {0.0f, 0.0f, 0.0f, 1.0f},
+  };
+  return translate;
+}
 static Transform LookAt(const Vec3f &pos, const Vec3f &up, const Vec3f &dir) {
   Vec3f z = dir.normalized();
-  Vec3f x = Cross(z, up).normalized();
-  Vec3f y = Cross(x, z).normalized();
+  Vec3f x = Cross(up, z).normalized();
+  Vec3f y = Cross(z, x).normalized();
 
   Transform camera_2_world{
       {x.x(), y.x(), z.x(), pos.x()},

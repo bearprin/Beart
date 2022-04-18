@@ -105,6 +105,10 @@ bool beart::BVH::TraverseNode(const BvhNode *node,
     auto found = false;
     for (auto i = start; i < end; ++i) {
       found |= bvh_prims_[i].primitives_->IntersectInfo(ray, info);
+      // intersect once, return true for shadow ray
+      if (info->query_shadow && found) {
+        return true;
+      }
     }
     return found;
   }
@@ -118,11 +122,11 @@ bool beart::BVH::TraverseNode(const BvhNode *node,
   auto inter = false;
   if (t_min_right > t_min_left) {
     inter |= TraverseNode(left_ptr, ray, t_min_left, info);
-    // TODO: Shadow ray
+    if (inter && info->query_shadow) return true;
     inter |= TraverseNode(right_ptr, ray, t_min_right, info);
   } else {
     inter |= TraverseNode(right_ptr, ray, t_min_right, info);
-    // TODO: Shadow ray
+    if (inter && info->query_shadow) return true;
     inter |= TraverseNode(left_ptr, ray, t_min_left, info);
   }
   return inter;

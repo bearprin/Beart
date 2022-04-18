@@ -5,7 +5,8 @@
 #pragma once
 
 #include "accelerator.h"
-#include "bvh_util.h"
+#include "bvh_common.h"
+#include "intersection_info.h"
 
 namespace beart {
 class BVH : public Accelerator {

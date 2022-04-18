@@ -23,14 +23,14 @@ class Camera {
     normal_ptr_ = std::make_unique<Film<RGBSpectrum>>(image_width_, image_height_);
 
     camera2world_ = LookAt(camera_pos, up, dir);
-    world2camera_ = camera2world_.inverse();
+    world2camera_ = Inverse(camera2world_);
   }
   Camera(unsigned int image_width, unsigned int image_height, Transform camera_2_world)
       : image_width_(image_width), image_height_(image_height), camera2world_(std::move(camera_2_world)) {
     image_ptr_ = std::make_unique<Film<RGBSpectrum>>(image_width_, image_height_);
     normal_ptr_ = std::make_unique<Film<RGBSpectrum>>(image_width_, image_height_);
 
-    world2camera_ = camera2world_.inverse();
+    world2camera_ = Inverse(camera2world_);
   }
   ~Camera() = default;;
   [[nodiscard]] unsigned int image_width() const {

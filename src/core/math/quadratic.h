@@ -14,7 +14,7 @@ constexpr std::tuple<bool, float, float> SolveQuadratic(const float &a, const fl
   } else if (discr == 0) {
     return {true, -0.5 * b / a, -0.5 * b / a};
   } else {
-    float q = (b > 0) ? -0.5f * (b + std::sqrtf(discr)) : -0.5f * (b - std::sqrtf(discr));
+    float q = (b > 0) ? -0.5f * (b + std::sqrt(discr)) : -0.5f * (b - std::sqrt(discr));
     float x_0 = q / a;
     float x_1 = c / q;
     if (x_0 > x_1) {

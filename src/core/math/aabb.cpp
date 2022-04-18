@@ -12,14 +12,14 @@ beart::AABB::AABB() {
 }
 beart::AABB::AABB(const beart::Vec3f &p_0, const beart::Vec3f &p_1) {
   for (unsigned int i = 0; i < 3; ++i) {
-    auto[min_v, max_v] = std::minmax(p_0.data()[i], p_1.data()[i]);
-    bounds_[0].data()[i] = min_v;
-    bounds_[1].data()[i] = max_v;
+    auto [min_v, max_v] = std::minmax(p_0[i], p_1[i]);
+    bounds_[0][i] = min_v;
+    bounds_[1][i] = max_v;
   }
 }
 bool beart::AABB::IsInBox(const beart::Vec3f &p) const {
   for (unsigned int i = 0; i < 3; ++i) {
-    if (!(p.data()[i] > bounds_[0].data()[i] && p.data()[i] < bounds_[1].data()[i])) {
+    if (!(p[i] > bounds_[0][i] && p[i] < bounds_[1][i])) {
       return false;
     }
   }
@@ -27,14 +27,14 @@ bool beart::AABB::IsInBox(const beart::Vec3f &p) const {
 }
 void beart::AABB::Union(const beart::AABB &rhs) {
   for (unsigned int i = 0; i < 3; ++i) {
-    bounds_[0].data()[i] = std::fmin(bounds_[0].data()[i], rhs.bounds_[0].data()[i]);
-    bounds_[1].data()[i] = std::fmax(bounds_[1].data()[i], rhs.bounds_[1].data()[i]);
+    bounds_[0][i] = std::fmin(bounds_[0][i], rhs.bounds_[0][i]);
+    bounds_[1][i] = std::fmax(bounds_[1][i], rhs.bounds_[1][i]);
   }
 }
 void beart::AABB::Union(const beart::Vec3f &point) {
   for (auto i = 0u; i < 3; ++i) {
-    bounds_[0].data()[i] = std::fmin(bounds_[0].data()[i], point.data()[i]);
-    bounds_[1].data()[i] = std::fmax(bounds_[1].data()[i], point.data()[i]);
+    bounds_[0][i] = std::fmin(bounds_[0][i], point[i]);
+    bounds_[1][i] = std::fmax(bounds_[1][i], point[i]);
   }
 }
 // Williams et al. <<An Efficient and Robust Ray-Box Intersection Algorithm>>
