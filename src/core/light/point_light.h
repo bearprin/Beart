@@ -14,13 +14,14 @@ class PointLight : public Light {
   Spectrum SampleLi(const IntersectionInfo &info,
                     const LightSample &ls,
                     Vec3f *wi,
-                    float *pdf,
+                    float *pdf_s,
                     float *distance,
+                    float *cos_light,
                     Visibility *visibility) const override;
   [[nodiscard]] bool IsDelta() const override {
     return true;
   }
-  Spectrum power() override {
+  Spectrum Power() override {
     return 4 * kPi * intensity_;
   }
 

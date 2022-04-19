@@ -58,8 +58,8 @@ static Transform Translate(const Vec3f &v) {
 }
 static Transform LookAt(const Vec3f &pos, const Vec3f &up, const Vec3f &dir) {
   Vec3f z = dir.normalized();
-  Vec3f x = Cross(up, z).normalized();
-  Vec3f y = Cross(z, x).normalized();
+  Vec3f x = Normalize(Cross(up, z));
+  Vec3f y = Normalize(Cross(z, x));
 
   Transform camera_2_world{
       {x.x(), y.x(), z.x(), pos.x()},

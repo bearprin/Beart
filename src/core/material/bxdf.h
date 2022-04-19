@@ -7,7 +7,7 @@
 #include "spectrum.h"
 #include "samples.h"
 namespace beart {
-enum class BxDFType {
+enum BxDFType {
   kBxDF_NONE = 0,
   kBxDF_DIFFUSE = 1,
   kBxDF_GLOSSY = 2,
@@ -19,7 +19,8 @@ enum class BxDFType {
 class Bxdf {
  public:
   explicit Bxdf() = default;
-  Bxdf(BxDFType type) : type_(type) {}
+  Bxdf(BxDFType type, float eval_weight) : type_(type), eval_weight_(eval_weight) {
+  }
   virtual ~Bxdf() = default;
   /// \brief Evaluate the value of Material, just like other render, this function return BXDF * abscos(\theta)
   ///        rather than only BXDF
@@ -66,8 +67,8 @@ class Bxdf {
 
   virtual float pdf(const Vec3f &wo, const Vec3f &wi) const = 0;
 
-  float eval_weight_ = 1.0f;
   BxDFType type_ = BxDFType::kBxDF_NONE;
+  float eval_weight_ = 1.0f;
   Vec3f geometry_normal_;
   Vec3f shading_normal_;
 };

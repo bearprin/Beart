@@ -8,30 +8,33 @@
 #include "direct.h"
 #include "phong.h"
 #include "normal.h"
+#include "directional_light.h"
 
 #include <iostream>
 int main() {
-//  auto phong = std::make_unique<beart::Phong>();
-  auto phong = std::make_unique<beart::NormalMaterial>();
+  auto phong = std::make_unique<beart::Phong>(beart::Spectrum{0.5, 0.5, 0.5}, beart::Spectrum{0.2, 0.2, 0.2}, 30.0);
+//  auto phong = std::make_unique<beart::NormalMaterial>();
 
-  std::unique_ptr<beart::Shape> sphere1 = std::make_unique<beart::Sphere>(beart::Vec3f{0.2f, 0.1f, -4.f}, 0.1f);
+  std::unique_ptr<beart::Shape> sphere1 = std::make_unique<beart::Sphere>(beart::Vec3f{-0.2, 0.2, -3.f}, 0.1);
   auto sphere1_prim = std::make_unique<beart::Primitive>(sphere1.get(), phong.get());
-  std::unique_ptr<beart::Shape> sphere2 = std::make_unique<beart::Sphere>(beart::Vec3f{0.1f, 0.2f, -3.f}, 0.1f);
+  std::unique_ptr<beart::Shape> sphere2 = std::make_unique<beart::Sphere>(beart::Vec3f{-0.1f, -0.1, -3.f}, 0.2f);
   auto sphere2_prim = std::make_unique<beart::Primitive>(sphere2.get(), phong.get());
-  std::unique_ptr<beart::Shape> sphere3 = std::make_unique<beart::Sphere>(beart::Vec3f{-0.2f, 0.2f, -3.f}, 0.1f);
-  auto sphere3_prim = std::make_unique<beart::Primitive>(sphere3.get(), phong.get());
+//  std::unique_ptr<beart::Shape> sphere3 = std::make_unique<beart::Sphere>(beart::Vec3f{-0.2f, 0.2f, -3.f}, 0.1f);
+//  auto sphere3_prim = std::make_unique<beart::Primitive>(sphere3.get(), phong.get());
 //  std::unique_ptr<beart::Shape> sphere4 = std::make_unique<beart::Sphere>(beart::Vec3f{-0.1f, -0.1f, -3.f}, 0.2f);
 //  auto sphere4_prim = std::make_unique<beart::Primitive>(sphere4.get(), phong.get());
   auto camera = std::make_unique<const beart::PerspectiveCamera>(400, 300);
-  auto light = std::make_unique<beart::PointLight>(beart::Vec3f{0.f, .1f, -1}, beart::Spectrum{5.f, 5.f, 5.f});
+  auto point_light =
+      std::make_unique<beart::PointLight>(beart::Vec3f{0.2f, 0.1f, -2}, beart::Spectrum{1, 1, 1});
+  auto distant_light =
+      std::make_unique<beart::DirectionalLight>(beart::Vec3f{0.2f, 0.1f, -2}, beart::Spectrum{1, 1, 1});
   auto integrator = beart::Direct{};
 
   beart::Scene scene;
-//  scene.AddPrimitive(sphere1_prim.get());
+  scene.AddPrimitive(sphere1_prim.get());
   scene.AddPrimitive(sphere2_prim.get());
-//  scene.AddPrimitive(sphere3_prim.get());
-//  scene.AddPrimitive(sphere4_prim.get());
-  scene.AddLight(light.get());
+  scene.AddLight(point_light.get());
+//  scene.AddLight(distant_light.get());
   scene.set_camera(camera.get());
   scene.Prepare();
   FILE *fp = fopen("sphere_normal.ppm", "wb");
@@ -41,15 +44,16 @@ int main() {
       // TODO: generate sample by i, j
       auto ps = beart::PixelSample{0.f, 0.f};
       beart::Ray r = scene.camera()->GenerateRay(i, j, ps);
-      std::cout << r.dir().x() << " " << r.dir().y() << " " << r.dir().z() << std::endl;
       auto nor = integrator.Li(r, scene, ps);
+      if (nor.maxCoeff() >= 1.0) {
+        nor = nor / nor.maxCoeff();
+      }
       (void) fprintf(fp,
                      "%d %d %d\n",
-                     static_cast<int>(nor.x()),
-                     static_cast<int>(nor.y()),
-                     static_cast<int>(nor.z()));
+                     static_cast<int>(255.999 * nor.x()),
+                     static_cast<int>(255.999 * nor.y()),
+                     static_cast<int>(255.999 * nor.z()));
     }
-    break;
   }
   return 0;
 }

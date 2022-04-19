@@ -8,7 +8,7 @@
 
 TEST_CASE("PerspectiveCamera", "[ProjectionMatrix]") {
   auto camera = beart::PerspectiveCamera{400, 300};
-  auto ray = camera.GenerateRay(0, 300, beart::PixelSample{0, 0});
+  auto ray = camera.GenerateRay(0, 0, beart::PixelSample{0, 0});
   std::cout << ray.ori().x() << " " << ray.ori().y() << " " << ray.ori().z() << std::endl;
   std::cout << ray.dir().x() << " " << ray.dir().y() << " " << ray.dir().z() << std::endl;
 }

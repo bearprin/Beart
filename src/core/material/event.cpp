@@ -12,14 +12,14 @@ beart::Event::Event(const beart::IntersectionInfo &info)
   bxdf_->set_shading_normal(World2Local(info.Ns));
 }
 beart::Vec3f beart::Event::World2Local(const beart::Vec3f &v) const {
-  return {Dot(v, t_), Dot(v, n_), Dot(v, b_)};
+  return {Dot(v, t_), Dot(v, b_), Dot(v, n_)};
 }
 beart::Vec3f beart::Event::Local2World(const beart::Vec3f &v) const {
-  return t_ * v.x() + n_ * v.y() + b_ * v.z();
+  return t_ * v.x() + b_ * v.y() + n_ * v.z();
 }
 beart::Spectrum beart::Event::EvaluateBxDF(const beart::Vec3f &wo, const beart::Vec3f &wi) const {
-  auto shading_wi = World2Local(wi);
   auto shading_wo = World2Local(wo);
+  auto shading_wi = World2Local(wi);
   auto L = Spectrum{0.f, 0.f, 0.f};
   L += bxdf_->F(shading_wo, shading_wi);
 //  for (auto i = 0u; i < bxdfs_count_; ++i) {

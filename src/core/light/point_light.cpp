@@ -9,32 +9,32 @@
 #include "point_light.h"
 #include "spectrum.h"
 
-beart::Spectrum beart::PointLight::SampleLi(const IntersectionInfo &info,
-                                            const LightSample &ls,
-                                            Vec3f *wi,
-                                            float *pdf,
+beart::Spectrum beart::PointLight::SampleLi(const beart::IntersectionInfo &info,
+                                            const beart::LightSample &ls,
+                                            beart::Vec3f *wi,
+                                            float *pdf_s,
                                             float *distance,
-                                            Visibility *visibility) const {
+                                            float *cos_light,
+                                            beart::Visibility *visibility) const {
   // transform light point from light space to world space
   auto light_pos = TransformPoint(light_to_world_, Vec3f{0., 0., 0.});
   // ray from light to point
   auto pos_to_light_dir = light_pos - info.corrds;
+  *wi = Normalize(pos_to_light_dir);
   auto dist = pos_to_light_dir.norm();
   auto sq_dist = pos_to_light_dir.norm() * pos_to_light_dir.norm();
-  // init visibility test
+  // init visibility test: from intersection point to light, add bias to avoid self-intersection
   auto eps = 0.01f;
-  visibility->ray_ = Ray(info.corrds, Normalize(pos_to_light_dir), 0, eps, dist);
-
-  if (wi) {
-    *wi = Normalize(pos_to_light_dir);
+  visibility->ray_ = Ray(info.corrds, *wi, 0, eps, dist);
+  if (pdf_s) {  // PDF of picking sampling direction based solid angle
+    *pdf_s = sq_dist;
   }
   if (distance) {
     *distance = dist;
   }
-  if (pdf) {
-    *pdf = 1.f;
+  if (cos_light) {
+    *cos_light = 1.0;
   }
-  // return light intensity
+  // return light intensity, d^2 law
   return intensity_ / sq_dist;
 }
-

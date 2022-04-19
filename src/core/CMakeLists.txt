@@ -31,7 +31,7 @@ add_executable(${PROJECT_NAME}
         integrator/integrator_common.h
         integrator/direct.cpp integrator/direct.h material/bxdf.cpp material/bxdf.h material/event.cpp material/event.h
         material/phong.cpp material/phong.h
-        material/bxdf_common.h material/normal.h)
+        material/bxdf_common.h material/normal.h light/directional_light.cpp light/directional_light.h)
 
 add_library(${PROJECT_NAME}_lib SHARED
         common.h

@@ -7,7 +7,6 @@ namespace beart {
 /// \param ng
 /// \return
 static inline bool IsSameSide(const Vec3f &v1, const Vec3f &ng) {
-  std::cout << Dot(v1, ng) << std::endl;
   return Dot(v1, ng) > 0.f;
 }
 ///
@@ -25,18 +24,21 @@ static inline float SafeDot(const Vec3f &v1, const Vec3f &v2) {
   return std::clamp(Dot(v1, v2), 0.0f, 1.0f);
 }
 /// @brief Compute the cosine of the angle between two vectors.
-/// shading coordinate optimization (ns as axis y)
+/// shading coordinate optimization (ns as axis z)
 /// \param v
 /// \param ns
 /// \return
 static inline float AbsCosTheta(const Vec3f &v) {
-  return fabsf(v.y());
+  return fabsf(v.z());
+}
+static inline float CosTheta(const Vec3f &v) {
+  return v.z();
 }
 ///
-/// shading coordinate optimization (ns as axis y)
+/// shading coordinate optimization (ns as axis z)
 /// \param v
 /// \return
 static inline beart::Vec3f Reflect(const Vec3f &v) {
-  return {-v.x(), v.y(), -v.z()};
+  return {-v.x(), -v.y(), v.z()};
 }
 }

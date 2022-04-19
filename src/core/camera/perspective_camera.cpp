@@ -17,7 +17,9 @@ beart::PerspectiveCamera::PerspectiveCamera(unsigned int image_width,
   image_aspect_ = static_cast<float>(image_width) / static_cast<float>(image_height);
   float scale_y = 1.0f / std::tan(0.5f * fov_);
   float scale_x = scale_y / image_aspect_;
-  screen2raster_ = Scale(0.5f, -0.5f, 1.0f) * Translate(1.0f, -1.0f, 0.0f);
+  raster2screen_ = Translate(1.0f, -1.0f, 0.0f) * Scale(-2.0f, 2.0f, 1.0f)
+      * Scale(1.0f / static_cast<float>(image_width_), 1.0f / static_cast<float>(image_height_), 1.0f);
+  screen2raster_ = raster2screen_.inverse();
   camera2screen_ = Perspective(scale_x, scale_y, near_clip_, far_clip_);
   camera2raster_ = screen2raster_ * camera2screen_;
   raster2camera_ = Inverse(camera2raster_);

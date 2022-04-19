@@ -6,20 +6,19 @@
 #include "bxdf_common.h"
 #include "common.h"
 beart::Spectrum beart::Phong::f(const beart::Vec3f &wo, const beart::Vec3f &wi) const {
-//  if (!IsSameSide(wo, geometry_normal_)) {
-//    return {0.0f, 0.f, 0.f};
-//  }
-//  if (!IsSameHemisphere(wo, wi, geometry_normal_)) {
-//    return {0.f, 0.f, 0.f};
-//  }
-  auto L = Spectrum{0.f, 0.f, 0.f};
-  // Diffuse  : f_diffuse( wo , wi ) = D / PI
-  L += D * kInvPi;
-  // Specular : f_specular( wo , wi ) = ( power + 2.0 ) * S * ( ( reflect( wo ) , wi ) ^ power ) / ( 2 * PI )
-  if (const auto alpha = SafeDot(wi, Reflect(wo)); alpha > 0.0f) {
-    L += S * (power + 2) * std::pow(alpha, power) * kInvTwoPi;
+  if (!IsSameSide(wo, geometry_normal_)) {
+    return {0.0f, 0.f, 0.f};
   }
-  return L;
+  if (!IsSameHemisphere(wo, wi, geometry_normal_)) {
+    return {0.f, 0.f, 0.f};
+  }
+  auto L = Spectrum{0.f, 0.f, 0.f};
+  L += diffuse_ * kInvPi;
+  // like traditional phong, we use the reflection of wi(p to light) to calculate the specular term
+  if (const auto alpha = SafeDot(wo, Reflect(wi)); alpha > 0.0f) {
+    L += specular_ * ((phong_exponent_ + 2) * kInvTwoPi * std::pow(alpha, phong_exponent_));
+  }
+  return L * AbsCosTheta(wi);
 }
 beart::Spectrum beart::Phong::sample_f(const beart::Vec3f &wo,
                                        const beart::Vec3f &wi,

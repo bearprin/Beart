@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include <utility>
+
 #include "vec.h"
 #include "transform.h"
 #include "common.h"
@@ -21,7 +23,12 @@ class Ray {
     sign_[1] = inv_dir_.y() < 0;
     sign_[2] = inv_dir_.z() < 0;
   }
-  Ray(Vec3f ori, Vec3f dir, unsigned int depth, float t_min, float t_max, bool is_primary_ray = false)
+  Ray(Vec3f ori,
+      Vec3f dir,
+      unsigned int depth,
+      float t_min = 0.f,
+      float t_max = kMaxFloat,
+      bool is_primary_ray = false)
       : ori_(std::move(ori)),
         dir_(std::move(dir)),
         depth_(depth),
