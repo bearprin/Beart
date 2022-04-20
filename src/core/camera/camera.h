@@ -16,12 +16,13 @@ class Camera {
  public:
   Camera(unsigned int image_width,
          unsigned int image_height,
+         const Vec3f &target = Vec3f{0.f, 0.f, -1.0f},
          const Vec3f &camera_pos = Vec3f{0.f, 0.f, 0.0f},
-         const Vec3f &up = Vec3f{0.f, 1.f, 0.0f},
-         const Vec3f &dir = Vec3f{0.f, 0.f, -1.0f}) : image_width_(image_width), image_height_(image_height) {
+         const Vec3f &up = Vec3f{0.f, 1.f, 0.0f}) : image_width_(image_width), image_height_(image_height) {
     image_ptr_ = std::make_unique<Film<RGBSpectrum>>(image_width_, image_height_);
     normal_ptr_ = std::make_unique<Film<RGBSpectrum>>(image_width_, image_height_);
 
+    auto dir = Normalize(target - camera_pos);
     camera2world_ = LookAt(camera_pos, up, dir);
     world2camera_ = Inverse(camera2world_);
   }

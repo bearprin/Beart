@@ -23,7 +23,13 @@ int main() {
 //  auto sphere3_prim = std::make_unique<beart::Primitive>(sphere3.get(), phong.get());
 //  std::unique_ptr<beart::Shape> sphere4 = std::make_unique<beart::Sphere>(beart::Vec3f{-0.1f, -0.1f, -3.f}, 0.2f);
 //  auto sphere4_prim = std::make_unique<beart::Primitive>(sphere4.get(), phong.get());
-  auto camera = std::make_unique<const beart::PerspectiveCamera>(400, 300);
+//  auto camera = std::make_unique<const beart::PerspectiveCamera>(700, 900);
+  auto camera = std::make_unique<const beart::PerspectiveCamera>(700,
+                                                                 900,
+                                                                 beart::Vec3f{0, 0, -1},
+                                                                 beart::Vec3f{0, 0, 0},
+                                                                 beart::Vec3f{0, 1, 0},
+                                                                 1.57);
   auto point_light =
       std::make_unique<beart::PointLight>(beart::Vec3f{0.2f, 0.1f, -2}, beart::Spectrum{1, 1, 1});
   auto distant_light =
@@ -38,7 +44,7 @@ int main() {
   scene.set_camera(camera.get());
   scene.Prepare();
   FILE *fp = fopen("sphere_normal.ppm", "wb");
-  (void) fprintf(fp, "P3\n%d %d\n255\n", 400, 300);
+  (void) fprintf(fp, "P3\n%d %d\n255\n", scene.camera()->image_width(), scene.camera()->image_height());
   for (unsigned j = scene.camera()->image_height(); j > 0; --j) {
     for (unsigned int i = 0; i < scene.camera()->image_width(); ++i) {
       // TODO: generate sample by i, j

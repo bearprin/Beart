@@ -5,15 +5,15 @@
 #include "perspective_camera.h"
 beart::PerspectiveCamera::PerspectiveCamera(unsigned int image_width,
                                             unsigned int image_height,
+                                            const Vec3f &target,
                                             const Vec3f &camera_pos,
                                             const Vec3f &up,
-                                            const Vec3f &dir,
+                                            float fov,
                                             float near_clip,
-                                            float far_clip,
-                                            float fov) : Camera(image_width, image_height, camera_pos, up, dir),
-                                                         near_clip_(near_clip),
-                                                         far_clip_(far_clip),
-                                                         fov_(fov) {
+                                            float far_clip) : Camera(image_width, image_height, target, camera_pos, up),
+                                                              near_clip_(near_clip),
+                                                              far_clip_(far_clip),
+                                                              fov_(fov) {
   image_aspect_ = static_cast<float>(image_width) / static_cast<float>(image_height);
   float scale_y = 1.0f / std::tan(0.5f * fov_);
   float scale_x = scale_y / image_aspect_;
