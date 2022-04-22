@@ -51,43 +51,34 @@ static AABB Union(const AABB &lhs, const AABB &rhs) {
   return res;
 }
 static float Intersect(const AABB &lhs, const Ray &ray) {
-  float t_min = 0;
-  float t_max = 0;
-  float t_x_min = 0;
-  float t_x_max = 0;
-  float t_y_min = 0;
-  float t_y_max = 0;
-  float t_z_min = 0;
-  float t_z_max = 0;
+  float neat_t = kMinFloat;
+  float far_t = kMaxFloat;
 
-  Vec3f inv_dir = ray.inv_dir();
-  // x case
-  t_x_min = (lhs.bounds()[ray.sign()[0]].x() - ray.ori().x()) * inv_dir.x();
-  t_x_max = (lhs.bounds()[1 - ray.sign()[0]].x() - ray.ori().x()) * inv_dir.x();
+  for (int i = 0; i < 3; i++) {
+    float origin = ray.ori().data()[i];
+    float min_val = lhs.bounds()[0].data()[i];
+    float max_val = lhs.bounds()[1].data()[i];
 
-  t_y_min = (lhs.bounds()[ray.sign()[1]].y() - ray.ori().y()) * inv_dir.y();
-  t_y_max = (lhs.bounds()[1 - ray.sign()[1]].y() - ray.ori().y()) * inv_dir.y();
+    if (ray.dir().data()[i] == 0) {
+      if (origin < min_val || origin > max_val) {
+        return false;
+      }
+    } else {
+      float t1 = (min_val - origin) * ray.inv_dir().data()[i];
+      float t2 = (max_val - origin) * ray.inv_dir().data()[i];
 
-  if (t_x_min > t_y_max || t_y_min > t_x_max) {
-    return -1;
+      if (t1 > t2) {
+        std::swap(t1, t2);
+      }
+      neat_t = std::max(t1, neat_t);
+      far_t = std::min(t2, far_t);
+      if (neat_t > far_t) {
+        return -1;
+      }
+    }
   }
-  // update max and min (more compact)
-  t_min = std::fmax(t_x_min, t_y_min);
-  t_max = std::fmin(t_x_max, t_y_max);
-
-  t_z_min = (lhs.bounds()[ray.sign()[2]].z() - ray.ori().z()) * inv_dir.z();
-  t_z_max = (lhs.bounds()[1 - ray.sign()[2]].z() - ray.ori().z()) * inv_dir.z();
-
-  // is valid?
-  if (t_min > t_z_max || t_z_min > t_max) {
-    return -1;
-  }
-
-  t_min = std::fmax(t_min, t_z_min);
-  t_max = std::fmin(t_max, t_z_max);
-
-  if (t_min > ray.t_min() && t_max < ray.t_max() && t_min < t_max) {
-    return t_min;
+  if (ray.t_min() <= far_t && neat_t <= ray.t_max()) {
+    return neat_t < 0 ? far_t : neat_t;
   }
   return -1;
 }

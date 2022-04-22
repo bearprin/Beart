@@ -18,7 +18,11 @@ class Camera {
          unsigned int image_height,
          const Vec3f &target = Vec3f{0.f, 0.f, -1.0f},
          const Vec3f &camera_pos = Vec3f{0.f, 0.f, 0.0f},
-         const Vec3f &up = Vec3f{0.f, 1.f, 0.0f}) : image_width_(image_width), image_height_(image_height) {
+         const Vec3f &up = Vec3f{0.f, 1.f, 0.0f})
+      : image_width_(image_width),
+        image_height_(image_height),
+        inv_image_width_(1.f / static_cast<float>(image_width)),
+        inv_image_height_(1.f / static_cast<float>(image_height)) {
     image_ptr_ = std::make_unique<Film<RGBSpectrum>>(image_width_, image_height_);
     normal_ptr_ = std::make_unique<Film<RGBSpectrum>>(image_width_, image_height_);
 
@@ -60,6 +64,8 @@ class Camera {
  protected:
   unsigned int image_width_;
   unsigned int image_height_;
+  float inv_image_width_;
+  float inv_image_height_;
   Transform camera2world_;
   Transform world2camera_;
 

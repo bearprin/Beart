@@ -13,16 +13,16 @@ class PerspectiveCamera : public Camera {
                     const Vec3f &target = Vec3f{0.f, 0.f, -1.0f},
                     const Vec3f &camera_pos = Vec3f{0.f, 0.f, 0.f},
                     const Vec3f &up = Vec3f{0.f, 1.f, 0.0f},
-                    float fov = 0.25f,
+                    float fov = 30.f,
                     float near_clip = 0.01f,
                     float far_clip = 10000.f);
   [[nodiscard]] Ray GenerateRay(const float &x,
                                 const float &y,
                                 const PixelSample &pixel_sample) const noexcept override;
  protected:
+  float fov_;
   float near_clip_;
   float far_clip_;
-  float fov_;
   float image_aspect_;
 
   Transform raster2screen_;

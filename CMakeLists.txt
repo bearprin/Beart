@@ -22,5 +22,6 @@ if (${CMAKE_BUILD_TYPE} STREQUAL "RelWithDebInfo" OR ${CMAKE_BUILD_TYPE} STREQUA
     add_subdirectory(third_party/backward-cpp)
 endif ()
 
+add_subdirectory(third_party)
 add_subdirectory(src/core)
 

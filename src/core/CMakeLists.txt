@@ -1,5 +1,7 @@
 project(Core)
 
+find_package(ZLIB REQUIRED)
+
 add_executable(${PROJECT_NAME}
         common.h
         math/vec.h
@@ -91,10 +93,17 @@ target_include_directories(${PROJECT_NAME} PRIVATE
         sampler
         material
         integrator
+        ${TINY_EXR_INCLUDE}
         )
 
-target_link_libraries(Core PUBLIC eigen)
-target_link_libraries(Core_lib PUBLIC eigen)
+target_link_libraries(Core PRIVATE
+        eigen
+        ZLIB::ZLIB
+        )
+target_link_libraries(Core_lib PUBLIC
+        eigen
+        ZLIB::ZLIB
+        )
 if (${CMAKE_BUILD_TYPE} STREQUAL "RelWithDebInfo" OR ${CMAKE_BUILD_TYPE} STREQUAL "Debug")
     target_sources(${PROJECT_NAME} PUBLIC ${BACKWARD_ENABLE})
     add_backward(Core)

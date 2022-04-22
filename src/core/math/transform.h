@@ -21,14 +21,11 @@ static Vec3f TransformPoint(const Transform &trans, const Vec3f &point) {
   if (res.w() == 1) {
     return {res.x(), res.y(), res.z()};
   }
-  return Vec3f{res.x() / res.w(), res.y() / res.w(), res.z() / res.w()};
+  return {res.x() / res.w(), res.y() / res.w(), res.z() / res.w()};
 }
-//static Vec3f TransformVector(const Transform &trans, const Vec3f &v) {
-//  float x = v.x * trans[0][0] + v.y * trans[0][1] + v.z * trans[0][2];
-//  float y = v.x * trans[1][0] + v.y * trans[1][0] + v.z * trans[1][6];
-//  float z = v.x * trans[2][0] + v.y * trans[2][0] + v.z * trans[2][10];
-//  return Vec3f{x, y, z};
-//}
+static Vec3f TransformVector(const Transform &trans, const Vec3f &v) {
+  return trans.topLeftCorner<3, 3>() * v;
+}
 static Transform Scale(const float &x, const float &y, const float &z) {
   Transform scale{
       {x, 0.0f, 0.0f, 0.0f},

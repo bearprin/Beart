@@ -11,16 +11,15 @@ beart::PerspectiveCamera::PerspectiveCamera(unsigned int image_width,
                                             float fov,
                                             float near_clip,
                                             float far_clip) : Camera(image_width, image_height, target, camera_pos, up),
+                                                              fov_(fov),
                                                               near_clip_(near_clip),
-                                                              far_clip_(far_clip),
-                                                              fov_(fov) {
+                                                              far_clip_(far_clip) {
   image_aspect_ = static_cast<float>(image_width) / static_cast<float>(image_height);
-  float scale_y = 1.0f / std::tan(0.5f * fov_);
-  float scale_x = scale_y / image_aspect_;
-  raster2screen_ = Translate(1.0f, -1.0f, 0.0f) * Scale(-2.0f, 2.0f, 1.0f)
-      * Scale(1.0f / static_cast<float>(image_width_), 1.0f / static_cast<float>(image_height_), 1.0f);
-  screen2raster_ = raster2screen_.inverse();
-  camera2screen_ = Perspective(scale_x, scale_y, near_clip_, far_clip_);
+  float cot = 1.0f / std::tan(DegToRad(0.5f * fov_));
+  screen2raster_ = Scale(-0.5f, -0.5f * image_aspect_, 1.0f)
+      * Translate(-1.0f, -1.0f / image_aspect_, 0.0f);
+  raster2screen_ = screen2raster_.inverse();
+  camera2screen_ = Perspective(cot, cot, near_clip_, far_clip_);
   camera2raster_ = screen2raster_ * camera2screen_;
   raster2camera_ = Inverse(camera2raster_);
   world2raster_ = camera2raster_ * world2camera_;
@@ -29,11 +28,12 @@ beart::PerspectiveCamera::PerspectiveCamera(unsigned int image_width,
 beart::Ray beart::PerspectiveCamera::GenerateRay(const float &x,
                                                  const float &y,
                                                  const beart::PixelSample &pixel_sample) const noexcept {
-  Vec3f p{x + pixel_sample.image_u_, y + pixel_sample.image_v_, 0.0f};
+  Vec3f p{(x + pixel_sample.image_u_) * inv_image_width_, (y + pixel_sample.image_v_) * inv_image_height_, 0.0f};
 
-  Vec3f dir = Normalize(TransformPoint(raster2_world_, p));
-//  dir = TransformVector(world2camera_, dir);
+  Vec3f dir = Normalize(TransformPoint(raster2camera_, p));
+  float inv_z = 1.0f / dir.z();
+  dir = TransformVector(camera2world_, dir);
   Vec3f ori = TransformPoint(camera2world_, Vec3f{0.f, 0.f, 0.f});
-  Ray ray{ori, dir, 1, true};
+  Ray ray{ori, dir, 1, near_clip_ * inv_z, far_clip_ * inv_z, true};
   return ray;
 }

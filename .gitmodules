@@ -7,3 +7,6 @@
 [submodule "third_party/Eigen"]
 	path = third_party/Eigen
 	url = https://gitlab.com/libeigen/eigen
+[submodule "third_party/tinyexr"]
+	path = third_party/tinyexr
+	url = https://github.com/syoyo/tinyexr

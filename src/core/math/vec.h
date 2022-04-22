@@ -58,19 +58,18 @@ static inline Vec3f Cross(const Vec3f &lhs, const Vec3f &rhs) {
   Vec3f res = lhs.cross(rhs);
   return res;
 }
-inline void CoordinateSystem(const Vec3f &v1, Vec3f *v2, Vec3f *v3) {
-  v1.normalized();
-  // Construct linear independent vector v2
-  if (std::abs(v1.x()) > std::abs(v1.y())) {
-    *v2 = Vec3f(-v1.z(), 0, v1.x()) / std::sqrt(v1.x() * v1.x() + v1.z() * v1.z());
-  } else {
-    *v2 = Vec3f(0, v1.z(), -v1.y()) / std::sqrt(v1.y() * v1.y() + v1.z() * v1.z());
-  }
-  *v3 = Cross(v1, *v2);
-  v3->normalized();
-}
 static inline Vec3f Normalize(const Vec3f &v) {
   Vec3f res = v.normalized();
   return res;
+}
+inline void CoordinateSystem(const Vec3f &v1, Vec3f *v2, Vec3f *v3) {
+  auto v = v1.normalized();
+  // Construct linear independent vector v2
+  if (std::abs(v.x()) > std::abs(v.y())) {
+    *v3 = Vec3f(v.z(), 0, -v.x()) / std::sqrt(v.x() * v.x() + v.z() * v.z());
+  } else {
+    *v3 = Vec3f(0, v.z(), -v.y()) / std::sqrt(v.y() * v.y() + v.z() * v.z());
+  }
+  *v2 = Normalize(Cross(*v3, v));
 }
 }

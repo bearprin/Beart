@@ -27,7 +27,7 @@ beart::Spectrum beart::PointLight::SampleLi(const beart::IntersectionInfo &info,
   auto eps = 0.01f;
   visibility->ray_ = Ray(info.corrds, *wi, 0, eps, dist);
   if (pdf_s) {  // PDF of picking sampling direction based solid angle
-    *pdf_s = sq_dist;
+    *pdf_s = 1.;
   }
   if (distance) {
     *distance = dist;
@@ -35,6 +35,5 @@ beart::Spectrum beart::PointLight::SampleLi(const beart::IntersectionInfo &info,
   if (cos_light) {
     *cos_light = 1.0;
   }
-  // return light intensity, d^2 law
-  return intensity_ / sq_dist;
+  return intensity_;
 }
