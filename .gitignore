@@ -99,3 +99,8 @@ compile_commands.json
 CTestTestfile.cmake
 _deps
 
+#### OS generated files ####
+.DS_Store
+
+
+/third_party/**
