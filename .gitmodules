@@ -1,0 +1,3 @@
+[submodule "third_party/enoki"]
+	path = third_party/enoki
+	url = https://github.com/mitsuba-renderer/enoki
