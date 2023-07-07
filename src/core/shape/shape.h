@@ -8,7 +8,7 @@
 #include "aabb.h"
 #include "transform.h"
 #include "interection.h"
-#include "JsonSerializable.h"
+#include "json_serializable.h"
 namespace beart {
 class Shape : public JsonSerializable {
  public:

@@ -1,3 +1,9 @@
 [submodule "third_party/enoki"]
 	path = third_party/enoki
 	url = https://github.com/mitsuba-renderer/enoki
+[submodule "third_party/stb"]
+	path = third_party/stb
+	url = https://github.com/nothings/stb
+[submodule "third_party/pcg-cpp"]
+	path = third_party/pcg-cpp
+	url = https://github.com/imneme/pcg-cpp

@@ -4,10 +4,7 @@
 
 #include "sphere.h"
 bool beart::Sphere::Intersect(const beart::Ray &ray) const {
-  if (Intersect(ray, nullptr)) {
-    return true;
-  }
-  return false;
+  return Intersect(ray, nullptr);
 }
 bool beart::Sphere::Intersect(const beart::Ray &ray, beart::SurfaceInterection *inter) const {
   const auto r = world_to_obj_ * ray; // transform ray from world space to object space

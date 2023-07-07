@@ -7,10 +7,14 @@
 #include <enoki/array.h>
 
 namespace beart {
+using Vec4f = enoki::Array<float, 4>;
+
 using Vec3f = enoki::Array<float, 3>;
 using Vec3i = enoki::Array<int, 3>;
 using Vec3u = enoki::Array<uint32_t, 3>;
 using Vec3b = enoki::Array<uint8_t, 3>;
+
+using Vec2f = enoki::Array<float, 2>;
 
 using Point3f = enoki::Array<float, 3>;
 using Point3i = enoki::Array<int, 3>;
@@ -31,7 +35,12 @@ inline static
 Vec3f Normalize(const Vec3f &v) {
   return enoki::normalize(v);
 }
-inline void CoordinateSystem(const Vec3f &v1, Vec3f *v2, Vec3f *v3) {
+inline static
+Vec3f Clamp(const Vec3f &v, float min, float max) {
+  return enoki::clamp(v, min, max);
+}
+inline static
+void CoordinateSystem(const Vec3f &v1, Vec3f *v2, Vec3f *v3) {
   auto v = Normalize(v1);
   // Construct linear independent vector v2
   if (std::abs(v.x()) > std::abs(v.y())) {
