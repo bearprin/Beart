@@ -102,5 +102,5 @@ _deps
 #### OS generated files ####
 .DS_Store
 
-
-/third_party/**
+#### IDEA generated files ####
+.idea
