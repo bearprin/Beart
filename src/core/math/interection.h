@@ -9,6 +9,7 @@
 namespace beart {
 struct SurfaceInterection {
   float t_curr = kMaxFloat;
+  const Primitive *primitive = nullptr;
 
   Vec3f Ng;  // geometric normal
   Vec3f Ns;  // shading normal

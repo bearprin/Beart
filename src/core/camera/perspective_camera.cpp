@@ -1,5 +1,5 @@
 //
-// Created by Bear on 2021/12/6.
+// Created by Bear on 2023/07/6.
 //
 
 #include "perspective_camera.h"
@@ -30,11 +30,12 @@ beart::PerspectiveCamera::PerspectiveCamera(unsigned int image_width,
 beart::Ray beart::PerspectiveCamera::GenerateRay(const float &x,
                                                  const float &y,
                                                  const beart::PixelSample &pixel_sample) const noexcept {
+  // scale to the [0, 1] range
   Vec3f p{(x + pixel_sample.image_u_) * inv_image_width_, (y + pixel_sample.image_v_) * inv_image_height_, 0.0f};
   Vec3f dir = Normalize(raster_to_camera_.TransformPoint(p));  // transform to camera space
   float inv_z = 1.0f / dir.z();  // scale to the range of ray [t_min, t_max]
   dir = camera_to_world_.TransformVector(dir);
   Vec3f ori = camera_to_world_.TransformPoint(Vec3f{0.f, 0.f, 0.f}); // transform to world space (camera origin)
-  Ray ray{ori, dir, 1, near_clip_ * inv_z, far_clip_ * inv_z, true};
+  Ray ray{ori, dir, 1, true, near_clip_ * inv_z, far_clip_ * inv_z};
   return ray;
 }

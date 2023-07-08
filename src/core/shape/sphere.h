@@ -16,8 +16,9 @@ class Sphere : public Shape {
   }
   bool Intersect(const Ray &ray) const override;
   bool Intersect(const Ray &ray, SurfaceInterection *inter) const override;
-  const AABB &AABBBounds() override;
   float SurfaceArea() const override;
+  float Volume() const override;
+  const AABB& bbox() const override;
  private:
   float radius_;
   Vec3f center_;

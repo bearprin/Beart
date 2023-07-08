@@ -8,6 +8,8 @@
 
 #include <cmath>
 namespace beart {
+class Primitive;
+
 // used for gcc and clang
 // if-else predication
 #define UNLIKELY(EXP)       __builtin_expect((EXP),0)

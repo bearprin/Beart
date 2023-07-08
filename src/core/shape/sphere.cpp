@@ -46,12 +46,15 @@ bool beart::Sphere::Intersect(const beart::Ray &ray, beart::SurfaceInterection *
   }
   return true;
 }
-const beart::AABB &beart::Sphere::AABBBounds() {
-  if (!aabb_) {
-    aabb_ = std::make_unique<AABB>(center_ - radius_, center_ + radius_);
+const beart::AABB &beart::Sphere::bbox() const {
+  if (!bbox_) {
+    bbox_ = std::make_unique<AABB>(center_ - radius_, center_ + radius_);
   }
-  return *aabb_;
+  return *bbox_;
 }
 float beart::Sphere::SurfaceArea() const {
   return 4 * kPi * radius_ * radius_;
+}
+float beart::Sphere::Volume() const {
+  return 4.f / 3.f * kPi * radius_ * radius_ * radius_;
 }

@@ -1,5 +1,5 @@
 //
-// Created by Bear on 2021/12/4.
+// Created by Bear on 2023/07/4.
 //
 
 #pragma once
@@ -9,6 +9,8 @@ namespace beart {
 
 using RGBSpectrum = Vec3f;
 using RGBASpectrum = Vec4f;
+
+using Spectrum = RGBSpectrum;  // TODO: add spectrum type
 
 /// Convert from linear RGB to sRGB
 inline static

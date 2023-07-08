@@ -14,12 +14,13 @@ class Shape : public JsonSerializable {
  public:
   virtual ~Shape() {}
   virtual bool Intersect(const Ray &ray) const = 0;
-  virtual bool Intersect(const Ray &ray, SurfaceInterection *inter = nullptr) const = 0;
-  virtual const AABB &AABBBounds() = 0;
+  virtual bool Intersect(const Ray &ray, SurfaceInterection *inter) const = 0;
   virtual float SurfaceArea() const = 0;
+  virtual float Volume() const = 0;
+  virtual const AABB &bbox() const = 0;
  protected:
   Transform obj_to_world_ = Mat4f{1.0};  // from object space to world space, default is identity
   Transform world_to_obj_ = Mat4f{1.0};  // from object space to world space, default is identity
-  std::unique_ptr<AABB> aabb_;
+  mutable std::unique_ptr<AABB> bbox_;
 };
 }

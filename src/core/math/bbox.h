@@ -12,8 +12,11 @@ enum class BBoxType {
 };
 class BBox {
  public:
+  virtual float HalfSurfaceArea() const = 0;
   virtual float SurfaceArea() const = 0;
   virtual float Volume() const = 0;
+  virtual Point3f Centroid() const = 0;
+  virtual unsigned int MaxAxisExtents() const = 0;
   virtual bool Intersect(const Ray &ray) const = 0;
   virtual bool IsInBox(const Point3f &p) const = 0;
 

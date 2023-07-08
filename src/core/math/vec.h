@@ -40,6 +40,14 @@ Vec3f Clamp(const Vec3f &v, float min, float max) {
   return enoki::clamp(v, min, max);
 }
 inline static
+Point3f Min(const Point3f &lhs, const Point3f &rhs) {
+  return enoki::min(lhs, rhs);
+}
+inline static
+Point3f Max(const Point3f &lhs, const Point3f &rhs) {
+  return enoki::max(lhs, rhs);
+}
+inline static
 void CoordinateSystem(const Vec3f &v1, Vec3f *v2, Vec3f *v3) {
   // TODO: leverage <<Building an Orthonormal Basis, Revisited>>
   auto v = Normalize(v1);
