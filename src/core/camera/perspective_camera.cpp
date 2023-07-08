@@ -30,7 +30,7 @@ beart::PerspectiveCamera::PerspectiveCamera(unsigned int image_width,
 beart::Ray beart::PerspectiveCamera::GenerateRay(const float &x,
                                                  const float &y,
                                                  const beart::PixelSample &pixel_sample) const noexcept {
-  Vec3f p{(x + pixel_sample.image_u_), (y + pixel_sample.image_v_), 0.0f};  // x, y add offset in raster space
+  Vec3f p{(x + pixel_sample.image_u_) * inv_image_width_, (y + pixel_sample.image_v_) * inv_image_height_, 0.0f};
   Vec3f dir = Normalize(raster_to_camera_.TransformPoint(p));  // transform to camera space
   float inv_z = 1.0f / dir.z();  // scale to the range of ray [t_min, t_max]
   dir = camera_to_world_.TransformVector(dir);

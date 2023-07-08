@@ -24,7 +24,10 @@ static constexpr float kInvTwoPi = 0.159154943091895335768883763372514f;
 static constexpr float kEpsilon = 1e-6f;
 static constexpr unsigned int kMaxBxdf = 8;
 
-inline static
+static
+constexpr float DegToRad(float deg) { return deg * kPi / 180.f; }
+
+static
 constexpr std::tuple<bool, float, float> SolveQuadratic(const float &a, const float &b, const float &c) {
   float discr = b * b - 4.f * a * c;
   if (discr < 0) {

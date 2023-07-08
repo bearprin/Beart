@@ -41,6 +41,7 @@ Vec3f Clamp(const Vec3f &v, float min, float max) {
 }
 inline static
 void CoordinateSystem(const Vec3f &v1, Vec3f *v2, Vec3f *v3) {
+  // TODO: leverage <<Building an Orthonormal Basis, Revisited>>
   auto v = Normalize(v1);
   // Construct linear independent vector v2
   if (std::abs(v.x()) > std::abs(v.y())) {

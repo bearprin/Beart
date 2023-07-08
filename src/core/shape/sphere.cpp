@@ -7,11 +7,10 @@ bool beart::Sphere::Intersect(const beart::Ray &ray) const {
   return Intersect(ray, nullptr);
 }
 bool beart::Sphere::Intersect(const beart::Ray &ray, beart::SurfaceInterection *inter) const {
-  const auto r = world_to_obj_ * ray; // transform ray from world space to object space
-  const auto a = Dot(r.dir_, r.dir_);
-  const auto b = 2.0f * Dot(r.dir_, r.ori_);
-  const auto c = sqrt(r.ori_.x()) + sqrt(r.ori_.y()) + sqrt(r.ori_.z()) - radius_;
-
+  Vec3f L = ray.ori_ - this->center_;
+  float a = Dot(ray.dir_, ray.dir_);
+  float b = 2.f * Dot(ray.dir_, L);
+  float c = Dot(L, L) - radius_ * radius_;
   auto [interect, t0, t1] = SolveQuadratic(a, b, c);
   if (!interect) {
     return false;
@@ -34,18 +33,16 @@ bool beart::Sphere::Intersect(const beart::Ray &ray, beart::SurfaceInterection *
   if (t > ray.t_max_ || t < ray.t_min_) {
     return false;
   }
-  const auto p = r(t);
   if (inter) {
     inter->t_curr = t;
-    Vec3f n = Normalize(Vec3f{p.x(), p.y(), p.z()});
-    Vec3f v0;
+    inter->intersect_pos = ray(t);
+    inter->view = -ray.dir_;
+    inter->Ns = Normalize((inter->intersect_pos - this->center_));
+    inter->Ng = inter->Ns;  // Ng eq Ns since this is an implicit equation
     Vec3f v1;
-    CoordinateSystem(n, &v0, &v1); // build local coordinate system with shading normal
-    inter->intersect = obj_to_world_.TransformPoint(p);
-    inter->Ns = obj_to_world_.TransformNormal(n);
-    inter->Ng = inter->Ns;
-    inter->tangent = obj_to_world_.TransformVector(v0);
-    inter->view = -ray.dir_;  // world space
+    Vec3f v2;
+    CoordinateSystem(inter->Ns, &v1, &v2); // build local coordinate system with shading normal
+    inter->tangent = v1;
   }
   return true;
 }

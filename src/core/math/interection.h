@@ -14,6 +14,6 @@ struct SurfaceInterection {
   Vec3f Ns;  // shading normal
   Vec3f tangent;
   Vec3f view;
-  Point3f intersect;
+  Point3f intersect_pos;
 };
 }
