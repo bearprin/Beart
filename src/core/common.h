@@ -8,7 +8,11 @@
 
 #include <cmath>
 namespace beart {
+// forward declare
+class Visibility;
 class Primitive;
+class Light;
+//class Camera;
 
 // used for gcc and clang
 // if-else predication

@@ -5,6 +5,7 @@
 #pragma once
 #include "primitive.h"
 
+#include <vector>
 namespace beart {
 
 class Accelerator {
@@ -15,6 +16,15 @@ class Accelerator {
     primitives_ = primitives;
     world_aabb_ = bbox;
   };
+  /// \brief Check if the ray is occluded by any primitive in the scene (sha
+  /// \param ray
+  /// \return
+  virtual bool IsOccupied(const Ray &ray) const {
+    // naive implementation loop for all primitive (just for debugging)
+    return std::any_of(primitives_->cbegin(), primitives_->cend(), [&ray](const Primitive *primitive) {
+      return primitive->IntersectInfo(ray, nullptr);
+    });
+  }
   virtual bool Intersect(const Ray &ray, SurfaceInterection *info) const {
     // naive implementation loop for all primitive (just for debugging)
     auto temp_r = ray;

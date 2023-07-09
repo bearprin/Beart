@@ -5,7 +5,7 @@
 #pragma once
 
 #include "common.h"
-#include "vec.h"
+#include "spectrum.h"
 namespace beart {
 struct SurfaceInterection {
   float t_curr = kMaxFloat;
@@ -16,5 +16,8 @@ struct SurfaceInterection {
   Vec3f tangent;
   Vec3f view;
   Point3f intersect_pos;
+
+  // get the emissive
+  Spectrum Le(const Vec3f &wo) const;
 };
 }

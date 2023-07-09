@@ -40,6 +40,10 @@ Vec3f Clamp(const Vec3f &v, float min, float max) {
   return enoki::clamp(v, min, max);
 }
 inline static
+float Norm(const Vec3f &v) {
+  return enoki::norm(v);
+}
+inline static
 Point3f Min(const Point3f &lhs, const Point3f &rhs) {
   return enoki::min(lhs, rhs);
 }

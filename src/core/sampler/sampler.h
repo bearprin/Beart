@@ -5,6 +5,8 @@
 #pragma once
 
 #include "vec.h"
+
+#include <vector>
 namespace beart {
 class Sampler {
  public:
