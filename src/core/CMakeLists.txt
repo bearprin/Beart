@@ -1,4 +1,4 @@
-set(BERT_CORE_SOURCES)
+set(BERT_CORE_SOURCES sampler/sample_common.h)
 list(
         APPEND
         BERT_CORE_SOURCES
@@ -9,12 +9,15 @@ list(
         shape/sphere.cpp shape/sphere.h shape/shape.h shape/primitive.h
         camera/camera.h camera/perspective_camera.h camera/perspective_camera.cpp
         film/film.h
-        sampler/sampler.h
+        sampler/sampler.h sampler/sampler.cpp sampler/random_sampler.h
         light/light.h light/point_light.h light/point_light.cpp
         accelerator/accelerator.h
-        material/bxdf_common.h material/bxdf.h material/normal.h
+        material/bxdf_common.h material/bxdf.h material/phong.h material/phong.cpp material/event.h material/event.cpp
+        integrator/integrator.h integrator/integrator.cpp integrator/integrator_common.h integrator/ao.h integrator/ao.cpp
+        integrator/normal.cpp integrator/normal.h
+#        integrator/direct.h integrator/direct.cpp
 )
 
 add_executable(Beart ${BERT_CORE_SOURCES})
-target_include_directories(Beart PRIVATE . math shape io camera film sampler spectrum light material accelerator)
+target_include_directories(Beart PRIVATE . math shape io camera film sampler spectrum light material accelerator integrator)
 target_link_libraries(Beart PRIVATE ${BERT_PRIVATE_LIBS})

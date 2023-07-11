@@ -20,7 +20,7 @@ class Ray {
       : ori_(std::move(ori)),
         dir_(std::move(dir)),
         inv_dir_(1.f / dir_),
-        depth(depth),
+        depth_(depth),
         t_min_(t_min),
         t_max_(t_max),
         is_primary_ray_(is_primary_ray) {
@@ -34,7 +34,7 @@ class Ray {
   Vec3f dir_;
   Vec3f inv_dir_;
   int sign_[3]{0, 0, 0};
-  uint depth;
+  uint depth_ = 1u;
   float t_min_ = 0.f;  // the range of the ray
   float t_max_ = kMaxFloat;  // the range of the ray
   bool is_primary_ray_;

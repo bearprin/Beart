@@ -25,6 +25,12 @@ add_library(pcg INTERFACE IMPORTED)
 target_include_directories(pcg INTERFACE ${PCG_INCLUDE_DIRS})
 list(APPEND BERT_PRIVATE_LIBS pcg)
 
+# oidn
+add_subdirectory(third_party/oidn)
+set(OIDN_INCLUDE_DIRS third_party/oidn/include)
+include_directories(${OIDN_INCLUDE_DIRS})
+list(APPEND BERT_PRIVATE_LIBS OpenImageDenoise)
+
 add_subdirectory(src)
 
 

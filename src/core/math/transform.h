@@ -34,7 +34,7 @@ class Transform {
   }
 
   Ray operator*(const Ray &r) const {
-    return Ray{TransformPoint(r.ori_), TransformVector(r.dir_), r.depth, r.is_primary_ray_};
+    return Ray{TransformPoint(r.ori_), TransformVector(r.dir_), r.depth_, r.is_primary_ray_};
   }
   Transform operator*(const Transform &t) const {
     return Transform{matrix_ * t.matrix_};

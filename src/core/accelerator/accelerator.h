@@ -22,7 +22,7 @@ class Accelerator {
   virtual bool IsOccupied(const Ray &ray) const {
     // naive implementation loop for all primitive (just for debugging)
     return std::any_of(primitives_->cbegin(), primitives_->cend(), [&ray](const Primitive *primitive) {
-      return primitive->IntersectInfo(ray, nullptr);
+      return primitive->Intersect(ray);
     });
   }
   virtual bool Intersect(const Ray &ray, SurfaceInterection *info) const {
@@ -30,7 +30,7 @@ class Accelerator {
     auto temp_r = ray;
     SurfaceInterection temp_info;
     for (const auto primitive : *primitives_) {
-      if (primitive->IntersectInfo(temp_r, &temp_info)) {
+      if (primitive->Intersect(temp_r, &temp_info)) {
         temp_r.t_max_ = temp_info.t_curr;
         *info = temp_info;
       }

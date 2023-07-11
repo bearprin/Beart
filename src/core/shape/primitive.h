@@ -20,7 +20,7 @@ class Primitive {
   bool Intersect(const Ray &ray) const {
     return shape_->Intersect(ray);
   }
-  bool IntersectInfo(const Ray &ray, SurfaceInterection *info) const {
+  bool Intersect(const Ray &ray, SurfaceInterection *info) const {
     if (shape_->Intersect(ray, info)) {
       info->primitive = this;
       return true;
@@ -29,13 +29,13 @@ class Primitive {
   }
   const AABB &bbox() const { return shape_->bbox(); }
   const Shape *shape() const { return shape_; }
-  const std::vector<std::shared_ptr<Bxdf>> bsdf() const {
-    return bxdfs_;
+  const std::vector<std::shared_ptr<Bxdf>> *bxdfs() const {
+    return &bxdfs_;
   }
-  std::shared_ptr<const Bxdf> bsdf(unsigned int idx) const {
+  std::shared_ptr<const Bxdf> bxdf(unsigned int idx) const {
     return bxdfs_[idx];
   }
-  void set_bsdf(std::shared_ptr<Bxdf> bxdf) {
+  void set_bxdf(std::shared_ptr<Bxdf> bxdf) {
     bxdfs_.emplace_back(bxdf);
   }
   const Light *light() const { return light_; }

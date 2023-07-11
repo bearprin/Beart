@@ -25,3 +25,8 @@ beart::Vec2f *beart::Sampler::Next2DArray(const unsigned int size) {
   }
   return nullptr;
 }
+void beart::Sampler::Advance() {
+  sample_idx++;
+  current_1d_array_index_ = 0u;
+  current_2d_array_index_ = 0u;
+}

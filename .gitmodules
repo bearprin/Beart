@@ -7,3 +7,6 @@
 [submodule "third_party/pcg-cpp"]
 	path = third_party/pcg-cpp
 	url = https://github.com/imneme/pcg-cpp
+[submodule "third_party/oidn"]
+	path = third_party/oidn
+	url = https://github.com/OpenImageDenoise/oidn.git

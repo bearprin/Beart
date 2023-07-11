@@ -26,9 +26,11 @@ static constexpr float kPi = 3.1415926535897932384626433832795028f;
 static constexpr float kInvPi = 0.3183098861837906715377675267450287f;
 static constexpr float kTwoPi = 6.28318530717948769f;
 static constexpr float kInvTwoPi = 0.159154943091895335768883763372514f;
+static constexpr float kFourPi = 12.566370614359172f;
+static constexpr float kInvFourPi = 0.079577471545947667884441881686257f;
 
-static constexpr float kEpsilon = 1e-6f;
-static constexpr unsigned int kMaxBxdf = 8;
+
+static constexpr float kEpsilon = 1e-7;
 
 static
 constexpr float DegToRad(float deg) { return deg * kPi / 180.f; }
