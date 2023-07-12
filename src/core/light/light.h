@@ -9,15 +9,17 @@
 namespace beart {
 class Light {
  public:
-  Light(Spectrum intensity) : intensity_(std::move(intensity)) {}
-  Light(Spectrum intensity, const Transform &light_to_world)
-      : intensity_(std::move(intensity)), light_to_world_(light_to_world), world_to_light_(Inverse(light_to_world)) {}
+  Light(const Transform &light_to_world = Transform::Identity())
+      : light_to_world_(light_to_world), world_to_light_(Inverse(light_to_world)) {}
   virtual ~Light() = default;
-  [[nodiscard]] virtual bool IsDelta() const {
+  virtual bool IsDelta() const {
     return true;
   }
-  [[nodiscard]] virtual bool IsInfinite() const {
+  virtual bool IsInfinite() const {
     return false;
+  }
+  void set_scene(const Scene *scene) {
+    scene_ = scene;
   }
   /// \brief Compute the radiance that from light to intersection point. Resulting 0 for delta lights naturally.
   /// \param info
@@ -56,7 +58,7 @@ class Light {
   virtual Spectrum Power() const = 0;
 
  protected:
-  Spectrum intensity_;  // Radiant intensity (W / sr)
+  const Scene *scene_ = nullptr;
   Transform light_to_world_;
   Transform world_to_light_;
 

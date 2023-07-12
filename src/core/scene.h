@@ -30,6 +30,9 @@ class Scene : public JsonSerializable {
   const std::vector<const Primitive *> &primitives() const {
     return primitives_;
   }
+  const AABB &world_aabb() const {
+    return world_aabb_;
+  }
   const Light *SampleLight(float u, float *pdf) const {
     *pdf = 1.;
     // TODO: Sample from multiple lights. For now just return the first light

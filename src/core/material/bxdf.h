@@ -71,6 +71,5 @@ class Bxdf {
   float eval_weight_ = 1.0f;
   Vec3f geometry_normal_;
   Vec3f shading_normal_;
-  const bool double_sides_ = false;
 };
 }

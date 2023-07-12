@@ -19,8 +19,8 @@ class Shape : public JsonSerializable {
   virtual float Volume() const = 0;
   virtual const AABB &bbox() const = 0;
  protected:
-  Transform obj_to_world_ = Mat4f{1.0};  // from object space to world space, default is identity
-  Transform world_to_obj_ = Mat4f{1.0};  // from object space to world space, default is identity
+  Transform obj_to_world_ = Transform{Mat4f{1.0}};  // from object space to world space, default is identity
+  Transform world_to_obj_ = Transform{Mat4f{1.0}};  // from object space to world space, default is identity
   mutable std::unique_ptr<AABB> bbox_;
 };
 }

@@ -12,7 +12,7 @@ namespace beart {
 /// <<Using_the_modified_Phong_reflectance_model_for_Physically_based_rendering>>
 class Phong : public Bxdf {
  public:
-  Phong(Spectrum diffuse, Spectrum specular, const float phong_exponent, const float eval_weight = 1.0)
+  explicit Phong(Spectrum diffuse={0.5}, Spectrum specular={0.2f}, const float phong_exponent=30., const float eval_weight = 1.0)
       : Bxdf(static_cast<BxDFType>(BxDFType::kBxDF_DIFFUSE | BxDFType::kBXDF_REFLECTION), eval_weight),
         diffuse_(std::move(diffuse)),
         specular_(std::move(specular)),

@@ -13,9 +13,8 @@ namespace beart {
 class Transform {
  public:
 
-  Transform() = default;
-  Transform(Mat4f m) : matrix_(std::move(m)) {}
-
+  Transform() : matrix_(enoki::identity<Mat4f>()) {}
+  explicit Transform(Mat4f m) : matrix_(std::move(m)) {}
   Point3f TransformPoint(const Point3f &p) const {
     Point4f p_new = Point4f{p.x(), p.y(), p.z(), 1.0};
     auto res = matrix_ * p_new;
@@ -41,6 +40,9 @@ class Transform {
   }
 
   Mat4f matrix_;
+  static Transform Identity() noexcept {
+    return Transform{enoki::identity<Mat4f>()};
+  }
 };
 inline static
 Transform Inverse(const Transform &t) {
@@ -72,7 +74,7 @@ Transform Perspective(float fov, float near, float far, float aspect = 1.0f) {
 
   trafo(2, 3) = -2.f * near * far * recip;
   trafo(3, 2) = 1.f;
-  return trafo;
+  return Transform{trafo};
 }
 inline static
 Transform LookAt(const Vec3f &camera_pos, const Vec3f &target, const Vec3f &up) {

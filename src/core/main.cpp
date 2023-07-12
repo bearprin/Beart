@@ -3,6 +3,11 @@
 #include "perspective_camera.h"
 #include "scene.h"
 #include "ao.h"
+#include "direct.h"
+#include "diffuse.h"
+#include "point_light.h"
+#include "directional_light.h"
+#include "phong.h"
 #include "random_sampler.h"
 #include <iostream>
 #include <OpenImageDenoise/oidn.hpp>
@@ -13,18 +18,23 @@ int main() {
                                                            beart::Vec3f{0, 0.5, 1},
                                                            beart::Vec3f{0, 1, 0},
                                                            16.0);
-  std::unique_ptr<beart::Shape> sphere1 = std::make_unique<beart::Sphere>(beart::Vec3f{0., 0.1, 0}, 0.05);
+  std::unique_ptr<beart::Shape> sphere1 = std::make_unique<beart::Sphere>(beart::Vec3f{0., 0.02, 0}, 0.05);
   std::unique_ptr<beart::Shape> sphere2 = std::make_unique<beart::Sphere>(beart::Vec3f{0., 1e5, 0}, 1e5);
   std::unique_ptr<beart::Shape> sphere3 = std::make_unique<beart::Sphere>(beart::Vec3f{0.02, 0, 0}, 0.05);
-  auto integrator = std::make_unique<beart::AOIntegrator>();
+  auto integrator = std::make_unique<beart::DirectIntegrator>();
   auto sampler = std::make_unique<beart::RandomSampler>();
+  auto diffust_material = std::make_shared<beart::Diffuse>(beart::Spectrum{0.5, 0.5, 0.5});
+  auto phone_material = std::make_shared<beart::Phong>();
+  auto point_light = std::make_unique<beart::PointLight>(beart::Point3f{0.0, 0.2, 0}, beart::Spectrum{0.1});
+  auto dir_light = std::make_unique<beart::DirectionalLight>(beart::Vec3f{1, 0.2, 0}, beart::Spectrum{1});
   beart::Scene scene;
-  beart::Primitive a{sphere1.get()};
-  beart::Primitive b{sphere2.get()};
+  beart::Primitive a{sphere1.get(), phone_material};
+  beart::Primitive b{sphere2.get(), phone_material};
   beart::Primitive c{sphere3.get()};
   scene.AddPrimitive(&a);
-  scene.AddPrimitive(&b);
+//  scene.AddPrimitive(&b);
 //  scene.AddPrimitive(&c);
+  scene.AddLight(dir_light.get());
   scene.Prepare();
 
   uint sample_count = 32;
@@ -40,7 +50,8 @@ int main() {
       camera->image()->set_color(i, j, L);
     }
   }
-  std::cout << camera->image()->Save("test_32.png");
+  std::cout << camera->image()->Save("direct_direcition.png");
+
 
 //  // Create an Open Image Denoise device
 //  oidn::DeviceRef device = oidn::newDevice(); // CPU or GPU if available
@@ -53,7 +64,7 @@ int main() {
 //  filter.setImage("color", colorBuf, oidn::Format::Float3, camera->image_width(), camera->image_height());
 //  filter.setImage("output", outputBuf, oidn::Format::Float3, camera->image_width(), camera->image_height());
 //
-//  filter.set("srgb", true);
+//  filter.set("srgb", false);
 //  filter.commit();
 //
 //  const char *errorMessage;
@@ -62,23 +73,24 @@ int main() {
 //  for (unsigned j = 0; j < camera->image_height(); ++j) {
 //    for (unsigned int i = 0; i < camera->image_width(); ++i) {
 //      auto color = camera->image()->color(i, j);
-//      colorPtr[(j * camera->image_width() + i) * 3 + 0] = color.x() * 255.;
-//      colorPtr[(j * camera->image_width() + i) * 3 + 1] = color.y() * 255.;
-//      colorPtr[(j * camera->image_width() + i) * 3 + 2] = color.z() * 255.;
+//      colorPtr[(j * camera->image_width() + i) * 3 + 0] = color.x();
+//      colorPtr[(j * camera->image_width() + i) * 3 + 1] = color.y();
+//      colorPtr[(j * camera->image_width() + i) * 3 + 2] = color.z();
 //    }
 //  }
 //
 //  filter.execute();
 //
+//  auto new_colorPtr = (float*)outputBuf.getData();
 //  for (unsigned j = 0; j < camera->image_height(); ++j) {
 //    for (unsigned int i = 0; i < camera->image_width(); ++i) {
 //      auto color = camera->image()->color(i, j);
-//      color.x() = colorPtr[(j * camera->image_width() + i) * 3 + 0];
-//      color.y() = colorPtr[(j * camera->image_width() + i) * 3 + 1];
-//      color.z() = colorPtr[(j * camera->image_width() + i) * 3 + 2];
+//      color.x() = new_colorPtr[(j * camera->image_width() + i) * 3 + 0];
+//      color.y() = new_colorPtr[(j * camera->image_width() + i) * 3 + 1];
+//      color.z() = new_colorPtr[(j * camera->image_width() + i) * 3 + 2];
 //      camera->image()->set_color(i, j, color);
 //    }
 //  }
-//
+
   return 0;
 }

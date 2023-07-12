@@ -1,4 +1,4 @@
-set(BERT_CORE_SOURCES sampler/sample_common.h)
+set(BERT_CORE_SOURCES)
 list(
         APPEND
         BERT_CORE_SOURCES
@@ -9,13 +9,14 @@ list(
         shape/sphere.cpp shape/sphere.h shape/shape.h shape/primitive.h
         camera/camera.h camera/perspective_camera.h camera/perspective_camera.cpp
         film/film.h
-        sampler/sampler.h sampler/sampler.cpp sampler/random_sampler.h
-        light/light.h light/point_light.h light/point_light.cpp
+        sampler/sample_common.h sampler/sampler.h sampler/sampler.cpp sampler/random_sampler.h
+        light/light.h light/point_light.h light/point_light.cpp light/directional_light.cpp light/directional_light.h light/quad_light.cpp light/quad_light.h
         accelerator/accelerator.h
         material/bxdf_common.h material/bxdf.h material/phong.h material/phong.cpp material/event.h material/event.cpp
+        material/diffuse.h material/diffuse.cpp
         integrator/integrator.h integrator/integrator.cpp integrator/integrator_common.h integrator/ao.h integrator/ao.cpp
         integrator/normal.cpp integrator/normal.h
-#        integrator/direct.h integrator/direct.cpp
+        integrator/direct.h integrator/direct.cpp
 )
 
 add_executable(Beart ${BERT_CORE_SOURCES})

@@ -12,16 +12,15 @@ beart::Spectrum beart::PointLight::SampleLi(const beart::SurfaceInterection &inf
                                             float *distance,
                                             float *cos_light,
                                             beart::Visibility *visibility) const {
-  // transform light point from light space to world space
-  auto light_pos = light_to_world_.TransformPoint(Vec3f{0., 0., 0.});
+  auto light_pos = pos_;
   // ray from light to point
-  auto pos_to_light_dir = light_pos - info.intersect_pos;
+  Vec3f pos_to_light_dir = light_pos - info.intersect_pos;
   *wi = Normalize(pos_to_light_dir);
   float dist = Norm(pos_to_light_dir);
-  auto sq_dist = dist * dist;
+  float inv_dist = 1.0f / dist;
   // init visibility test: from intersection point to light, add bias to avoid self-intersection
-  auto eps = 0.01f;
-  visibility->ray_ = Ray(info.intersect_pos, *wi, 0, eps, dist);
+//  auto eps = 0.01f;
+  visibility->ray_ = Ray(info.intersect_pos, *wi, 0, false, kEpsilon, dist);
   if (pdf_s) {  // PDF of picking sampling direction based solid angle
     *pdf_s = 1.;
   }
@@ -31,5 +30,5 @@ beart::Spectrum beart::PointLight::SampleLi(const beart::SurfaceInterection &inf
   if (cos_light) {
     *cos_light = 1.0;
   }
-  return intensity_;
+  return intensity_ * (inv_dist * inv_dist);
 }

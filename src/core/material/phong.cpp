@@ -9,12 +9,6 @@ beart::Spectrum beart::Phong::f(const beart::Vec3f &wo, const beart::Vec3f &wi) 
   if (CosTheta(wo) <= 0.0f || CosTheta(wi) <= 0.0f) { // wo and wi are on different side of surface, return
     return {0.0f, 0.f, 0.f};
   }
-//  if (!IsSameSide(wo, geometry_normal_)) {
-//    return {0.0f, 0.f, 0.f};
-//  }
-//  if (!double_sides_ && !IsSameHemisphere(wo, wi, geometry_normal_)) {
-//    return {0.f, 0.f, 0.f};
-//  }
   auto L = Spectrum{0.f, 0.f, 0.f};
   L += diffuse_ * kInvPi; // Lambertian diffuse,  f_diffuse( wo , wi ) = D / PI
   // Phong, ( power + 2.0 ) * S * ( ( reflect( wo ) , wi ) ^ power ) / ( 2 * PI )
