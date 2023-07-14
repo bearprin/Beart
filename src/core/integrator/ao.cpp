@@ -7,7 +7,9 @@
 #include "event.h"
 beart::Spectrum beart::AOIntegrator::Li(const beart::Ray &ray,
                                         const beart::Scene &scene,
-                                        const Sampler &sampler) const {
+                                        const beart::Sampler &sampler,
+                                        beart::Spectrum *normal,
+                                        beart::Spectrum *albedos) const {
   Spectrum L(0.f, 0.f, 0.f);
   if (ray.depth_ > max_depth_) {
     return L;
@@ -18,6 +20,10 @@ beart::Spectrum beart::AOIntegrator::Li(const beart::Ray &ray,
   if (!scene.Intersect(ray, &info)) {
 //    return scene.Le(ray);
     return {0.};  // no intersection, return black for AO
+  }
+  if (normal) {
+    // map the normal to [0, 1]
+    *normal = (info.Ns + 1.f) * 0.5f;
   }
 //  info.Ns = Dot(info.Ns, ray.dir_) >= 0.f ? -info.Ns : info.Ns; // make sure the normal is in the same side of the ray
   Event event(info);
@@ -39,6 +45,4 @@ beart::Spectrum beart::AOIntegrator::Li(const beart::Ray &ray,
     return L;
   }
   return {0.f};
-//  return scene.Le(ray);
-//  return {0.f};
 }

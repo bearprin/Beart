@@ -70,7 +70,7 @@ beart::TriangleMesh::TriangleMesh(std::filesystem::path filename, beart::Transfo
     surface_areas_ += tri->SurfaceArea();
     children_.emplace_back(tri);
   }
-  if (Fv_.size() > 100) {
+  if (Fv_.size() > 100) { // only build bvh for large meshes
       children_bvh_flag_ = true;
   }
 }

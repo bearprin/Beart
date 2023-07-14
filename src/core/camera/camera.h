@@ -56,6 +56,9 @@ class Camera : public JsonSerializable {
   Film<RGBSpectrum> *image() const {
     return image_ptr_.get();
   }
+  Film<RGBSpectrum> *normal() const {
+    return normal_ptr_.get();
+  }
   virtual Ray GenerateRay(const float &x, const float &y, const PixelSample &pixel_sample) const noexcept = 0;
  protected:
   unsigned int image_width_;

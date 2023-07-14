@@ -94,5 +94,8 @@ static inline float CosTheta(const Vec3f &v) {
 static inline beart::Vec3f Reflect(const Vec3f &v) {
   return {-v.x(), -v.y(), v.z()};
 }
+static inline beart::Vec3f Lerp(const Vec3f &v1, const Vec3f &v2, float t) {
+  return v1 * (1 - t) + v2 * t;
+}
 }
 

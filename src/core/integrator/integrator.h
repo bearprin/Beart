@@ -10,7 +10,9 @@ namespace beart {
 class Integrator {
  public:
   virtual ~Integrator() = default;
-  virtual Spectrum Li(const Ray &ray, const Scene &scene, const Sampler &sampler) const = 0;
+  virtual Spectrum Li(const Ray &ray,
+                      const Scene &scene,
+                      const Sampler &sampler, Spectrum *normal = nullptr, Spectrum *albedos = nullptr) const = 0;
  protected:
   unsigned int max_depth_ = 6;
 };

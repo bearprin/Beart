@@ -8,7 +8,11 @@
 namespace beart {
 class DirectIntegrator : public Integrator {
  public:
-  virtual Spectrum Li(const Ray &ray, const Scene &scene, const Sampler &sampler) const override;
+  virtual Spectrum Li(const Ray &ray,
+                      const Scene &scene,
+                      const Sampler &sampler,
+                      Spectrum *normal = nullptr,
+                      Spectrum *albedos = nullptr) const override;
 
 };
 }

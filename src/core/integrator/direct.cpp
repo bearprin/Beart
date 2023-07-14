@@ -8,7 +8,10 @@
 
 beart::Spectrum beart::DirectIntegrator::Li(const beart::Ray &ray,
                                             const beart::Scene &scene,
-                                            const beart::Sampler &sampler) const {
+                                            const beart::Sampler &sampler,
+                                            beart::Spectrum *normal,
+                                            beart::Spectrum *albedos) const {
+
   Spectrum L(0.f, 0.f, 0.f);
   if (ray.depth_ > max_depth_) {
     return L;
@@ -18,6 +21,9 @@ beart::Spectrum beart::DirectIntegrator::Li(const beart::Ray &ray,
   SurfaceInterection info;
   if (!scene.Intersect(ray, &info)) {
     return scene.Le(ray);
+  }
+  if (normal) {
+    *normal = (info.Ns + 1.f) * 0.5f;
   }
   // accumulate the light emitted by intersection itself
   L += info.Le(-ray.dir_);

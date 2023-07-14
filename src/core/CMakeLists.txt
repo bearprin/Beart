@@ -17,7 +17,6 @@ list(
         material/bxdf_common.h material/bxdf.h material/phong.h material/phong.cpp material/event.h material/event.cpp
         material/diffuse.h material/diffuse.cpp
         integrator/integrator.h integrator/integrator.cpp integrator/integrator_common.h integrator/ao.h integrator/ao.cpp
-        integrator/normal.cpp integrator/normal.h
         integrator/direct.h integrator/direct.cpp
 )
 

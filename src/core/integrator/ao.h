@@ -10,7 +10,11 @@ namespace beart {
 
 class AOIntegrator : public Integrator {
  public:
-  Spectrum Li(const Ray &ray, const Scene &scene, const Sampler &sampler) const override;
+  Spectrum Li(const Ray &ray,
+              const Scene &scene,
+              const Sampler &sampler,
+              Spectrum *normal,
+              Spectrum *albedos) const override;
  private:
   float max_distance = 10.0f;
 
