@@ -43,6 +43,7 @@ bool beart::Sphere::Intersect(const beart::Ray &ray, beart::SurfaceInterection *
     Vec3f v2;
     CoordinateSystem(inter->Ns, &v1, &v2); // build local coordinate system with shading normal
     inter->tangent = v1;
+    inter->hit = true;
   }
   return true;
 }

@@ -1,4 +1,6 @@
-set(BERT_CORE_SOURCES)
+set(BERT_CORE_SOURCES shape/triangle.cpp shape/triangle.h shape/triangle_mesh.cpp shape/triangle_mesh.h
+        light/area_light.cpp
+        light/area_light.h)
 list(
         APPEND
         BERT_CORE_SOURCES
@@ -10,7 +12,7 @@ list(
         camera/camera.h camera/perspective_camera.h camera/perspective_camera.cpp
         film/film.h
         sampler/sample_common.h sampler/sampler.h sampler/sampler.cpp sampler/random_sampler.h
-        light/light.h light/point_light.h light/point_light.cpp light/directional_light.cpp light/directional_light.h light/quad_light.cpp light/quad_light.h
+        light/light.h light/point_light.h light/point_light.cpp light/directional_light.cpp light/directional_light.h light/area_light.h light/area_light.cpp
         accelerator/accelerator.h
         material/bxdf_common.h material/bxdf.h material/phong.h material/phong.cpp material/event.h material/event.cpp
         material/diffuse.h material/diffuse.cpp

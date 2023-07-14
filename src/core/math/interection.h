@@ -11,6 +11,7 @@ struct SurfaceInterection {
   float t_curr = kMaxFloat;
   const Primitive *primitive = nullptr;
 
+  bool hit = false;
   Vec3f Ng;  // geometric normal
   Vec3f Ns;  // shading normal
   Vec3f tangent;

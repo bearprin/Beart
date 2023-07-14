@@ -5,9 +5,11 @@
 #pragma once
 #include <limits>
 #include <tuple>
+#include <filesystem>
 
 #include <cmath>
 namespace beart {
+namespace fs = std::filesystem;
 // forward declare
 class Visibility;
 class Primitive;
@@ -29,8 +31,7 @@ static constexpr float kInvTwoPi = 0.159154943091895335768883763372514f;
 static constexpr float kFourPi = 12.566370614359172f;
 static constexpr float kInvFourPi = 0.079577471545947667884441881686257f;
 
-
-static constexpr float kEpsilon = 1e-7;
+static constexpr float kEpsilon = 1e-4;
 
 static
 constexpr float DegToRad(float deg) { return deg * kPi / 180.f; }

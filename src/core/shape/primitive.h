@@ -14,7 +14,6 @@ namespace beart {
 class Primitive {
  public:
   Primitive(const Shape *shape) : shape_(shape) {}
-//  Primitive(const Shape *shape) : shape_(shape), bxdfs_({????}) {}
   Primitive(const Shape *shape, std::shared_ptr<Bxdf> bxdf) : shape_(shape), bxdfs_({bxdf}) {}
 
   bool Intersect(const Ray &ray) const {
@@ -35,10 +34,10 @@ class Primitive {
   std::shared_ptr<const Bxdf> bxdf(unsigned int idx) const {
     return bxdfs_[idx];
   }
-  void set_bxdf(std::shared_ptr<Bxdf> bxdf) {
+  const Light *light() const { return light_; }
+  void add_bxdf(std::shared_ptr<Bxdf> bxdf) {
     bxdfs_.emplace_back(bxdf);
   }
-  const Light *light() const { return light_; }
  private:
   const Shape *shape_ = nullptr;
   const Light *light_ = nullptr;  // primitive may emit light

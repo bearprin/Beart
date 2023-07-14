@@ -31,6 +31,12 @@ set(OIDN_INCLUDE_DIRS third_party/oidn/include)
 include_directories(${OIDN_INCLUDE_DIRS})
 list(APPEND BERT_PRIVATE_LIBS OpenImageDenoise)
 
+# assimp
+add_subdirectory(third_party/assimp)
+set(ASSIMP_INCLUDE_DIRS third_party/assimp/include)
+include_directories(${ASSIMP_INCLUDE_DIRS})
+list(APPEND BERT_PRIVATE_LIBS assimp)
+
 add_subdirectory(src)
 
 

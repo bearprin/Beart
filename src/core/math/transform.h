@@ -38,6 +38,9 @@ class Transform {
   Transform operator*(const Transform &t) const {
     return Transform{matrix_ * t.matrix_};
   }
+  Point3f operator*(const Point3f &p) const {
+    return TransformPoint(p);
+  }
 
   Mat4f matrix_;
   static Transform Identity() noexcept {

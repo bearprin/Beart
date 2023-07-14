@@ -36,7 +36,7 @@ class DirectionalLight : public beart::Light {
   }
 
  private:
-  Vec3f direction_;
+  Vec3f direction_; // note that this is the direction from light to the scene
   Spectrum irradiance_;
 };
 }
