@@ -1,20 +1,19 @@
-set(BERT_CORE_SOURCES shape/triangle.cpp shape/triangle.h shape/triangle_mesh.cpp shape/triangle_mesh.h
-        light/area_light.cpp
-        light/area_light.h)
+set(BERT_CORE_SOURCES)
+
 list(
         APPEND
         BERT_CORE_SOURCES
         main.cpp
-        common.h scene.h
+        common.h scene.h scene.cpp
         math/vec.h math/ray.h math/interection.h math/interection.cpp math/bbox.h math/aabb.cpp math/aabb.h math/transform.h math/matrix.h
         io/json_serializable.h
-        shape/sphere.cpp shape/sphere.h shape/shape.h shape/primitive.h
+        shape/sphere.cpp shape/sphere.h shape/shape.h shape/primitive.h shape/triangle.cpp shape/triangle.h shape/triangle_mesh.cpp shape/triangle_mesh.h
         camera/camera.h camera/perspective_camera.h camera/perspective_camera.cpp
         film/film.h
         sampler/sample_common.h sampler/sampler.h sampler/sampler.cpp sampler/random_sampler.h
         light/light.h light/point_light.h light/point_light.cpp light/directional_light.cpp light/directional_light.h light/area_light.h light/area_light.cpp
         accelerator/accelerator.h
-        material/bxdf_common.h material/bxdf.h material/phong.h material/phong.cpp material/event.h material/event.cpp
+        material/bxdf.h material/phong.h material/phong.cpp material/event.h material/event.cpp
         material/diffuse.h material/diffuse.cpp
         integrator/integrator.h integrator/integrator.cpp integrator/integrator_common.h integrator/ao.h integrator/ao.cpp
         integrator/direct.h integrator/direct.cpp

@@ -8,7 +8,7 @@
 beart::Spectrum beart::PointLight::SampleLi(const beart::SurfaceInterection &info,
                                             const beart::LightSample &ls,
                                             beart::Vec3f *wi,
-                                            float *pdf_s,
+                                            float *pdf_solid,
                                             float *distance,
                                             float *cos_light,
                                             beart::Visibility *visibility) const {
@@ -20,9 +20,9 @@ beart::Spectrum beart::PointLight::SampleLi(const beart::SurfaceInterection &inf
   float inv_dist = 1.0f / dist;
   // init visibility test: from intersection point to light, add bias to avoid self-intersection
 //  auto eps = 0.01f;
-  visibility->ray_ = Ray(info.intersect_pos, *wi, 0, false, kEpsilon, dist);
-  if (pdf_s) {  // PDF of picking sampling direction based solid angle
-    *pdf_s = 1.;
+  visibility->ray_ = Ray(info.intersect_pos, *wi, 1, false, kEpsilon, dist - kEpsilon);
+  if (pdf_solid) {  // PDF of picking sampling direction based solid angle
+    *pdf_solid = 1.;
   }
   if (distance) {
     *distance = dist;

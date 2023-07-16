@@ -53,4 +53,8 @@ constexpr std::tuple<bool, float, float> SolveQuadratic(const float &a, const fl
     return {true, x_0, x_1};
   }
 };
+static
+constexpr float Lerp(const float a, const float b, const float t) {
+  return (1 - t) * a + t * b;
+}
 }

@@ -36,7 +36,7 @@ class Bxdf {
   /// \param wi
   /// \param u
   /// \return
-  virtual Spectrum SampleF(const Vec3f &wo, const Vec3f &wi, const BsdfSample &bs, float *pdf) const {
+  virtual Spectrum SampleF(const Vec3f &wo, Vec3f &wi, const BsdfSample &bs, float *pdf) const {
     return sample_f(wo, wi, bs, pdf);
   }
 
@@ -60,10 +60,14 @@ class Bxdf {
     shading_normal_ = v;
   }
 
+  bool PointingExterior(const Vec3f &wo) const {
+    return Dot(wo, geometry_normal_) > 0.f;
+  }
+
  protected:
   virtual Spectrum f(const Vec3f &wo, const Vec3f &wi) const = 0;
 
-  virtual Spectrum sample_f(const Vec3f &wo, const Vec3f &wi, const BsdfSample &bs, float *pdf) const = 0;
+  virtual Spectrum sample_f(const Vec3f &wo, Vec3f &wi, const BsdfSample &bs, float *pdf) const = 0;
 
   virtual float pdf(const Vec3f &wo, const Vec3f &wi) const = 0;
 

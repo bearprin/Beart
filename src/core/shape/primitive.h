@@ -14,6 +14,7 @@ namespace beart {
 class Primitive {
  public:
   Primitive(const Shape *shape) : shape_(shape) {}
+  Primitive(const Shape *shape, const Light *light) : shape_(shape), light_(light) {}
   Primitive(const Shape *shape, std::shared_ptr<Bxdf> bxdf) : shape_(shape), bxdfs_({bxdf}) {}
 
   bool Intersect(const Ray &ray) const {

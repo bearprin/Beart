@@ -7,7 +7,7 @@
 beart::Spectrum beart::DirectionalLight::SampleLi(const beart::SurfaceInterection &info,
                                                   const beart::LightSample &ls,
                                                   beart::Vec3f *wi,
-                                                  float *pdf_s,
+                                                  float *pdf_solid,
                                                   float *distance,
                                                   float *cos_light,
                                                   beart::Visibility *visibility) const {
@@ -18,8 +18,8 @@ beart::Spectrum beart::DirectionalLight::SampleLi(const beart::SurfaceInterectio
     *wi = dir_to_light;
   }
 
-  if (pdf_s) {
-    *pdf_s = 1.0f;
+  if (pdf_solid) {
+    *pdf_solid = 1.0f;
   }
 
   if (distance) {

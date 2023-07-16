@@ -23,17 +23,17 @@ beart::Spectrum beart::DirectIntegrator::Li(const beart::Ray &ray,
     return scene.Le(ray);
   }
   if (normal) {
-    *normal = (info.Ns + 1.f) * 0.5f;
+    *normal += (info.Ns + 1.f) * 0.5f;
   }
   // accumulate the light emitted by intersection itself
   L += info.Le(-ray.dir_);
 
   Event event(info);
-  // evaluate each direct light
+  // evaluate each direct light (may add sampling based on the Power)
   auto lights = scene.lights();
   for (const auto &light : lights) {
-    const auto light_sample = LightSample();
-    const auto bsdf_sample = BsdfSample();
+    const auto light_sample = LightSample(sampler.Next2D());
+    const auto bsdf_sample = BsdfSample(sampler.Next2D());
     L += DirectIllumination(event, ray, scene, *light, light_sample, bsdf_sample);
   }
   return L;

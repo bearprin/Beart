@@ -27,10 +27,14 @@ class Event {
   const SurfaceInterection &info() const {
     return info_;
   }
+  float Pdf(const Vec3f &wo, const Vec3f &wi) const;
+  Spectrum SampleF(const Vec3f &wo, Vec3f &wi, const BsdfSample &bs, float *pdf) const;
  private:
   Vec3f n_;
   Vec3f b_;
   Vec3f t_;
+  Vec3f local_ng_;
+  Vec3f local_ns_;
   const SurfaceInterection &info_;
   const std::vector<std::shared_ptr<Bxdf>> *bxdfs_;
 };

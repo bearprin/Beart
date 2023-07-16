@@ -16,7 +16,7 @@ class Light {
     return true;
   }
   virtual bool IsInfinite() const {
-    return false;
+    return true;
   }
   void set_scene(const Scene *scene) {
     scene_ = scene;
@@ -25,7 +25,7 @@ class Light {
   /// \param info
   /// \param wo
   /// \return
-  virtual Spectrum Le(const SurfaceInterection &info, const Vec3f &wo) const {
+  virtual Spectrum Le(const SurfaceInterection &info, const Vec3f &wo, float *pdf_area, float *pdf_solid) const {
     return Spectrum{0.f, 0.f, 0.f};
   }
 
@@ -42,7 +42,7 @@ class Light {
   virtual Spectrum SampleLi(const SurfaceInterection &info,
                             const LightSample &ls,
                             Vec3f *wi,
-                            float *pdf_s,
+                            float *pdf_solid,
                             float *distance,
                             float *cos_light,
                             Visibility *visibility) const = 0;

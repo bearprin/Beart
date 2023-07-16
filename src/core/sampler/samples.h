@@ -3,10 +3,12 @@
 //
 
 #pragma once
-
+#include "vec.h"
 namespace beart {
 
 struct LightSample {
+  LightSample(float u, float v) : u_(u), v_(v) {}
+  explicit LightSample(Point2f uv) : u_(uv.x()), v_(uv.y()) {}
   float t_{};  // 1d sample
 
   // 2d sample
@@ -14,6 +16,9 @@ struct LightSample {
   float v_{};
 };
 struct BsdfSample {
+  BsdfSample(float u, float v) : u_(u), v_(v) {}
+  explicit BsdfSample(Point2f uv) : u_(uv.x()), v_(uv.y()) {}
+
   float t_{};  // 1d sample
 
   // 2d sample

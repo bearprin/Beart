@@ -3,6 +3,7 @@
 //
 
 #include "sphere.h"
+#include "sample_common.h"
 bool beart::Sphere::Intersect(const beart::Ray &ray) const {
   return Intersect(ray, nullptr);
 }
@@ -58,4 +59,51 @@ float beart::Sphere::SurfaceArea() const {
 }
 float beart::Sphere::Volume() const {
   return 4.f / 3.f * kPi * radius_ * radius_ * radius_;
+}
+beart::Point3f beart::Sphere::SampleDirect(const beart::LightSample &ls,
+                                           const beart::Point3f &inter_pos,
+                                           beart::Vec3f &wi,
+                                           beart::Vec3f *n,
+                                           float *pdf_solid) const {
+  Vec3f L = center_ - inter_pos; // point to light
+  float dist = Norm(L);
+  Vec3f dir = Normalize(L);
+
+  // compute solid angle
+  float sin_theta_max = radius_ / dist;
+  float cos_theta_max = std::sqrtf(std::fmax(0.f, 1.f - sin_theta_max * sin_theta_max)); // sin^2 + cos^2 = 1
+
+  SurfaceInterection inter;
+  // sample a direction
+  wi = SampleUniformCone(ls.u_, ls.v_, cos_theta_max);
+  if (pdf_solid) {
+    *pdf_solid = SampleUniformConePdf(cos_theta_max);
+  }
+  Vec3f v1;
+  Vec3f v2;
+  CoordinateSystem(dir, &v1, &v2);
+
+  // transform to world coordinate from sphere coordinate
+  Transform m{{v1.x(), v2.x(), dir.x(), 0.f,
+               v1.y(), v2.y(), dir.y(), 0.f,
+               v1.z(), v2.z(), dir.z(), 0.f,
+               0.f, 0.f, 0.f, 1.f}};
+  wi = m.TransformVector(wi);
+
+  // try to find intersection point (since sample point may not be on the sphere)
+  Ray ray{inter_pos, wi, 1, false, kEpsilon, dist - kEpsilon};
+  if (!Intersect(ray, &inter)) { // no intersection, sampled outside the sphere, projection to the sphere
+    inter.intersect_pos = ray(Dot(L, wi));
+  }
+  if (n) {
+    *n = Normalize(inter.intersect_pos - center_);
+  }
+
+  return inter.intersect_pos;
+}
+float beart::Sphere::DirectPdf(const beart::Point3f &p, const beart::Vec3f &wi) const {
+  float dist = Norm(center_ - p);
+  float sin_theta_max = radius_ / dist;
+  float cos_theta_max = std::sqrtf(std::fmax(0.f, 1.f - sin_theta_max * sin_theta_max)); // sin^2 + cos^2 = 1
+  return SampleUniformConePdf(cos_theta_max);
 }

@@ -14,6 +14,8 @@ class Sphere : public Shape {
     obj_to_world_ = Translate(center_) * Scale(Vec3f{radius_});
     world_to_obj_ = Scale(Vec3f{1.f / radius_}) * Translate(-center_);
   }
+  Point3f SampleDirect(const LightSample &ls, const Point3f &inter_pos, Vec3f &wi, Vec3f *n, float *pdf_solid) const override;
+  float DirectPdf(const Point3f &p, const Vec3f &wi) const override;
   bool Intersect(const Ray &ray) const override;
   bool Intersect(const Ray &ray, SurfaceInterection *inter) const override;
   float SurfaceArea() const override;

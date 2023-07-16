@@ -12,13 +12,22 @@ namespace beart {
 class TriangleMesh : public Shape {
  public:
   TriangleMesh(fs::path filename, Transform obj_to_world_);
-  TriangleMesh(fs::path filename) : TriangleMesh(std::move(filename), Transform{Mat4f{1.0}}) {}
+  explicit TriangleMesh(fs::path filename) : TriangleMesh(std::move(filename), Transform{Mat4f{1.0}}) {}
   bool Intersect(const Ray &ray) const override;
   bool Intersect(const Ray &ray, SurfaceInterection *inter) const override;
   float SurfaceArea() const override;
   float Volume() const override;
   const AABB &bbox() const override;
-//  void add_children(std::shared_ptr<Shape> child) override;
+  Point3f SampleDirect(const LightSample &ls,
+                       const Point3f &inter_pos,
+                       Vec3f &wi,
+                       Vec3f *n,
+                       float *pdf_solid) const override {
+    return beart::Point3f();
+  }
+  float DirectPdf(const Point3f &p, const Vec3f &wi) const override {
+    return Shape::DirectPdf(p, wi);
+  }
  private:
   /// Report the approximate size (in bytes) of the mesh
   size_t size() const;

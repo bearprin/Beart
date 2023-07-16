@@ -17,7 +17,7 @@ class PointLight : public Light {
   Spectrum SampleLi(const SurfaceInterection &info,
                     const LightSample &ls,
                     Vec3f *wi,
-                    float *pdf_s,
+                    float *pdf_solid,
                     float *distance,
                     float *cos_light,
                     Visibility *visibility) const override;

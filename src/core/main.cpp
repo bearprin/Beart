@@ -7,41 +7,70 @@
 #include "diffuse.h"
 #include "point_light.h"
 #include "directional_light.h"
+#include "area_light.h"
 #include "phong.h"
 #include "random_sampler.h"
 #include "triangle_mesh.h"
 #include <OpenImageDenoise/oidn.hpp>
-int main() {
+int main(int argc, char **argv) {
+//  auto camera = std::make_unique<beart::PerspectiveCamera>(768,
+//                                                           768,
+//                                                           beart::Vec3f{0, 0, 0},
+//                                                           beart::Vec3f{0, 0.5, -1},
+//                                                           beart::Vec3f{0, 1, 0},
+//                                                           16.0);
+//  std::unique_ptr<beart::Shape> sphere1 = std::make_unique<beart::Sphere>(beart::Vec3f{0., 0.0, 0}, 0.05);
+////  std::unique_ptr<beart::Shape> sphere2 = std::make_unique<beart::Sphere>(beart::Vec3f{1., -1.5, 1.75}, 0.1);
+//  std::unique_ptr<beart::Shape> plane = std::make_unique<beart::TriangleMesh>(argv[1],
+//                                                                              beart::Translate({0, -0.05, 0})
+//                                                                                  * beart::Scale({0.2, 0.1, 0.2}));
+//  auto integrator = std::make_unique<beart::DirectIntegrator>();
+//  auto sampler = std::make_unique<beart::RandomSampler>();
+//  auto diffuse_material = std::make_shared<beart::Diffuse>(beart::Spectrum{0.5, 0.5, 0.5});
+//  auto phone_material = std::make_shared<beart::Phong>();
+//  auto point_light = std::make_unique<beart::PointLight>(beart::Point3f{0.2, 0.2, 0}, beart::Spectrum{.1});
+//  auto dir_light = std::make_unique<beart::DirectionalLight>(beart::Vec3f{-1, -1, 0}, beart::Spectrum{2});
+//  auto area_light =
+//      std::make_unique<beart::AreaLight>(std::make_unique<beart::Sphere>(beart::Point3f{1, -1.5, 1.75}, 0.1),
+//                                         beart::Spectrum{300});
+//
   auto camera = std::make_unique<beart::PerspectiveCamera>(768,
                                                            768,
                                                            beart::Vec3f{0, 0, 0},
-                                                           beart::Vec3f{0, 0.5, 1},
-                                                           beart::Vec3f{0, 1, 0},
-                                                           16.0);
-  std::unique_ptr<beart::Shape> sphere1 = std::make_unique<beart::Sphere>(beart::Vec3f{0., 0.0, 0}, 0.05);
+                                                           beart::Vec3f{4, 4, 0},
+                                                           beart::Vec3f{0, 0, 1},
+                                                           40.0);
+  std::unique_ptr<beart::Shape> sphere1 = std::make_unique<beart::Sphere>(beart::Vec3f{0., 0.0, 0}, 1);
+//  std::unique_ptr<beart::Shape> sphere2 = std::make_unique<beart::Sphere>(beart::Vec3f{1., -1.5, 1.75}, 0.1);
   std::unique_ptr<beart::Shape> plane = std::make_unique<beart::TriangleMesh>("../../../asset/plane.obj",
-                                                                              beart::Translate({0, -0.05, 0})
-                                                                                  * beart::Scale({1, 1, 1}));
+                                                                              beart::Translate({0, 0, -1})
+                                                                                  * beart::Rotate({1, 0, 0}, 90)
+                                                                                  * beart::Scale({100, 1, 100}));
 
-//  auto integrator = std::make_unique<beart::DirectIntegrator>();
-  auto integrator = std::make_unique<beart::AOIntegrator>();
+  auto integrator = std::make_unique<beart::DirectIntegrator>();
+//  auto integrator = std::make_unique<beart::AOIntegrator>();
 //  auto integrator = std::make_unique<beart::NormalIntegrator>();
   auto sampler = std::make_unique<beart::RandomSampler>();
-  auto diffust_material = std::make_shared<beart::Diffuse>(beart::Spectrum{0.5, 0.5, 0.5});
+  auto diffuse_material = std::make_shared<beart::Diffuse>(beart::Spectrum{0.5, 0.5, 0.5});
   auto phone_material = std::make_shared<beart::Phong>();
-  auto point_light = std::make_unique<beart::PointLight>(beart::Point3f{0.2, 0.2, 0}, beart::Spectrum{0.1});
+  auto point_light = std::make_unique<beart::PointLight>(beart::Point3f{1, -1.5, 1.75}, beart::Spectrum{1});
   auto dir_light = std::make_unique<beart::DirectionalLight>(beart::Vec3f{-1, -1, 0}, beart::Spectrum{2});
+  auto area_light =
+      std::make_unique<beart::AreaLight>(std::make_unique<beart::Sphere>(beart::Point3f{1, -1.5, 1.75}, 0.1),
+                                         beart::Spectrum{300});
   beart::Scene scene;
   beart::Primitive a{sphere1.get(), phone_material};
   beart::Primitive b{plane.get(), phone_material};
+  beart::Primitive c{area_light->shape(), area_light.get()};
   scene.AddPrimitive(&a);
   scene.AddPrimitive(&b);
-//  scene.AddPrimitive(&c);
-  scene.AddLight(dir_light.get());
+  scene.AddPrimitive(&c);
+//  scene.AddLight(dir_light.get());
 //  scene.AddLight(point_light.get());
+  scene.AddLight(area_light.get());
   scene.Prepare();
 
-  uint sample_count = 32;
+  uint sample_count = 16;
   for (unsigned j = 0; j < camera->image_height(); ++j) {
     for (unsigned int i = 0; i < camera->image_width(); ++i) {
       auto L = beart::Spectrum{0.};
@@ -59,7 +88,7 @@ int main() {
       camera->normal()->set_color(i, j, normal);
     }
   }
-  camera->image()->Save("AO_no_denoise.png");
+  camera->image()->Save("direct_no_denoise.png");
 
 
   // Create an Open Image Denoise device
@@ -110,7 +139,7 @@ int main() {
       camera->image()->set_color(i, j, color);
     }
   }
-  camera->image()->Save("AO_denoise.png");
+  camera->image()->Save("direct_denoise.png");
   camera->normal()->Save("normal.png");
-//  return 0;
+  return 0;
 }

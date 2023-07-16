@@ -13,7 +13,7 @@ class Ray {
   Ray() = default;
   Ray(Vec3f ori,
       Vec3f dir,
-      unsigned int depth,
+      unsigned int depth = 0u,
       bool is_primary_ray = false,
       float t_min = 0.f,
       float t_max = kMaxFloat)
@@ -34,7 +34,7 @@ class Ray {
   Vec3f dir_;
   Vec3f inv_dir_;
   int sign_[3]{0, 0, 0};
-  uint depth_ = 1u;
+  uint depth_ = 0u;
   float t_min_ = 0.f;  // the range of the ray
   float t_max_ = kMaxFloat;  // the range of the ray
   bool is_primary_ray_;

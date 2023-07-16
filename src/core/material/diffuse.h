@@ -14,7 +14,7 @@ class Diffuse : public Bxdf {
   }
  protected:
   Spectrum f(const Vec3f &wo, const Vec3f &wi) const override;
-  Spectrum sample_f(const Vec3f &wo, const Vec3f &wi, const BsdfSample &bs, float *pdf) const override;
+  Spectrum sample_f(const Vec3f &wo, Vec3f &wi, const BsdfSample &bs, float *pdf) const override;
   float pdf(const Vec3f &wo, const Vec3f &wi) const override;
  private :
   Spectrum diffuse_;

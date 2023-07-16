@@ -10,7 +10,7 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 #include <assimp/Importer.hpp>
-beart::TriangleMesh::TriangleMesh(std::filesystem::path filename, beart::Transform obj_to_world_) {
+beart::TriangleMesh::TriangleMesh(std::filesystem::path filename, beart::Transform obj_to_world) : Shape(obj_to_world) {
   Assimp::Importer importer;
   const aiScene *scene = importer.ReadFile(filename.string(), aiProcess_Triangulate);
   if (!scene || !scene->mRootNode) {
@@ -33,6 +33,8 @@ beart::TriangleMesh::TriangleMesh(std::filesystem::path filename, beart::Transfo
     for (size_t i = 0; i < mesh->mNumVertices; ++i) {
       vn_.emplace_back(obj_to_world_.TransformNormal({mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z}));
     }
+  } else {
+    // TODO: compute vertex normals
   }
   // load vertex colors
   if (mesh->HasVertexColors(0)) {
@@ -71,7 +73,7 @@ beart::TriangleMesh::TriangleMesh(std::filesystem::path filename, beart::Transfo
     children_.emplace_back(tri);
   }
   if (Fv_.size() > 100) { // only build bvh for large meshes
-      children_bvh_flag_ = true;
+    children_bvh_flag_ = true;
   }
 }
 bool beart::TriangleMesh::Intersect(const beart::Ray &ray) const {

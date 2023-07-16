@@ -15,9 +15,8 @@ class Scene : public JsonSerializable {
   void AddPrimitive(const Primitive *primitive) {
     this->primitives_.emplace_back(primitive);
   }
-  void AddLight(const Light *light) {
-    this->lights_.emplace_back(light);
-  }
+  void AddLight(Light *light);
+
   [[nodiscard]] const Camera *camera() const {
     return camera_;
   }

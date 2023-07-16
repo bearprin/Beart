@@ -8,7 +8,7 @@
 
 namespace beart {
 static float Mis(float f, float g) {
-  auto weight = f / (f + g);
+  auto weight = f * f / (f * f + g * g);
   return weight;
 }
 static Spectrum DirectIllumination(const Event &event,
@@ -25,18 +25,35 @@ static Spectrum DirectIllumination(const Event &event,
   auto cos_light{0.f};
   Vec3f wo = -ray.dir_;
   Vec3f wi;
+  // light sampling based solid angle
   auto li = light.SampleLi(event.info(), ls, &wi, &light_pdf, &distance, &cos_light, &vis_test);
-  // light sampling
-  if (light_pdf > 0.f) {
-    // evaluate BSDF
+  if (light_pdf > 0.f && !IsBlack(li) && cos_light > 0.f) {
+    // evaluate BSDF * cos(theta)
     auto f = event.EvaluateBxDF(wo, wi);
-    if (vis_test.IsVisible()) {
-      if (light.IsDelta()) { // delta light not need light sampling
+    if (!IsBlack(f) && vis_test.IsVisible()) { // intersection point is visible to light
+      if (light.IsDelta()) {
+        radiance += li * f / light_pdf;
+      } else {  // Non-delta light, sampling the area of the light
+//        bsdf_pdf = event.Pdf(wo, wi);
+//        radiance += li * f * Mis(light_pdf, bsdf_pdf) / light_pdf;
         radiance += li * f / light_pdf;
       }
-    } else {  // light sampling with MIS
     }
   }
+  // bsdf sampling
+//  if (!light.IsDelta()) {
+//    const auto f = event.SampleF(wo, wi, bs, &bsdf_pdf);
+//    if (!IsBlack(f) && bsdf_pdf != 0.f) {
+//      light_pdf = light.Pdf(event.info().intersect_pos, wi);
+//      if (light_pdf <= 0.f) {
+//        return radiance;
+//      }
+//      auto li = light.Le(event.info(), wi, );
+//      if (!IsBlack(li) && vis_test.IsVisible()) {
+//        radiance += li * f * Mis(bsdf_pdf, light_pdf) / bsdf_pdf;
+//      }
+//    }
+//  }
   return radiance;
 }
 }

@@ -56,6 +56,10 @@ Transform Translate(const Vec3f &v) {
   return Transform{enoki::translate<Mat4f, Vec3f>(v)};
 }
 inline static
+Transform Rotate(Vec3f axis, float angle) {
+  return Transform{enoki::rotate<Mat4f, Vec3f>(axis, DegToRad(angle))};
+}
+inline static
 Transform Scale(const Vec3f &v) {
   return Transform{enoki::scale<Mat4f, Vec3f>(v)};
 }

@@ -38,6 +38,13 @@ Vec3f SampleCosineHemiSphere(const float u, const float v) {
   return {x, y, z};
 }
 inline static
+Vec3f SampleUniformCone(const float u, const float v, const float costhetamax) {
+  float costheta = (1.f - u) + u * costhetamax;
+  float sintheta = std::sqrtf(1.f - costheta * costheta);
+  float phi = v * 2.f * kPi;
+  return {std::cosf(phi) * sintheta, std::sinf(phi) * sintheta, costheta};
+}
+inline static
 float SampleUniformSpherePdf() {
   return kInvFourPi;
 }
@@ -48,5 +55,9 @@ float SampleUniformHemiSpherePdf() {
 inline static
 float SampleCosineHemiSpherePdf(Vec3f v) {
   return AbsCosTheta(v) * kInvPi;
+}
+inline static
+float SampleUniformConePdf(const float costhetamax) {
+  return 1.f / (2.f * kPi * (1.f - costhetamax));
 }
 }

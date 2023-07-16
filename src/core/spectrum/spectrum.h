@@ -22,5 +22,8 @@ inline static
 RGBSpectrum sRGBToLinearRGB(const RGBSpectrum &s) {
   return enoki::select(s <= 0.04045f, s / 12.92f, enoki::pow((s + 0.055f) / 1.055f, 2.4f));
 }
-
+inline static
+bool IsBlack(const RGBSpectrum &s) {
+  return enoki::all(enoki::eq(s, 0.f));
+}
 } // namespace beart

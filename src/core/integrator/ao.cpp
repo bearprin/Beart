@@ -23,7 +23,7 @@ beart::Spectrum beart::AOIntegrator::Li(const beart::Ray &ray,
   }
   if (normal) {
     // map the normal to [0, 1]
-    *normal = (info.Ns + 1.f) * 0.5f;
+    *normal += (info.Ns + 1.f) * 0.5f;
   }
 //  info.Ns = Dot(info.Ns, ray.dir_) >= 0.f ? -info.Ns : info.Ns; // make sure the normal is in the same side of the ray
   Event event(info);
@@ -38,7 +38,7 @@ beart::Spectrum beart::AOIntegrator::Li(const beart::Ray &ray,
   }
 
   // the ray to be tested
-  Ray shadow_ray(info.intersect_pos, wi, 1, false, kEpsilon, max_distance);
+  Ray shadow_ray(info.intersect_pos, wi, 1, false, kEpsilon, max_distance - kEpsilon);
   SurfaceInterection ao_test_info;
   if (!scene.IsOccluded(shadow_ray)) {  // no intersection,
     L = d * kInvPi / pdf; // lambertian materrail / pdf

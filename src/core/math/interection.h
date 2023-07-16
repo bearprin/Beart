@@ -19,6 +19,6 @@ struct SurfaceInterection {
   Point3f intersect_pos;
 
   // get the emissive
-  Spectrum Le(const Vec3f &wo) const;
+  Spectrum Le(const Vec3f &wo, float *pdf_area = nullptr, float *pdf_solid = nullptr) const;
 };
 }
