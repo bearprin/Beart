@@ -88,7 +88,7 @@ int main(int argc, char **argv) {
       camera->normal()->set_color(i, j, normal);
     }
   }
-  camera->image()->Save("direct_no_denoise.png");
+  camera->image()->Save("direct_no_denoise.exr");
 
 
   // Create an Open Image Denoise device
@@ -103,6 +103,7 @@ int main(int argc, char **argv) {
   filter.setImage("output", colorBuf, oidn::Format::Float3, camera->image_width(), camera->image_height());
 //  filter.setImage("normal", normalBuf, oidn::Format::Float3, camera->image_width(), camera->image_height());
 //  filter.setImage("albedo", normalBuf, oidn::Format::Float3, camera->image_width(), camera->image_height());
+  filter.set("hdr", true);
   filter.commit();
 
   const char *errorMessage;
@@ -139,7 +140,7 @@ int main(int argc, char **argv) {
       camera->image()->set_color(i, j, color);
     }
   }
-  camera->image()->Save("direct_denoise.png");
-  camera->normal()->Save("normal.png");
+  camera->image()->Save("direct_denoise.exr");
+  camera->normal()->Save("normal.exr");
   return 0;
 }

@@ -9,7 +9,7 @@ list(
         io/json_serializable.h
         shape/sphere.cpp shape/sphere.h shape/shape.h shape/primitive.h shape/triangle.cpp shape/triangle.h shape/triangle_mesh.cpp shape/triangle_mesh.h
         camera/camera.h camera/perspective_camera.h camera/perspective_camera.cpp
-        film/film.h
+        film/film.h film/film.cpp
         sampler/sample_common.h sampler/sampler.h sampler/sampler.cpp sampler/random_sampler.h
         light/light.h light/point_light.h light/point_light.cpp light/directional_light.cpp light/directional_light.h light/area_light.h light/area_light.cpp
         accelerator/accelerator.h
