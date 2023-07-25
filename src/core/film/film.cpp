@@ -36,7 +36,8 @@ bool Film<RGBSpectrum>::Save(const std::string &filename) const {
     }
     return stbi_write_hdr(filename.c_str(), width_, height_, N,
                           &data[0]) != 0;
-  } else if (extension == "exr") {
+  }
+  else if (extension == "exr") {
     EXRHeader header;
     InitEXRHeader(&header);
 
@@ -44,7 +45,6 @@ bool Film<RGBSpectrum>::Save(const std::string &filename) const {
     InitEXRImage(&image);
 
     image.num_channels = N;
-
 
     // init channels
     std::vector<float> images[N];

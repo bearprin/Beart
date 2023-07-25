@@ -27,6 +27,9 @@ beart::Spectrum beart::DirectIntegrator::Li(const beart::Ray &ray,
   }
   // accumulate the light emitted by intersection itself
   L += info.Le(-ray.dir_);
+  if (info.primitive->bxdfs()->empty()) {
+    return L;
+  }
 
   Event event(info);
   // evaluate each direct light (may add sampling based on the Power)
