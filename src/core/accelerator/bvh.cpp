@@ -18,7 +18,7 @@ void beart::BVH::Build(const std::vector<const Primitive *> *primitives, const b
   // init bvh_prims
   unsigned int bvh_prims_index{};
   for (auto primitive : *primitives_) {
-    bvh_prims_[bvh_prims_index++].set_shape(primitive);
+    bvh_prims_[bvh_prims_index++].set_primitive(primitive);
   }
 
   root_ = std::make_unique<BvhNode>();
@@ -109,7 +109,7 @@ bool beart::BVH::TraverseNode(const BvhNode *node,
     temp_r.t_max_ = info->t_curr < temp_r.t_max_ ? info->t_curr : temp_r.t_max_;
     SurfaceInterection temp_info = *info;
     for (auto i = start; i < end; ++i) {
-      if (bvh_prims_[i].shape_->Intersect(temp_r, &temp_info)) {
+      if (bvh_prims_[i].primitive_->Intersect(temp_r, &temp_info)) {
         found = true;
         temp_r.t_max_ = temp_info.t_curr;
         if (!ray.is_primary_ray_) return true; // shadow ray, return directly

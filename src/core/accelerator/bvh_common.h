@@ -10,19 +10,16 @@
 namespace beart {
 
 struct BvhPrimitive {
-  const Shape *shape_;
+  const Primitive *primitive_ = nullptr;
 
-  void set_shape(const Primitive *prim) {
-    shape_ = prim->shape();
-  }
-  void set_shape(const Shape *shape) {
-    shape_ = shape;
+  void set_primitive(const Primitive *prim) {
+    primitive_ = prim;
   }
   [[nodiscard]] const AABB &Box() const {
-    return shape_->bbox();
+    return primitive_->bbox();
   }
   [[nodiscard]] Vec3f Centroid() const {
-    return shape_->bbox().Centroid();
+    return primitive_->shape()->bbox().Centroid();
   }
 
 };
