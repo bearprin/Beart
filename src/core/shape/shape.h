@@ -40,7 +40,7 @@ class Shape : public JsonSerializable {
   /// \return
   virtual float DirectPdf(const Point3f &p, const Vec3f &wi) const {
     SurfaceInterection inter;
-    if (!Intersect(Ray{p, wi}, &inter)) {
+    if (!Intersect(Ray{p, wi, 1, false}, &inter)) {
       return 0.f;
     }
     Vec3f delta = Normalize(p - inter.intersect_pos);
@@ -55,17 +55,12 @@ class Shape : public JsonSerializable {
   virtual float SurfaceArea() const = 0;
   virtual float Volume() const = 0;
   virtual const AABB &bbox() const = 0;
-  virtual void add_children(std::shared_ptr<Shape> child) {
-    children_.emplace_back(child);
-  }
   const Transform &ObjToWorld() const {
     return obj_to_world_;
   }
   const Transform &WorldToObj() const {
     return world_to_obj_;
   }
-  std::vector<std::shared_ptr<Shape>> children_;
-  bool children_bvh_flag_ = false;
  protected:
   Transform obj_to_world_ = Transform{Mat4f{1.0}};  // from object space to world space, default is identity
   Transform world_to_obj_ = Transform{Mat4f{1.0}};  // from object space to world space, default is identity

@@ -16,3 +16,6 @@
 [submodule "third_party/tinyexr"]
 	path = third_party/tinyexr
 	url = https://github.com/syoyo/tinyexr
+[submodule "third_party/nanothread"]
+	path = third_party/nanothread
+	url = https://github.com/mitsuba-renderer/nanothread

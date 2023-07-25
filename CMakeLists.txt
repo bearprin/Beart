@@ -45,6 +45,12 @@ set(ASSIMP_INCLUDE_DIRS third_party/assimp/include)
 include_directories(${ASSIMP_INCLUDE_DIRS})
 list(APPEND BERT_PRIVATE_LIBS assimp)
 
+# nanothread
+add_subdirectory(third_party/nanothread)
+set(NANOTHREAD_INCLUDE_DIRS third_party/nanothread/include)
+include_directories(${NANOTHREAD_INCLUDE_DIRS})
+list(APPEND BERT_PRIVATE_LIBS nanothread)
+
 add_subdirectory(src)
 
 

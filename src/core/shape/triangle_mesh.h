@@ -5,6 +5,7 @@
 #pragma once
 
 #include "shape.h"
+#include "accelerator.h"
 #include <utility>
 #include <vector>
 #include <filesystem>
@@ -13,6 +14,11 @@ class TriangleMesh : public Shape {
  public:
   TriangleMesh(fs::path filename, Transform obj_to_world_);
   explicit TriangleMesh(fs::path filename) : TriangleMesh(std::move(filename), Transform{Mat4f{1.0}}) {}
+  ~TriangleMesh() override {
+    for (auto &tri_pri : triangles_child_prim_) {
+      delete tri_pri;
+    }
+  }
   bool Intersect(const Ray &ray) const override;
   bool Intersect(const Ray &ray, SurfaceInterection *inter) const override;
   float SurfaceArea() const override;
@@ -41,6 +47,10 @@ class TriangleMesh : public Shape {
   std::vector<Vec3i> Ft_;        ///< Texture indices per face (triangle)
 
   mutable float surface_areas_;
+  std::unique_ptr<Accelerator> accelerator_ = nullptr;
+  std::vector<std::unique_ptr<Shape>> triangles_child_;
+  std::vector<const Primitive *> triangles_child_prim_;
+  bool use_bvh_ = false;
 
   friend class Triangle;
 };

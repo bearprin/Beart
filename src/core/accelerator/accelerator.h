@@ -13,7 +13,6 @@ class Accelerator {
   Accelerator() = default;
   virtual ~Accelerator() = default;
   virtual void Build(const std::vector<const Primitive *> *primitives, const AABB *bbox) {
-    // Note: should task care the children shape of the primitives by accelerator
     primitives_ = primitives;
     world_aabb_ = bbox;
   };

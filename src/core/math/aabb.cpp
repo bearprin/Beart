@@ -86,3 +86,38 @@ bool beart::AABB::Intersect(const beart::Ray &ray) const {
   }
   return (t_min < ray.t_max_) && (t_max > ray.t_min_);
 }
+float beart::AABB::Delta(const unsigned int axis) const {
+  return p_max_.data()[axis] - p_min_.data()[axis];
+}
+float beart::AABB::Intersect(const beart::AABB &lhs, const beart::Ray &ray) {
+  float neat_t = kMinFloat;
+  float far_t = kMaxFloat;
+
+  for (int i = 0; i < 3; i++) {
+    float origin = ray.ori_.data()[i];
+    float min_val = lhs[0].data()[i];
+    float max_val = lhs[1].data()[i];
+
+    if (ray.dir_.data()[i] == 0) {
+      if (origin < min_val || origin > max_val) {
+        return false;
+      }
+    } else {
+      float t1 = (min_val - origin) * ray.inv_dir_.data()[i];
+      float t2 = (max_val - origin) * ray.inv_dir_.data()[i];
+
+      if (t1 > t2) {
+        std::swap(t1, t2);
+      }
+      neat_t = std::max(t1, neat_t);
+      far_t = std::min(t2, far_t);
+      if (neat_t > far_t) {
+        return -1;
+      }
+    }
+  }
+  if (ray.t_min_ <= far_t && neat_t <= ray.t_max_) {
+    return neat_t < 0 ? far_t : neat_t;
+  }
+  return -1;
+}

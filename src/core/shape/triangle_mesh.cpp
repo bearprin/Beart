@@ -4,6 +4,7 @@
 
 #include "triangle_mesh.h"
 #include "triangle.h"
+#include "bvh.h"
 
 #include <memory>
 
@@ -68,22 +69,36 @@ beart::TriangleMesh::TriangleMesh(std::filesystem::path filename, beart::Transfo
     Fn_.emplace_back(Normalize(Cross(e1, e2)));
   }
   for (auto i = 0u; i < Fv_.size(); ++i) {
-    std::shared_ptr<Shape> tri = std::make_shared<Triangle>(this, i);
+    std::unique_ptr<Shape> tri = std::make_unique<Triangle>(this, i);
     surface_areas_ += tri->SurfaceArea();
-    children_.emplace_back(tri);
+    triangles_child_.emplace_back(std::move(tri));
+    triangles_child_prim_.push_back(new Primitive{triangles_child_[i].get()});
   }
-  if (Fv_.size() > 100) { // only build bvh for large meshes
-    children_bvh_flag_ = true;
+  if (Fv_.size() > 100) { // only build bvh for each triangle for large meshes
+    use_bvh_ = true;
+    accelerator_ = std::make_unique<BVH>();
+    accelerator_->Build(&triangles_child_prim_, bbox_.get());
   }
 }
 bool beart::TriangleMesh::Intersect(const beart::Ray &ray) const {
-  return std::any_of(children_.begin(), children_.end(), [&ray](const auto &child) {
+  if (accelerator_) {
+    return accelerator_->IsOccupied(ray);
+  }
+  return std::any_of(triangles_child_.begin(), triangles_child_.end(), [&ray](const auto &child) {
     return child->Intersect(ray);
   });
 }
 bool beart::TriangleMesh::Intersect(const beart::Ray &ray, beart::SurfaceInterection *inter) const {
-  for (const auto &child : children_) {
-    child->Intersect(ray, inter);
+  if (accelerator_) {
+    return accelerator_->Intersect(ray, inter);
+  }
+  auto temp_r = ray;
+  SurfaceInterection temp_info;
+  for (const auto &child : triangles_child_) {
+    if (child->Intersect(temp_r, &temp_info)) {
+      temp_r.t_max_ = temp_info.t_curr;
+      *inter = temp_info;
+    }
   }
   return inter->hit;
 }

@@ -5,7 +5,7 @@
 #pragma once
 
 #include "json_serializable.h"
-#include "accelerator.h"
+#include "bvh.h"
 #include "common.h"
 #include "camera.h"
 namespace beart {
@@ -65,7 +65,8 @@ class Scene : public JsonSerializable {
   std::vector<const Light *> lights_;
   std::vector<const Primitive *> primitives_;
   const Camera *camera_ = nullptr;
-  std::unique_ptr<Accelerator> accelerator_ = std::make_unique<Accelerator>();
+  std::unique_ptr<Accelerator> accelerator_ = std::make_unique<BVH>();
+//  std::unique_ptr<Accelerator> accelerator_ = std::make_unique<Accelerator>();
   AABB world_aabb_;
   Light *sky_light_ = nullptr;
 };

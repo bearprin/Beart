@@ -11,7 +11,10 @@
 #include "phong.h"
 #include "random_sampler.h"
 #include "triangle_mesh.h"
+
+#include <nanothread/nanothread.h>
 #include <OpenImageDenoise/oidn.hpp>
+namespace dr = drjit;
 int main(int argc, char **argv) {
 //  auto camera = std::make_unique<beart::PerspectiveCamera>(768,
 //                                                           768,
@@ -34,34 +37,71 @@ int main(int argc, char **argv) {
 //      std::make_unique<beart::AreaLight>(std::make_unique<beart::Sphere>(beart::Point3f{1, -1.5, 1.75}, 0.1),
 //                                         beart::Spectrum{300});
 //
+//  auto camera = std::make_unique<beart::PerspectiveCamera>(768,
+//                                                           768,
+//                                                           beart::Vec3f{0, 0, 0},
+//                                                           beart::Vec3f{4, 4, 0},
+//                                                           beart::Vec3f{0, 0, 1},
+//                                                           40.0);
+//  std::unique_ptr<beart::Shape> sphere1 = std::make_unique<beart::Sphere>(beart::Vec3f{0., 0.0, 0}, 1);
+////  std::unique_ptr<beart::Shape> sphere2 = std::make_unique<beart::Sphere>(beart::Vec3f{1., -1.5, 1.75}, 0.1);
+//  std::unique_ptr<beart::Shape> plane = std::make_unique<beart::TriangleMesh>("../../../asset/plane.obj",
+//                                                                              beart::Translate({0, 0, -1})
+//                                                                                  * beart::Rotate({1, 0, 0}, 90)
+//                                                                                  * beart::Scale({100, 1, 100}));
+
+//  auto integrator = std::make_unique<beart::DirectIntegrator>();
+//  auto integrator = std::make_unique<beart::AOIntegrator>();
+//  auto integrator = std::make_unique<beart::NormalIntegrator>();
+//  auto sampler = std::make_unique<beart::RandomSampler>();
+//  auto diffuse_material = std::make_shared<beart::Diffuse>(beart::Spectrum{0.5, 0.5, 0.5});
+//  auto phone_material = std::make_shared<beart::Phong>();
+//  auto point_light = std::make_unique<beart::PointLight>(beart::Point3f{1, -1.5, 1.75}, beart::Spectrum{1});
+//  auto dir_light = std::make_unique<beart::DirectionalLight>(beart::Vec3f{-1, -1, 0}, beart::Spectrum{2});
+//  auto area_light =
+//      std::make_unique<beart::AreaLight>(std::make_unique<beart::Sphere>(beart::Point3f{1, -1.5, 1.75}, 0.1),
+//                                         beart::Spectrum{300});
+//  beart::Scene scene;
+//  beart::Primitive a{sphere1.get(), diffuse_material};
+//  beart::Primitive b{plane.get(), diffuse_material};
+//  beart::Primitive c{area_light->shape(), area_light.get()};
+
   auto camera = std::make_unique<beart::PerspectiveCamera>(768,
-                                                           768,
+                                                           576,
                                                            beart::Vec3f{0, 0, 0},
                                                            beart::Vec3f{4, 4, 0},
                                                            beart::Vec3f{0, 0, 1},
                                                            40.0);
   std::unique_ptr<beart::Shape> sphere1 = std::make_unique<beart::Sphere>(beart::Vec3f{0., 0.0, 0}, 1);
-//  std::unique_ptr<beart::Shape> sphere2 = std::make_unique<beart::Sphere>(beart::Vec3f{1., -1.5, 1.75}, 0.1);
   std::unique_ptr<beart::Shape> plane = std::make_unique<beart::TriangleMesh>("../../../asset/plane.obj",
                                                                               beart::Translate({0, 0, -1})
                                                                                   * beart::Rotate({1, 0, 0}, 90)
                                                                                   * beart::Scale({100, 1, 100}));
-
-  auto integrator = std::make_unique<beart::DirectIntegrator>();
-//  auto integrator = std::make_unique<beart::AOIntegrator>();
-//  auto integrator = std::make_unique<beart::NormalIntegrator>();
-  auto sampler = std::make_unique<beart::RandomSampler>();
-  auto diffuse_material = std::make_shared<beart::Diffuse>(beart::Spectrum{0.5, 0.5, 0.5});
-  auto phone_material = std::make_shared<beart::Phong>();
-  auto point_light = std::make_unique<beart::PointLight>(beart::Point3f{1, -1.5, 1.75}, beart::Spectrum{1});
-  auto dir_light = std::make_unique<beart::DirectionalLight>(beart::Vec3f{-1, -1, 0}, beart::Spectrum{2});
+  std::unique_ptr<beart::Shape> bunny = std::make_unique<beart::TriangleMesh>("../../../asset/bunny.obj",
+                                                                              beart::Translate({-0.3, 0, -0.8}) *
+                                                                                  beart::Rotate({0, 0, 1}, 120)
+                                                                                  * beart::Rotate({1, 0, 0}, 90)
+                                                                                  * beart::Scale({0.7, 0.7, 0.7}));
   auto area_light =
-      std::make_unique<beart::AreaLight>(std::make_unique<beart::Sphere>(beart::Point3f{1, -1.5, 1.75}, 0.1),
+      std::make_unique<beart::AreaLight>(std::make_unique<beart::Sphere>(beart::Point3f{1, 2, 2}, 0.2),
                                          beart::Spectrum{300});
+
+  auto diffuse_material = std::make_shared<beart::Diffuse>(beart::Spectrum{0.5, 0.5, 0.5});
+  auto phone_material = std::make_shared<beart::Phong>(beart::Spectrum{0.2, 0.2, 0.8}, beart::Spectrum{1.0}, 40);
+
+  auto sampler = std::make_unique<beart::RandomSampler>();
+
   beart::Scene scene;
-  beart::Primitive a{sphere1.get(), phone_material};
-  beart::Primitive b{plane.get(), phone_material};
+
+//  beart::Primitive a{sphere1.get(), phone_material};
+//  beart::Primitive a{bunny.get(), phone_material};
+  beart::Primitive a{bunny.get()};
+  beart::Primitive b{plane.get(), diffuse_material};
   beart::Primitive c{area_light->shape(), area_light.get()};
+
+//  auto integrator = std::make_unique<beart::DirectIntegrator>();
+  auto integrator = std::make_unique<beart::AOIntegrator>();
+
   scene.AddPrimitive(&a);
   scene.AddPrimitive(&b);
   scene.AddPrimitive(&c);
@@ -70,25 +110,47 @@ int main(int argc, char **argv) {
   scene.AddLight(area_light.get());
   scene.Prepare();
 
-  uint sample_count = 16;
+  uint sample_count = 1;
   for (unsigned j = 0; j < camera->image_height(); ++j) {
-    for (unsigned int i = 0; i < camera->image_width(); ++i) {
-      auto L = beart::Spectrum{0.};
-      auto normal = beart::Spectrum{0.};
-      auto albendo = beart::Spectrum{0.};
-      for (unsigned int k = 0; k < sample_count; ++k) {
-        auto ps = beart::PixelSample{sampler->Next1D(), sampler->Next1D()};
-        beart::Ray r = camera->GenerateRay(i, j, ps);
-        L += integrator->Li(r, scene, *sampler, &normal, &albendo);
-      }
-      L = L / sample_count;
-      normal = normal / sample_count;
-      albendo = albendo / sample_count;
-      camera->image()->set_color(i, j, L);
-      camera->normal()->set_color(i, j, normal);
-    }
+//    for (unsigned int i = 0; i < camera->image_width(); ++i) {
+//      auto L = beart::Spectrum{0.};
+//      auto normal = beart::Spectrum{0.};
+//      auto albendo = beart::Spectrum{0.};
+//      for (unsigned int k = 0; k < sample_count; ++k) {
+//        auto ps = beart::PixelSample{sampler->Next1D(), sampler->Next1D()};
+//        beart::Ray r = camera->GenerateRay(i, j, ps);
+//        L += integrator->Li(r, scene, *sampler, &normal, &albendo);
+//      }
+//      L = L / sample_count;
+//      normal = normal / sample_count;
+//      albendo = albendo / sample_count;
+//      camera->image()->set_color(i, j, L);
+//      camera->normal()->set_color(i, j, normal);
+//    }
+    dr::parallel_for(
+        dr::blocked_range<uint32_t>(/* begin = */ 0, /* end = */ camera->image_width(), /* block_size = */ 16),
+//         The callback is allowed to be a stateful lambda function
+        [&](dr::blocked_range<uint32_t> range) {
+          for (uint32_t i = range.begin(); i != range.end(); ++i) {
+            auto L = beart::Spectrum{0.};
+            auto normal = beart::Spectrum{0.};
+            auto albendo = beart::Spectrum{0.};
+            for (unsigned int k = 0; k < sample_count; ++k) {
+              auto ps = beart::PixelSample{sampler->Next1D(), sampler->Next1D()};
+              beart::Ray r = camera->GenerateRay(i, j, ps);
+              L += integrator->Li(r, scene, *sampler, &normal, &albendo);
+            }
+            L = L / sample_count;
+            normal = normal / sample_count;
+            albendo = albendo / sample_count;
+            camera->image()->set_color(i, j, L);
+            camera->normal()->set_color(i, j, normal);
+//            printf("Worker thread %u is starting to process work unit %u\n",
+//                   pool_thread_id(), i);
+          }
+        });
   }
-  camera->image()->Save("direct_no_denoise.exr");
+  camera->image()->Save("hw3_bunny_phong_nodenoise.exr");
 
 
   // Create an Open Image Denoise device
@@ -140,7 +202,7 @@ int main(int argc, char **argv) {
       camera->image()->set_color(i, j, color);
     }
   }
-  camera->image()->Save("direct_denoise.exr");
+  camera->image()->Save("hw3_bunny_phong_denoise.exr");
   camera->normal()->Save("normal.exr");
   return 0;
 }

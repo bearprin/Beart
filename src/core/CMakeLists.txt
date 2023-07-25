@@ -13,6 +13,7 @@ list(
         sampler/sample_common.h sampler/sampler.h sampler/sampler.cpp sampler/random_sampler.h
         light/light.h light/point_light.h light/point_light.cpp light/directional_light.cpp light/directional_light.h light/area_light.h light/area_light.cpp
         accelerator/accelerator.h
+        accelerator/bvh.h accelerator/bvh.cpp
         material/bxdf.h material/phong.h material/phong.cpp material/event.h material/event.cpp
         material/diffuse.h material/diffuse.cpp
         integrator/integrator.h integrator/integrator.cpp integrator/integrator_common.h integrator/ao.h integrator/ao.cpp
