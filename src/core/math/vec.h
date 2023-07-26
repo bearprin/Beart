@@ -109,5 +109,16 @@ static inline beart::Point3f Permute(const beart::Point3f &p, int x, int y, int 
 static inline beart::Vec3f FaceForward(const beart::Vec3f &n, const beart::Vec3f &v) {
   return Dot(n, v) < 0.f ? -n : n;
 }
+static inline beart::Vec3f SphericalVec(float sintheta, float costheta, float phi) {
+  float x = sintheta * cos(phi);
+  float y = costheta;
+  float z = sintheta * sin(phi);
+  return beart::Vec3f{x, y, z};
 }
-
+static inline beart::Vec3f SphericalVec(float theta, float phi) {
+  float x = sinf(theta) * cosf(theta);
+  float y = cosf(theta);
+  float z = sinf(theta) * sinf(phi);
+  return beart::Vec3f{x, y, z};
+}
+}

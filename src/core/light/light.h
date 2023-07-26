@@ -28,6 +28,9 @@ class Light {
   virtual Spectrum Le(const SurfaceInterection &info, const Vec3f &wo, float *pdf_area, float *pdf_solid) const {
     return Spectrum{0.f, 0.f, 0.f};
   }
+  virtual bool Le(const Ray &ray, SurfaceInterection *info, Spectrum *radiance) const {
+    return false;
+  }
 
   /// \brief Sampling point and compute the radiance arriving at the point on the surface
   /// return pdf simultaneously

@@ -9,7 +9,7 @@ beart::Spectrum beart::AreaLight::Le(const beart::SurfaceInterection &info,
                                      float *pdf_area,
                                      float *pdf_solid) const {
   float cos = SafeDot(info.Ng, wo);
-  if (cos == 0.f) { //
+  if (cos <= 0.f) { //
     return Spectrum{0.f, 0.f, 0.f};
   }
   if (pdf_area) {
@@ -19,6 +19,13 @@ beart::Spectrum beart::AreaLight::Le(const beart::SurfaceInterection &info,
     *pdf_solid = SampleUniformSpherePdf() / shape_->SurfaceArea(); // based on solid angle
   }
   return radiance_;
+}
+bool beart::AreaLight::Le(const beart::Ray &ray, beart::SurfaceInterection *info, beart::Spectrum *radiance) const {
+  if (!shape_->Intersect(ray, info)) {
+    return false;
+  }
+  *radiance = Le(*info, -ray.dir_, nullptr, nullptr); // ray.dir = wi
+  return true;
 }
 
 beart::Spectrum beart::AreaLight::SampleLi(const beart::SurfaceInterection &info,

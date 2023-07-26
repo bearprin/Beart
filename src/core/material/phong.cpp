@@ -3,11 +3,16 @@
 //
 
 #include "phong.h"
-#include "bxdf_common.h"
 #include "common.h"
+#include "sample_common.h"
+#include "transform.h"
+#include <numeric>
 beart::Spectrum beart::Phong::f(const beart::Vec3f &wo, const beart::Vec3f &wi) const {
-  if (CosTheta(wo) <= 0.0f || CosTheta(wi) <= 0.0f) { // wo and wi are on different side of surface, return
-    return {0.0f, 0.f, 0.f};
+  if (!SameHemiSphere(wi, wo)) {
+    return 0.;
+  }
+  if (!PointingExterior(wo)) {  // wo is not pointing to exterior, return
+    return 0.f;
   }
   auto L = Spectrum{0.f, 0.f, 0.f};
   L += diffuse_ * kInvPi; // Lambertian diffuse,  f_diffuse( wo , wi ) = D / PI
@@ -18,11 +23,45 @@ beart::Spectrum beart::Phong::f(const beart::Vec3f &wo, const beart::Vec3f &wi) 
   return L * AbsCosTheta(wi);
 }
 beart::Spectrum beart::Phong::sample_f(const beart::Vec3f &wo,
-                                       const beart::Vec3f &wi,
+                                       beart::Vec3f &wi,
                                        const beart::BsdfSample &bs,
                                        float *pdf) const {
-  return beart::Spectrum();
+  if (bs.u_ < diffuse_.x() || diffuse_.x() == 1.0f) { // leverage x() as diffuse ratio (may not be a good idea)
+    wi = SampleCosineHemiSphere(bs.u_ / diffuse_.x(), bs.v_);
+  }
+  else if (bs.u_ > diffuse_.x() && bs.u_ < (diffuse_.x() + specular_.x())) {
+    const auto cos_theta = pow(bs.v_, 1.0f / (phong_exponent_ + 2.0f));
+    const auto sin_theta = sqrt(1.0f - cos_theta * cos_theta);
+    const auto phi = kTwoPi * (bs.u_ - diffuse_.x()) / (1.0f - diffuse_.x());
+    const auto dir = SphericalVec(sin_theta, cos_theta, phi);
+    // naive way
+//    const auto alpha = std::acosf(std::pow(bs.v_, 1.0f / (phong_exponent_ + 1.0f)));
+//    const auto theta = kTwoPi * bs.u_;
+//    const auto dir = SphericalVec(alpha, theta);
+
+    const auto r = Reflect(wo);
+    Vec3f t0, t1;
+    CoordinateSystem(r, &t0, &t1);
+    Transform m{Mat4f{t0.x(), r.x(), t1.x(), 0.0f,
+                      t0.y(), r.y(), t1.y(), 0.0f,
+                      t0.z(), r.z(), t1.z(), 0.0f,
+                      0.0f, 0.0f, 0.0f, 1.0f}};
+    wi = m.TransformVector(dir);
+  }
+  if (pdf) {
+    *pdf = this->pdf(wo, wi);
+  }
+  return f(wo, wi);
 }
 float beart::Phong::pdf(const beart::Vec3f &wo, const beart::Vec3f &wi) const {
-  return 0;
+  if (!SameHemiSphere(wi, wo)) {
+    return 0.;
+  }
+  if (!PointingExterior(wo)) {
+    return 0.f;
+  }
+  const auto cos_theta = SafeDot(Reflect(wo), wi);
+  const auto pdf_spec = pow(cos_theta, phong_exponent_ + 1.0f) * (phong_exponent_ + 2.0f) * kInvTwoPi;
+  const auto pdf_diff = SampleCosineHemiSpherePdf(wi);
+  return Lerp(pdf_spec, pdf_diff, diffuse_.x());  // interpolate diffuse and specular
 }

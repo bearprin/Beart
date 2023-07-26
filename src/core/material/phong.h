@@ -12,16 +12,21 @@ namespace beart {
 /// <<Using_the_modified_Phong_reflectance_model_for_Physically_based_rendering>>
 class Phong : public Bxdf {
  public:
-  explicit Phong(Spectrum diffuse={0.5}, Spectrum specular={0.2f}, const float phong_exponent=30., const float eval_weight = 1.0)
+  explicit Phong(Spectrum diffuse = {0.5},
+                 Spectrum specular = {0.2f},
+                 const float phong_exponent = 30.,
+                 const float eval_weight = 1.0)
       : Bxdf(static_cast<BxDFType>(BxDFType::kBxDF_DIFFUSE | BxDFType::kBXDF_REFLECTION), eval_weight),
         diffuse_(std::move(diffuse)),
         specular_(std::move(specular)),
         phong_exponent_(phong_exponent) {
-
+    assert(diffuse_.x() + specular_.x() <= 1.0f);
+    assert(diffuse_.y() + specular_.y() <= 1.0f);
+    assert(diffuse_.z() + specular_.z() <= 1.0f);
   }
  protected:
   [[nodiscard]] Spectrum f(const Vec3f &wo, const Vec3f &wi) const override;
-  Spectrum sample_f(const Vec3f &wo, const Vec3f &wi, const BsdfSample &bs, float *pdf) const override;
+  Spectrum sample_f(const Vec3f &wo, Vec3f &wi, const BsdfSample &bs, float *pdf) const override;
   [[nodiscard]] float pdf(const Vec3f &wo, const Vec3f &wi) const override;
  private :
   const Spectrum diffuse_;

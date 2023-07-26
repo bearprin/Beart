@@ -34,26 +34,33 @@ static Spectrum DirectIllumination(const Event &event,
       if (light.IsDelta()) {
         radiance += li * f / light_pdf;
       } else {  // Non-delta light, sampling the area of the light
-//        bsdf_pdf = event.Pdf(wo, wi);
-//        radiance += li * f * Mis(light_pdf, bsdf_pdf) / light_pdf;
-        radiance += li * f / light_pdf;
+        bsdf_pdf = event.Pdf(wo, wi);
+        radiance += li * f * Mis(light_pdf, bsdf_pdf) / light_pdf;
       }
     }
   }
   // bsdf sampling
-//  if (!light.IsDelta()) {
-//    const auto f = event.SampleF(wo, wi, bs, &bsdf_pdf);
-//    if (!IsBlack(f) && bsdf_pdf != 0.f) {
-//      light_pdf = light.Pdf(event.info().intersect_pos, wi);
-//      if (light_pdf <= 0.f) {
-//        return radiance;
-//      }
-//      auto li = light.Le(event.info(), wi, );
-//      if (!IsBlack(li) && vis_test.IsVisible()) {
-//        radiance += li * f * Mis(bsdf_pdf, light_pdf) / bsdf_pdf;
-//      }
-//    }
-//  }
+  if (!light.IsDelta()) {
+    const auto f = event.SampleF(wo, wi, bs, &bsdf_pdf);  // sample bsdf get wi and pdf
+    if (!IsBlack(f) && bsdf_pdf != 0.f) {
+      light_pdf = light.Pdf(event.info().intersect_pos, wi);
+      if (light_pdf <= 0.f) {
+        return radiance;
+      }
+      auto shadow_ray = Ray{event.info().intersect_pos, wi, ray.depth_ + 1, false, kEpsilon};
+      SurfaceInterection shadow_info;
+      Spectrum li;
+      if (!light.Le(shadow_ray, &shadow_info, &li)) {  // find intersection of the light
+        return radiance;
+      }
+      vis_test.ray_ =
+          Ray{event.info().intersect_pos, wi, ray.depth_ + 1, false, kEpsilon, shadow_info.t_curr - kEpsilon};
+      if (!IsBlack(li) && vis_test.IsVisible()) {
+        radiance += li * f * Mis(bsdf_pdf, light_pdf) / bsdf_pdf;
+//        radiance += li * f / bsdf_pdf;
+      }
+    }
+  }
   return radiance;
 }
 }

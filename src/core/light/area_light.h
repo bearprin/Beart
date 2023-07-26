@@ -22,6 +22,7 @@ class AreaLight : public Light {
     return false;
   }
   Spectrum Le(const SurfaceInterection &info, const Vec3f &wo, float *pdf_area, float *pdf_solid) const override;
+  bool Le(const Ray &ray, SurfaceInterection *info, Spectrum *radiance) const override;
   Spectrum SampleLi(const SurfaceInterection &info,
                     const LightSample &ls,
                     Vec3f *wi,
