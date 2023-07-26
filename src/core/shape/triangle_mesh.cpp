@@ -100,7 +100,7 @@ bool beart::TriangleMesh::Intersect(const beart::Ray &ray, beart::SurfaceInterec
       *inter = temp_info;
     }
   }
-  return inter->hit;
+  return temp_info.hit;
 }
 float beart::TriangleMesh::SurfaceArea() const {
   return surface_areas_;

@@ -105,7 +105,7 @@ bool beart::BVH::TraverseNode(const BvhNode *node,
     const auto start = node->prim_offset;
     const auto end = node->prim_offset + node->prim_num;
     auto found = false;
-    auto temp_r = ray;
+    Ray temp_r = ray;
     temp_r.t_max_ = info->t_curr < temp_r.t_max_ ? info->t_curr : temp_r.t_max_;
     SurfaceInterection temp_info;
     for (auto i = start; i < end; ++i) {
@@ -118,7 +118,7 @@ bool beart::BVH::TraverseNode(const BvhNode *node,
     if (temp_info.t_curr < info->t_curr) {
       *info = temp_info;
     }
-    return found;
+    return temp_info.hit;
   }
   const auto left_ptr = node->left.get();
   const auto right_ptr = node->right.get();

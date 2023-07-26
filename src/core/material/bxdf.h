@@ -63,6 +63,9 @@ class Bxdf {
   bool PointingExterior(const Vec3f &wo) const {
     return Dot(wo, geometry_normal_) > 0.f;
   }
+  bool SameHemiSphere(const Vec3f &wi, const Vec3f &wo) const {
+    return !(PointingExterior(wi) ^ PointingExterior(wo));
+  }
 
  protected:
   virtual Spectrum f(const Vec3f &wo, const Vec3f &wi) const = 0;

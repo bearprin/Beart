@@ -36,6 +36,6 @@ beart::Ray beart::PerspectiveCamera::GenerateRay(const float &x,
   float inv_z = 1.0f / dir.z();  // scale to the range of ray [t_min, t_max]
   dir = camera_to_world_.TransformVector(dir);
   Vec3f ori = camera_to_world_.TransformPoint(Vec3f{0.f, 0.f, 0.f}); // transform to world space (camera origin)
-  Ray ray{ori, dir, 1, true, near_clip_ * inv_z, far_clip_ * inv_z};
+  Ray ray{ori, dir, 0, true, near_clip_ * inv_z, far_clip_ * inv_z};
   return ray;
 }

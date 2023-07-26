@@ -35,7 +35,7 @@ class Accelerator {
         *info = temp_info;
       }
     }
-    return info->primitive != nullptr;
+    return temp_info.hit;
   }
 
  protected:

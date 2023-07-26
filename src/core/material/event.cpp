@@ -20,6 +20,7 @@ beart::Spectrum beart::Event::EvaluateBxDF(const beart::Vec3f &wo, const beart::
   Vec3f shading_wo = WorldToLocal(wo);
   Vec3f shading_wi = WorldToLocal(wi);
   auto L = Spectrum{0.f, 0.f, 0.f};
+
   // TODO: assume only one bxdf now
   bxdfs_->operator[](0)->set_geometry_normal(local_ng_);
   bxdfs_->operator[](0)->set_shading_normal(local_ns_);

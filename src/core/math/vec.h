@@ -97,5 +97,17 @@ static inline beart::Vec3f Reflect(const Vec3f &v) {
 static inline beart::Vec3f Lerp(const Vec3f &v1, const Vec3f &v2, float t) {
   return v1 * (1 - t) + v2 * t;
 }
+static inline beart::Vec3f Abs(const Vec3f &v) {
+  return {std::abs(v.x()), std::abs(v.y()), std::abs(v.z())};
+}
+static inline unsigned int MaxDim(const Vec3f &v) {
+  return v.x() > v.y() ? (v.x() > v.z() ? 0 : 2) : (v.y() > v.z() ? 1 : 2);
+}
+static inline beart::Point3f Permute(const beart::Point3f &p, int x, int y, int z) {
+  return {p[x], p[y], p[z]};
+}
+static inline beart::Vec3f FaceForward(const beart::Vec3f &n, const beart::Vec3f &v) {
+  return Dot(n, v) < 0.f ? -n : n;
+}
 }
 

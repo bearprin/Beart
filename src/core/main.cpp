@@ -36,7 +36,7 @@ int main(int argc, char **argv) {
 //  auto area_light =
 //      std::make_unique<beart::AreaLight>(std::make_unique<beart::Sphere>(beart::Point3f{1, -1.5, 1.75}, 0.1),
 //                                         beart::Spectrum{300});
-//
+
 //  auto camera = std::make_unique<beart::PerspectiveCamera>(768,
 //                                                           768,
 //                                                           beart::Vec3f{0, 0, 0},
@@ -49,10 +49,10 @@ int main(int argc, char **argv) {
 //                                                                              beart::Translate({0, 0, -1})
 //                                                                                  * beart::Rotate({1, 0, 0}, 90)
 //                                                                                  * beart::Scale({100, 1, 100}));
-
+//
 //  auto integrator = std::make_unique<beart::DirectIntegrator>();
-//  auto integrator = std::make_unique<beart::AOIntegrator>();
-//  auto integrator = std::make_unique<beart::NormalIntegrator>();
+////  auto integrator = std::make_unique<beart::AOIntegrator>();
+////  auto integrator = std::make_unique<beart::NormalIntegrator>();
 //  auto sampler = std::make_unique<beart::RandomSampler>();
 //  auto diffuse_material = std::make_shared<beart::Diffuse>(beart::Spectrum{0.5, 0.5, 0.5});
 //  auto phone_material = std::make_shared<beart::Phong>();
@@ -62,7 +62,7 @@ int main(int argc, char **argv) {
 //      std::make_unique<beart::AreaLight>(std::make_unique<beart::Sphere>(beart::Point3f{1, -1.5, 1.75}, 0.1),
 //                                         beart::Spectrum{300});
 //  beart::Scene scene;
-//  beart::Primitive a{sphere1.get(), diffuse_material};
+//  beart::Primitive a{sphere1.get(), phone_material};
 //  beart::Primitive b{plane.get(), diffuse_material};
 //  beart::Primitive c{area_light->shape(), area_light.get()};
 
@@ -87,20 +87,19 @@ int main(int argc, char **argv) {
                                          beart::Spectrum{300});
 
   auto diffuse_material = std::make_shared<beart::Diffuse>(beart::Spectrum{0.5, 0.5, 0.5});
-  auto phone_material = std::make_shared<beart::Phong>(beart::Spectrum{0.2, 0.2, 0.8}, beart::Spectrum{1.0}, 40);
+  auto phong_material = std::make_shared<beart::Phong>(beart::Spectrum{0.2, 0.2, 0.8}, beart::Spectrum{1.0}, 40);
 
   auto sampler = std::make_unique<beart::RandomSampler>();
 
   beart::Scene scene;
 
-//  beart::Primitive a{sphere1.get(), phone_material};
-//  beart::Primitive a{bunny.get(), phone_material};
-  beart::Primitive a{bunny.get()};
+//  beart::Primitive a{sphere1.get(), phong_material};
+  beart::Primitive a{bunny.get(), phong_material};
   beart::Primitive b{plane.get(), diffuse_material};
   beart::Primitive c{area_light->shape(), area_light.get()};
 
-//  auto integrator = std::make_unique<beart::DirectIntegrator>();
-  auto integrator = std::make_unique<beart::AOIntegrator>();
+  auto integrator = std::make_unique<beart::DirectIntegrator>();
+//  auto integrator = std::make_unique<beart::AOIntegrator>();
 
   scene.AddPrimitive(&a);
   scene.AddPrimitive(&b);
@@ -110,28 +109,13 @@ int main(int argc, char **argv) {
   scene.AddLight(area_light.get());
   scene.Prepare();
 
-  uint sample_count = 1;
+  uint sample_count = 32;
   for (unsigned j = 0; j < camera->image_height(); ++j) {
-//    for (unsigned int i = 0; i < camera->image_width(); ++i) {
-//      auto L = beart::Spectrum{0.};
-//      auto normal = beart::Spectrum{0.};
-//      auto albendo = beart::Spectrum{0.};
-//      for (unsigned int k = 0; k < sample_count; ++k) {
-//        auto ps = beart::PixelSample{sampler->Next1D(), sampler->Next1D()};
-//        beart::Ray r = camera->GenerateRay(i, j, ps);
-//        L += integrator->Li(r, scene, *sampler, &normal, &albendo);
-//      }
-//      L = L / sample_count;
-//      normal = normal / sample_count;
-//      albendo = albendo / sample_count;
-//      camera->image()->set_color(i, j, L);
-//      camera->normal()->set_color(i, j, normal);
-//    }
     dr::parallel_for(
-        dr::blocked_range<uint32_t>(/* begin = */ 0, /* end = */ camera->image_width(), /* block_size = */ 16),
-//         The callback is allowed to be a stateful lambda function
+        dr::blocked_range<uint32_t>(/* begin = */ 0, /* end = */ camera->image_width(), /* block_size = */ 32),
         [&](dr::blocked_range<uint32_t> range) {
           for (uint32_t i = range.begin(); i != range.end(); ++i) {
+//    for (uint32_t i = 0u; i != camera->image_width(); ++i) {
             auto L = beart::Spectrum{0.};
             auto normal = beart::Spectrum{0.};
             auto albendo = beart::Spectrum{0.};
@@ -145,8 +129,6 @@ int main(int argc, char **argv) {
             albendo = albendo / sample_count;
             camera->image()->set_color(i, j, L);
             camera->normal()->set_color(i, j, normal);
-//            printf("Worker thread %u is starting to process work unit %u\n",
-//                   pool_thread_id(), i);
           }
         });
   }
