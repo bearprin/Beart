@@ -64,7 +64,6 @@ beart::Spectrum beart::PathTracing::Li(const beart::Ray &ray,
     // update ray
     temp_r = Ray(info.intersect_pos, wi, temp_r.depth_ + 1, true, kEpsilon);
 
-    local_bounce++;
     if (local_bounce > 3) {
       // Russian Roulette
       float q = std::max(0.05f, 1.f - MaxComponent(f));
@@ -73,7 +72,7 @@ beart::Spectrum beart::PathTracing::Li(const beart::Ray &ray,
       }
       throughput /= 1.f - q;
     }
+    local_bounce++;
   }
-
   return L;
 }

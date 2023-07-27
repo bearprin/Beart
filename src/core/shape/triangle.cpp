@@ -5,7 +5,7 @@
 #include "triangle.h"
 #include "triangle_mesh.h"
 bool beart::Triangle::Intersect(const beart::Ray &ray, beart::SurfaceInterection *inter) const {
-  // (PBRT style)
+  // <<Watertight Ray/Triangle Intersection>> by Journal of Computer Graphics Techniques
   // transform the vertices from world space to ray coordinate
   // step 0 : translate the vertices with ray origin
   auto p_0_t = p_0_ - ray.ori_;
