@@ -11,6 +11,7 @@
 #include "phong.h"
 #include "random_sampler.h"
 #include "triangle_mesh.h"
+#include "path_tracing.h"
 
 #include <nanothread/nanothread.h>
 #include <OpenImageDenoise/oidn.hpp>
@@ -99,56 +100,107 @@ int main(int argc, char **argv) {
 //  beart::Primitive c{area_light->shape(), area_light.get()};
 
   // hw3 t3
+//  auto camera = std::make_unique<beart::PerspectiveCamera>(768,
+//                                                           512,
+//                                                           beart::Vec3f{0, -2, 2.5},
+//                                                           beart::Vec3f{0, 2, 15},
+//                                                           beart::Vec3f{0, 1, 0},
+//                                                           42.0);
+//  auto integrator = std::make_unique<beart::DirectIntegrator>();
+//  auto integrator = std::make_unique<beart::PathTracing>();
+//  auto sampler = std::make_unique<beart::RandomSampler>();
+
+//  auto env = std::make_unique<beart::AreaLight>(std::make_unique<beart::Sphere>(beart::Point3f{10, 10, 4}, 0.5),
+//                                                beart::Spectrum{800, 800, 800});
+//  auto red =
+//      std::make_unique<beart::AreaLight>(std::make_unique<beart::Sphere>(beart::Point3f{-3.75, 0, 0}, 0.03333),
+//                                         beart::Spectrum{901.803, 0, 0});
+//  auto green =
+//      std::make_unique<beart::AreaLight>(std::make_unique<beart::Sphere>(beart::Point3f{-1.25, 0, 0}, 0.1),
+//                                         beart::Spectrum{0, 100, 0});
+//  auto blue = std::make_unique<beart::AreaLight>(std::make_unique<beart::Sphere>(beart::Point3f{1.25, 0, 0}, 0.3),
+//                                                 beart::Spectrum{0, 0, 11.1111});
+//  auto white = std::make_unique<beart::AreaLight>(std::make_unique<beart::Sphere>(beart::Point3f{3.75, 0, 0}, 0.9),
+//                                                  beart::Spectrum{1.23457, 1.23457, 0});
+//
+//  std::unique_ptr<beart::Shape> plate1 = std::make_unique<beart::TriangleMesh>("../../../asset/plate1.obj");
+//  std::unique_ptr<beart::Shape> plate2 = std::make_unique<beart::TriangleMesh>("../../../asset/plate2.obj");
+//  std::unique_ptr<beart::Shape> plate3 = std::make_unique<beart::TriangleMesh>("../../../asset/plate3.obj");
+//  std::unique_ptr<beart::Shape> plate4 = std::make_unique<beart::TriangleMesh>("../../../asset/plate4.obj");
+//  std::unique_ptr<beart::Shape> floor = std::make_unique<beart::TriangleMesh>("../../../asset/floor.obj");
+//
+//  auto phong_material_1 =
+//      std::make_shared<beart::Phong>(beart::Spectrum{0.07, 0.09, 0.13}, beart::Spectrum{0.93, 0.91, 0.87}, 10000);
+//  auto phong_material_2 =
+//      std::make_shared<beart::Phong>(beart::Spectrum{0.07, 0.09, 0.13}, beart::Spectrum{0.93, 0.91, 0.87}, 1000);
+//  auto phong_material_3 =
+//      std::make_shared<beart::Phong>(beart::Spectrum{0.07, 0.09, 0.13}, beart::Spectrum{0.93, 0.91, 0.87}, 100);
+//  auto phong_material_4 =
+//      std::make_shared<beart::Phong>(beart::Spectrum{0.07, 0.09, 0.13}, beart::Spectrum{0.93, 0.91, 0.87}, 80);
+//  auto diffuse_material = std::make_shared<beart::Diffuse>(beart::Spectrum{0.4, 0.4, 0.4});
+//  auto diffuse_material_env = std::make_shared<beart::Diffuse>(beart::Spectrum{0.});
+//
+//  beart::Primitive a{plate1.get(), phong_material_1};
+//  beart::Primitive b{plate2.get(), phong_material_2};
+//  beart::Primitive c{plate3.get(), phong_material_3};
+//  beart::Primitive d{plate4.get(), phong_material_4};
+//  beart::Primitive e{floor.get(), diffuse_material};
+
+//  beart::Primitive r{red->shape(), red.get()};
+//  beart::Primitive g{green->shape(), green.get()};
+//  beart::Primitive bl{blue->shape(), blue.get()};
+//  beart::Primitive w{white->shape(), white.get()};
+//  beart::Primitive env_p{env->shape(), env.get(), diffuse_material_env};
+
+//  beart::Scene scene;
+//  scene.AddPrimitive(&a);
+//  scene.AddPrimitive(&b);
+//  scene.AddPrimitive(&c);
+//  scene.AddPrimitive(&d);
+//  scene.AddPrimitive(&e);
+//  scene.AddPrimitive(&r);
+//  scene.AddPrimitive(&g);
+//  scene.AddPrimitive(&bl);
+//  scene.AddPrimitive(&w);
+
+//  scene.AddLight(red.get());
+//  scene.AddLight(green.get());
+//  scene.AddLight(blue.get());
+//  scene.AddLight(white.get());
+//  scene.Prepare();
+
   auto camera = std::make_unique<beart::PerspectiveCamera>(768,
-                                                           512,
-                                                           beart::Vec3f{0, -2, 2.5},
-                                                           beart::Vec3f{0, 2, 15},
-                                                           beart::Vec3f{0, 1, 0},
-                                                           42.0);
-  auto integrator = std::make_unique<beart::DirectIntegrator>();
+                                                           768,
+                                                           beart::Vec3f{0, 0, 1},
+                                                           beart::Vec3f{0, -4, 1},
+                                                           beart::Vec3f{0, 0, 1},
+                                                           37.0);
+  auto integrator = std::make_unique<beart::PathTracing>();
+//  auto integrator = std::make_unique<beart::DirectIntegrator>();
   auto sampler = std::make_unique<beart::RandomSampler>();
 
-  auto env = std::make_unique<beart::AreaLight>(std::make_unique<beart::Sphere>(beart::Point3f{10, 10, 4}, 0.5),
-                                                beart::Spectrum{800, 800, 800});
-  auto red =
-      std::make_unique<beart::AreaLight>(std::make_unique<beart::Sphere>(beart::Point3f{-3.75, 0, 0}, 0.03333),
-                                         beart::Spectrum{901.803, 0, 0});
-  auto green =
-      std::make_unique<beart::AreaLight>(std::make_unique<beart::Sphere>(beart::Point3f{-1.25, 0, 0}, 0.1),
-                                         beart::Spectrum{0, 100, 0});
-  auto blue = std::make_unique<beart::AreaLight>(std::make_unique<beart::Sphere>(beart::Point3f{1.25, 0, 0}, 0.3),
-                                                 beart::Spectrum{0, 0, 11.1111});
-  auto white = std::make_unique<beart::AreaLight>(std::make_unique<beart::Sphere>(beart::Point3f{3.75, 0, 0}, 0.9),
-                                                  beart::Spectrum{1.23457, 1.23457, 0});
+  std::unique_ptr<beart::Shape> wall = std::make_unique<beart::TriangleMesh>("../../../asset/cornellbox_walls.obj");
+  std::unique_ptr<beart::Shape> lwall = std::make_unique<beart::TriangleMesh>("../../../asset/cornellbox_lwall.obj");
+  std::unique_ptr<beart::Shape> rwall = std::make_unique<beart::TriangleMesh>("../../../asset/cornellbox_rwall.obj");
+  std::unique_ptr<beart::Shape> bigbox = std::make_unique<beart::TriangleMesh>("../../../asset/cornellbox_bigbox.obj");
+  std::unique_ptr<beart::Shape>
+      smallbox = std::make_unique<beart::TriangleMesh>("../../../asset/cornellbox_smallbox.obj");
 
-  std::unique_ptr<beart::Shape> plate1 = std::make_unique<beart::TriangleMesh>("../../../asset/plate1.obj");
-  std::unique_ptr<beart::Shape> plate2 = std::make_unique<beart::TriangleMesh>("../../../asset/plate2.obj");
-  std::unique_ptr<beart::Shape> plate3 = std::make_unique<beart::TriangleMesh>("../../../asset/plate3.obj");
-  std::unique_ptr<beart::Shape> plate4 = std::make_unique<beart::TriangleMesh>("../../../asset/plate4.obj");
-  std::unique_ptr<beart::Shape> floor = std::make_unique<beart::TriangleMesh>("../../../asset/floor.obj");
+  auto area_light =
+      std::make_unique<beart::AreaLight>(std::make_unique<beart::Sphere>(beart::Point3f{0, 0, 1.9}, 0.05),
+                                         beart::Spectrum{300});
 
-  auto phong_material_1 =
-      std::make_shared<beart::Phong>(beart::Spectrum{0.07, 0.09, 0.13}, beart::Spectrum{0.93, 0.91, 0.87}, 10000);
-  auto phong_material_2 =
-      std::make_shared<beart::Phong>(beart::Spectrum{0.07, 0.09, 0.13}, beart::Spectrum{0.93, 0.91, 0.87}, 1000);
-  auto phong_material_3 =
-      std::make_shared<beart::Phong>(beart::Spectrum{0.07, 0.09, 0.13}, beart::Spectrum{0.93, 0.91, 0.87}, 100);
-  auto phong_material_4 =
-      std::make_shared<beart::Phong>(beart::Spectrum{0.07, 0.09, 0.13}, beart::Spectrum{0.93, 0.91, 0.87}, 80);
-  auto diffuse_material = std::make_shared<beart::Diffuse>(beart::Spectrum{0.4, 0.4, 0.4});
-  auto diffuse_material_env = std::make_shared<beart::Diffuse>(beart::Spectrum{0.});
+  auto diffuse_material = std::make_shared<beart::Diffuse>(beart::Spectrum{0.725, 0.71, 0.68});
+  auto diffuse_material_l = std::make_shared<beart::Diffuse>(beart::Spectrum{0.05, 0.21, 0.63});
+  auto diffuse_material_r = std::make_shared<beart::Diffuse>(beart::Spectrum{0.63, 0.65, 0.05});
 
-  beart::Primitive a{plate1.get(), phong_material_1};
-  beart::Primitive b{plate2.get(), phong_material_2};
-  beart::Primitive c{plate3.get(), phong_material_3};
-  beart::Primitive d{plate4.get(), phong_material_4};
-  beart::Primitive e{floor.get(), diffuse_material};
+  beart::Primitive a{wall.get(), diffuse_material};
+  beart::Primitive b{lwall.get(), diffuse_material_l};
+  beart::Primitive c{rwall.get(), diffuse_material_r};
+  beart::Primitive d{bigbox.get(), diffuse_material};
+  beart::Primitive e{smallbox.get(), diffuse_material};
 
-  beart::Primitive r{red->shape(), red.get()};
-  beart::Primitive g{green->shape(), green.get()};
-  beart::Primitive bl{blue->shape(), blue.get()};
-  beart::Primitive w{white->shape(), white.get()};
-  beart::Primitive env_p{env->shape(), env.get(), diffuse_material_env};
+  beart::Primitive light{area_light->shape(), area_light.get()};
 
   beart::Scene scene;
   scene.AddPrimitive(&a);
@@ -156,18 +208,12 @@ int main(int argc, char **argv) {
   scene.AddPrimitive(&c);
   scene.AddPrimitive(&d);
   scene.AddPrimitive(&e);
-  scene.AddPrimitive(&r);
-  scene.AddPrimitive(&g);
-  scene.AddPrimitive(&bl);
-  scene.AddPrimitive(&w);
+  scene.AddPrimitive(&light);
 
-  scene.AddLight(red.get());
-  scene.AddLight(green.get());
-  scene.AddLight(blue.get());
-  scene.AddLight(white.get());
+  scene.AddLight(area_light.get());
+
   scene.Prepare();
-
-  uint sample_count = 32;
+  uint sample_count = 16;
   for (unsigned j = 0; j < camera->image_height(); ++j) {
     dr::parallel_for(
         dr::blocked_range<uint32_t>(/* begin = */ 0, /* end = */ camera->image_width(), /* block_size = */ 32),
@@ -180,7 +226,6 @@ int main(int argc, char **argv) {
             for (unsigned int k = 0; k < sample_count; ++k) {
               auto ps = beart::PixelSample{sampler->Next1D(), sampler->Next1D()};
               beart::Ray r = camera->GenerateRay(i, j, ps);
-              // TODO: Change API pixel
               L += integrator->Li(r, scene, *sampler, &normal, &albendo);
             }
             L = L / sample_count;
@@ -191,7 +236,8 @@ int main(int argc, char **argv) {
           }
         });
   }
-  camera->image()->Save("hw3_veach_phong_nodenoise.exr");
+  camera->image()->Save("hw4_pt_nodenoise.exr");
+  camera->normal()->Save("hw4_pt_normal.exr");
 
 
   // Create an Open Image Denoise device
@@ -243,7 +289,6 @@ int main(int argc, char **argv) {
       camera->image()->set_color(i, j, color);
     }
   }
-  camera->image()->Save("hw3_veach_phong_denoise.exr");
-  camera->normal()->Save("normal.hdr");
+  camera->image()->Save("hw4_pt_denoise.exr");
   return 0;
 }

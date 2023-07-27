@@ -6,6 +6,7 @@
 #include <limits>
 #include <tuple>
 #include <filesystem>
+#include <numeric>
 
 #include <cmath>
 namespace beart {

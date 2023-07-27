@@ -19,7 +19,7 @@ beart::Spectrum beart::Diffuse::sample_f(const beart::Vec3f &wo,
                                          const beart::BsdfSample &bs,
                                          float *pdf) const {
   // sample diffuse hemisphere
-  wi = SampleCosineHemiSphere(bs.u_ / diffuse_.x(), bs.v_);
+  wi = SampleCosineHemiSphere(bs.u_ / MaxComponent(diffuse_), bs.v_);
   // record pdf
   if (pdf) {
     *pdf = this->pdf(wo, wi);

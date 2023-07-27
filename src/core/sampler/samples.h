@@ -7,8 +7,9 @@
 namespace beart {
 
 struct LightSample {
-  LightSample(float u, float v) : u_(u), v_(v) {}
-  explicit LightSample(Point2f uv) : u_(uv.x()), v_(uv.y()) {}
+  LightSample(const float u, const float v) : u_(u), v_(v) {}
+  explicit LightSample(const Point2f &uv) : u_(uv.x()), v_(uv.y()) {}
+  explicit LightSample(const Point2f &uv, const float t) : u_(uv.x()), v_(uv.y()), t_(t) {}
   float t_{};  // 1d sample
 
   // 2d sample
@@ -16,8 +17,9 @@ struct LightSample {
   float v_{};
 };
 struct BsdfSample {
-  BsdfSample(float u, float v) : u_(u), v_(v) {}
-  explicit BsdfSample(Point2f uv) : u_(uv.x()), v_(uv.y()) {}
+  BsdfSample(const float u, const float v) : u_(u), v_(v) {}
+  explicit BsdfSample(const Point2f& uv) : u_(uv.x()), v_(uv.y()) {}
+  explicit BsdfSample(const Point2f& uv, const float t) : u_(uv.x()), v_(uv.y()), t_(t) {}
 
   float t_{};  // 1d sample
 

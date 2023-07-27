@@ -26,13 +26,13 @@ beart::Spectrum beart::Phong::sample_f(const beart::Vec3f &wo,
                                        beart::Vec3f &wi,
                                        const beart::BsdfSample &bs,
                                        float *pdf) const {
-  if (bs.u_ < diffuse_.x() || diffuse_.x() == 1.0f) { // leverage x() as diffuse ratio (may not be a good idea)
-    wi = SampleCosineHemiSphere(bs.u_ / diffuse_.x(), bs.v_);
-  }
-  else if (bs.u_ > diffuse_.x() && bs.u_ < (diffuse_.x() + specular_.x())) {
+  auto diff_max_comp = MaxComponent(diffuse_);
+  if (bs.u_ < diff_max_comp || diff_max_comp == 1.0f) {
+    wi = SampleCosineHemiSphere(bs.u_ / diff_max_comp, bs.v_);
+  } else {
     const auto cos_theta = pow(bs.v_, 1.0f / (phong_exponent_ + 2.0f));
     const auto sin_theta = sqrt(1.0f - cos_theta * cos_theta);
-    const auto phi = kTwoPi * (bs.u_ - diffuse_.x()) / (1.0f - diffuse_.x());
+    const auto phi = kTwoPi * (bs.u_ - diff_max_comp) / (1.0f - diff_max_comp);
     const auto dir = SphericalVec(sin_theta, cos_theta, phi);
     // naive way
 //    const auto alpha = std::acosf(std::pow(bs.v_, 1.0f / (phong_exponent_ + 1.0f)));
@@ -63,5 +63,5 @@ float beart::Phong::pdf(const beart::Vec3f &wo, const beart::Vec3f &wi) const {
   const auto cos_theta = SafeDot(Reflect(wo), wi);
   const auto pdf_spec = pow(cos_theta, phong_exponent_ + 1.0f) * (phong_exponent_ + 2.0f) * kInvTwoPi;
   const auto pdf_diff = SampleCosineHemiSpherePdf(wi);
-  return Lerp(pdf_spec, pdf_diff, diffuse_.x());  // interpolate diffuse and specular
+  return Lerp(pdf_spec, pdf_diff, MaxComponent(diffuse_));  // interpolate diffuse and specular
 }

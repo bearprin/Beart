@@ -26,4 +26,8 @@ inline static
 bool IsBlack(const RGBSpectrum &s) {
   return enoki::all(enoki::eq(s, 0.f));
 }
+inline static float Intensity(const RGBSpectrum &s) {
+  constexpr float YWeight[3] = {0.212671f, 0.715160f, 0.072169f}; // ITU-R BT.709
+  return YWeight[0] * s.data()[0] + YWeight[1] * s.data()[1] + YWeight[2] * s.data()[2];
+}
 } // namespace beart

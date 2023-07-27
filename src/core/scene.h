@@ -32,11 +32,7 @@ class Scene : public JsonSerializable {
   const AABB &world_aabb() const {
     return world_aabb_;
   }
-  const Light *SampleLight(float u, float *pdf) const {
-    *pdf = 1.;
-    // TODO: Sample from multiple lights. For now just return the first light
-    return this->lights_[0];
-  }
+  const Light *SampleLight(float u, float *pdf) const;
   void Prepare() {
     AABB world_aabb;
     for (const auto item : primitives_) {

@@ -30,6 +30,10 @@ float Dot(const Vec3f &lhs, const Vec3f &rhs) {
   return enoki::dot(lhs, rhs);
 }
 inline static
+float AbsDot(const Vec3f &lhs, const Vec3f &rhs) {
+  return std::abs(enoki::dot(lhs, rhs));
+}
+inline static
 Vec3f Cross(const Vec3f &lhs, const Vec3f &rhs) {
   return enoki::cross(lhs, rhs);
 }
@@ -102,6 +106,12 @@ static inline beart::Vec3f Abs(const Vec3f &v) {
 }
 static inline unsigned int MaxDim(const Vec3f &v) {
   return v.x() > v.y() ? (v.x() > v.z() ? 0 : 2) : (v.y() > v.z() ? 1 : 2);
+}
+static inline float MaxComponent(const Vec3f &v) {
+  return std::max({v.x(), v.y(), v.z()});
+}
+static inline float MinComponent(const Vec3f &v) {
+  return std::min({v.x(), v.y(), v.z()});
 }
 static inline beart::Point3f Permute(const beart::Point3f &p, int x, int y, int z) {
   return {p[x], p[y], p[z]};

@@ -1,4 +1,6 @@
-set(BERT_CORE_SOURCES)
+set(BERT_CORE_SOURCES
+        integrator/path_tracing.cpp
+        integrator/path_tracing.h)
 
 list(
         APPEND

@@ -32,7 +32,14 @@ beart::Spectrum beart::DirectIntegrator::Li(const beart::Ray &ray,
   }
 
   Event event(info);
-  // evaluate each direct light (may add sampling based on the Power)
+  // evaluate each direct light (may add sampling based on the Power of the light)
+//  float multi_light_pdf{};
+//  const auto light_sample = LightSample(sampler.Next2D(), sampler.Next1D());
+//  const auto bsdf_sample = BsdfSample(sampler.Next2D());
+//  auto light = scene.SampleLight(light_sample.t_, &multi_light_pdf); // sample multiple light sources
+//  if (multi_light_pdf > 0.f) {
+//    L += DirectIllumination(event, ray, scene, *light, light_sample, bsdf_sample) / multi_light_pdf;
+//  }
   auto lights = scene.lights();
   for (const auto &light : lights) {
     const auto light_sample = LightSample(sampler.Next2D());
