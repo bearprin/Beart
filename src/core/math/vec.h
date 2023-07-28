@@ -59,15 +59,22 @@ Point3f Max(const Point3f &lhs, const Point3f &rhs) {
 }
 inline static
 void CoordinateSystem(const Vec3f &v1, Vec3f *v2, Vec3f *v3) {
-  // TODO: leverage <<Building an Orthonormal Basis, Revisited>>
+  // <<Building an Orthonormal Basis, Revisited>>
   auto v = Normalize(v1);
-  // Construct linear independent vector v2
-  if (std::abs(v.x()) > std::abs(v.y())) {
-    *v3 = Vec3f(v.z(), 0, -v.x()) / std::sqrt(v.x() * v.x() + v.z() * v.z());
-  } else {
-    *v3 = Vec3f(0, v.z(), -v.y()) / std::sqrt(v.y() * v.y() + v.z() * v.z());
-  }
-  *v2 = Normalize(Cross(*v3, v));
+  float sign = std::copysignf(1.0f, v.z());
+  float a = -1.0f / (sign + v.z());
+  float b = v.x() * v.y() * a;
+  *v2 = Vec3f(1.0f + sign * v.x() * v.x() * a, sign * b, -sign * v.x());
+  *v3 = Vec3f(b, sign + v.y() * v.y() * a, -v.y());
+
+//  auto v = Normalize(v1);
+//  // Construct linear independent vector v2
+//  if (std::abs(v.x()) > std::abs(v.y())) {
+//    *v3 = Vec3f(v.z(), 0, -v.x()) / std::sqrt(v.x() * v.x() + v.z() * v.z());
+//  } else {
+//    *v3 = Vec3f(0, v.z(), -v.y()) / std::sqrt(v.y() * v.y() + v.z() * v.z());
+//  }
+//  *v2 = Normalize(Cross(*v3, v));
 }
 
 //inline static
