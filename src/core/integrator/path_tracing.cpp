@@ -32,12 +32,12 @@ beart::Spectrum beart::PathTracing::Li(const beart::Ray &ray,
     if (local_bounce == 0) {
       L += info.Le(-temp_r.dir_);
     }
-    if (info.primitive->bxdfs()->empty()) {
-      return L;
-    }
     // record normal
     if (local_bounce == 0 && normal) {
       *normal += (info.Ns + 1.f) * 0.5f;
+    }
+    if (info.primitive->bxdfs()->empty()) {
+      return L;
     }
     Event event(info);
 

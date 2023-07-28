@@ -33,7 +33,7 @@ class Transform {
   }
 
   Ray operator*(const Ray &r) const {
-    return Ray{TransformPoint(r.ori_), TransformVector(r.dir_), r.depth_, r.is_primary_ray_};
+    return Ray{TransformPoint(r.ori_), TransformVector(r.dir_), r.depth_, r.is_primary_ray_, r.t_min_, r.t_max_};
   }
   Transform operator*(const Transform &t) const {
     return Transform{matrix_ * t.matrix_};
@@ -41,7 +41,9 @@ class Transform {
   Point3f operator*(const Point3f &p) const {
     return TransformPoint(p);
   }
-
+  Vec3f ExtractScale() const {
+    return Vec3f{matrix_.data()[0][0], matrix_.data()[1][1], matrix_.data()[2][2]};
+  }
   Mat4f matrix_;
   static Transform Identity() noexcept {
     return Transform{enoki::identity<Mat4f>()};

@@ -1,6 +1,9 @@
 set(BERT_CORE_SOURCES
         integrator/path_tracing.cpp
-        integrator/path_tracing.h)
+        integrator/path_tracing.h
+        shape/quad.cpp
+        shape/quad.h
+)
 
 list(
         APPEND
@@ -10,6 +13,7 @@ list(
         math/vec.h math/ray.h math/interection.h math/interection.cpp math/bbox.h math/aabb.cpp math/aabb.h math/transform.h math/matrix.h
         io/json_serializable.h
         shape/sphere.cpp shape/sphere.h shape/shape.h shape/primitive.h shape/triangle.cpp shape/triangle.h shape/triangle_mesh.cpp shape/triangle_mesh.h
+        shape/quad.cpp shape/quad.h
         camera/camera.h camera/perspective_camera.h camera/perspective_camera.cpp
         film/film.h film/film.cpp
         sampler/sample_common.h sampler/sampler.h sampler/sampler.cpp sampler/random_sampler.h
@@ -19,7 +23,9 @@ list(
         material/bxdf.h material/phong.h material/phong.cpp material/event.h material/event.cpp
         material/diffuse.h material/diffuse.cpp
         integrator/integrator.h integrator/integrator.cpp integrator/integrator_common.h integrator/ao.h integrator/ao.cpp
-        integrator/direct.h integrator/direct.cpp
+        integrator/direct.h integrator/direct.cpp integrator/path_tracing.cpp integrator/path_tracing.h
+
+
 )
 
 add_executable(Beart ${BERT_CORE_SOURCES})

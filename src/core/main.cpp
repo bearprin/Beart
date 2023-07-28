@@ -12,6 +12,7 @@
 #include "random_sampler.h"
 #include "triangle_mesh.h"
 #include "path_tracing.h"
+#include "quad.h"
 
 #include <nanothread/nanothread.h>
 #include <OpenImageDenoise/oidn.hpp>
@@ -186,9 +187,15 @@ int main(int argc, char **argv) {
   std::unique_ptr<beart::Shape>
       smallbox = std::make_unique<beart::TriangleMesh>("../../../asset/cornellbox_smallbox.obj");
 
+//  auto area_light =
+//      std::make_unique<beart::AreaLight>(std::make_unique<beart::Sphere>(beart::Point3f{0, 0, 1.9}, 0.05),
+//                                         beart::Spectrum{300});
   auto area_light =
-      std::make_unique<beart::AreaLight>(std::make_unique<beart::Sphere>(beart::Point3f{0, 0, 1.9}, 0.05),
-                                         beart::Spectrum{300});
+      std::make_unique<beart::AreaLight>(std::make_unique<beart::Quad>(1,
+                                                                       1,
+                                                                       beart::Point3f{0, 0, 1.985},
+                                                                       beart::Vec3f{0, 0, -1}),
+                                         beart::Spectrum{10});
 
   auto diffuse_material = std::make_shared<beart::Diffuse>(beart::Spectrum{0.725, 0.71, 0.68});
   auto diffuse_material_l = std::make_shared<beart::Diffuse>(beart::Spectrum{0.05, 0.21, 0.63});
@@ -213,7 +220,7 @@ int main(int argc, char **argv) {
   scene.AddLight(area_light.get());
 
   scene.Prepare();
-  uint sample_count = 16;
+  uint sample_count = 32;
   for (unsigned j = 0; j < camera->image_height(); ++j) {
     dr::parallel_for(
         dr::blocked_range<uint32_t>(/* begin = */ 0, /* end = */ camera->image_width(), /* block_size = */ 32),
@@ -231,6 +238,7 @@ int main(int argc, char **argv) {
             L = L / sample_count;
             normal = normal / sample_count;
             albendo = albendo / sample_count;
+
             camera->image()->set_color(i, j, L);
             camera->normal()->set_color(i, j, normal);
           }
