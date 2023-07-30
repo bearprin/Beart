@@ -52,7 +52,7 @@ bool beart::AABB::IsInBox(const beart::Point3f &p) const {
   return true;
 }
 bool beart::AABB::Intersect(const beart::Ray &ray) const {
-  // <<An Efﬁcient and Robust Ray-Box Intersection Algorithm>>
+  // <<Robust BVH Ray Traversal>>
   float t_min{};
   float t_max{};
   float t_ymin{};
@@ -61,9 +61,9 @@ bool beart::AABB::Intersect(const beart::Ray &ray) const {
   float t_zmax{};
 
   t_min = (this->operator[](ray.sign_[0]).x() - ray.ori_.x()) * ray.inv_dir_.x();
-  t_max = (this->operator[](1 - ray.sign_[0]).x() - ray.ori_.x()) * ray.inv_dir_.x();
+  t_max = (this->operator[](1 - ray.sign_[0]).x() - ray.ori_.x()) * ray.inv_dir_pad_.x();
   t_ymin = (this->operator[](ray.sign_[1]).y() - ray.ori_.y()) * ray.inv_dir_.y();
-  t_ymax = (this->operator[](1 - ray.sign_[1]).y() - ray.ori_.y()) * ray.inv_dir_.y();
+  t_ymax = (this->operator[](1 - ray.sign_[1]).y() - ray.ori_.y()) * ray.inv_dir_pad_.y();
   if ((t_min > t_ymax) || (t_ymin > t_max)) {
     return false;
   }
@@ -74,7 +74,7 @@ bool beart::AABB::Intersect(const beart::Ray &ray) const {
     t_max = t_ymax;
   }
   t_zmin = (this->operator[](ray.sign_[2]).z() - ray.ori_.z()) * ray.inv_dir_.z();
-  t_zmax = (this->operator[](1 - ray.sign_[2]).z() - ray.ori_.z()) * ray.inv_dir_.z();
+  t_zmax = (this->operator[](1 - ray.sign_[2]).z() - ray.ori_.z()) * ray.inv_dir_pad_.z();
   if ((t_min > t_zmax) || (t_zmin > t_max)) {
     return false;
   }
@@ -90,34 +90,40 @@ float beart::AABB::Delta(const unsigned int axis) const {
   return p_max_.data()[axis] - p_min_.data()[axis];
 }
 float beart::AABB::Intersect(const beart::AABB &lhs, const beart::Ray &ray) {
-  float neat_t = kMinFloat;
-  float far_t = kMaxFloat;
 
-  for (int i = 0; i < 3; i++) {
-    float origin = ray.ori_.data()[i];
-    float min_val = lhs[0].data()[i];
-    float max_val = lhs[1].data()[i];
+  float t_min{};
+  float t_max{};
+  float t_ymin{};
+  float t_ymax{};
+  float t_zmin{};
+  float t_zmax{};
 
-    if (ray.dir_.data()[i] == 0) {
-      if (origin < min_val || origin > max_val) {
-        return false;
-      }
-    } else {
-      float t1 = (min_val - origin) * ray.inv_dir_.data()[i];
-      float t2 = (max_val - origin) * ray.inv_dir_.data()[i];
-
-      if (t1 > t2) {
-        std::swap(t1, t2);
-      }
-      neat_t = std::max(t1, neat_t);
-      far_t = std::min(t2, far_t);
-      if (neat_t > far_t) {
-        return -1;
-      }
-    }
+  t_min = (lhs.operator[](ray.sign_[0]).x() - ray.ori_.x()) * ray.inv_dir_.x();
+  t_max = (lhs.operator[](1 - ray.sign_[0]).x() - ray.ori_.x()) * ray.inv_dir_pad_.x();
+  t_ymin = (lhs.operator[](ray.sign_[1]).y() - ray.ori_.y()) * ray.inv_dir_.y();
+  t_ymax = (lhs.operator[](1 - ray.sign_[1]).y() - ray.ori_.y()) * ray.inv_dir_pad_.y();
+  if ((t_min > t_ymax) || (t_ymin > t_max)) {
+    return -1;
   }
-  if (ray.t_min_ <= far_t && neat_t <= ray.t_max_) {
-    return neat_t < 0 ? far_t : neat_t;
+  if (t_ymin > t_min) {
+    t_min = t_ymin;
+  }
+  if (t_ymax < t_max) {
+    t_max = t_ymax;
+  }
+  t_zmin = (lhs.operator[](ray.sign_[2]).z() - ray.ori_.z()) * ray.inv_dir_.z();
+  t_zmax = (lhs.operator[](1 - ray.sign_[2]).z() - ray.ori_.z()) * ray.inv_dir_pad_.z();
+  if ((t_min > t_zmax) || (t_zmin > t_max)) {
+    return -1;
+  }
+  if (t_zmin > t_min) {
+    t_min = t_zmin;
+  }
+  if (t_zmax < t_max) {
+    t_max = t_zmax;
+  }
+  if (ray.t_min_ <= t_max && t_min <= ray.t_max_) {
+    return t_min < 0 ? t_max : t_min;
   }
   return -1;
 }

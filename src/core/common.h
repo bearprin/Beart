@@ -22,6 +22,12 @@ class Light;
 #define UNLIKELY(EXP)       __builtin_expect((EXP),0)
 #define LIKELY(EXP)         __builtin_expect((EXP),1)
 
+#if defined(__GNUC__) || defined(__GNUG__) || defined(__clang__)
+#define BERT_FORCEINLINE  __attribute__((always_inline))
+#elif defined(_MSC_VER)
+#define BERT_FORCEINLINE __forceinline
+#endif
+
 static constexpr float kMinFloat = std::numeric_limits<float>::lowest();
 static constexpr float kMaxFloat = std::numeric_limits<float>::max();
 static constexpr float kInfinity = std::numeric_limits<float>::infinity();
@@ -34,6 +40,20 @@ static constexpr float kInvFourPi = 0.079577471545947667884441881686257f;
 
 static constexpr float kEpsilon = 1e-4;
 
+template<typename IN_T, typename OUT_T>
+static
+constexpr OUT_T reinterpret_type(const IN_T in) {
+// Good compiler should optimize memcpy away.
+  OUT_T out;
+  memcpy(&out, &in, sizeof(out));
+  return out;
+}
+static
+constexpr float AddUlpMagnitude(float f, int ulps) {
+  if (!std::isfinite(f)) return f;
+  const unsigned bits = reinterpret_type<float, unsigned>(f);
+  return reinterpret_type<unsigned, float>(bits + ulps);
+}
 static
 constexpr float DegToRad(float deg) { return deg * kPi / 180.f; }
 

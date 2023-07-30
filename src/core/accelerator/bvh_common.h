@@ -28,14 +28,14 @@ struct BinInfo {
   AABB bin_box;
 };
 
-inline float sah_eval(const unsigned int left_prim_num,
+static BERT_FORCEINLINE float sah_eval(const unsigned int left_prim_num,
                       const unsigned int right_prim_num,
                       const AABB &l_box,
                       const AABB &r_box,
                       const AABB &box) {
   return (left_prim_num * l_box.HalfSurfaceArea() + right_prim_num * r_box.HalfSurfaceArea()) / box.HalfSurfaceArea();
 }
-inline float PickBestSplit(
+static BERT_FORCEINLINE float PickBestSplit(
     const BvhPrimitive *primitive,
     const AABB &node_bbox,
     const unsigned int start,

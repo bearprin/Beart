@@ -183,9 +183,10 @@ int main(int argc, char **argv) {
   std::unique_ptr<beart::Shape> wall = std::make_unique<beart::TriangleMesh>("../../../asset/cornellbox_walls.obj");
   std::unique_ptr<beart::Shape> lwall = std::make_unique<beart::TriangleMesh>("../../../asset/cornellbox_lwall.obj");
   std::unique_ptr<beart::Shape> rwall = std::make_unique<beart::TriangleMesh>("../../../asset/cornellbox_rwall.obj");
-  std::unique_ptr<beart::Shape> bigbox = std::make_unique<beart::TriangleMesh>("../../../asset/cornellbox_bigbox.obj");
-  std::unique_ptr<beart::Shape>
-      smallbox = std::make_unique<beart::TriangleMesh>("../../../asset/cornellbox_smallbox.obj");
+//  std::unique_ptr<beart::Shape> bigbox = std::make_unique<beart::TriangleMesh>("../../../asset/cornellbox_bigbox.obj");
+  std::unique_ptr<beart::Shape> bigbox = std::make_unique<beart::TriangleMesh>("../../../asset/bunny.obj");
+//  std::unique_ptr<beart::Shape>
+//      smallbox = std::make_unique<beart::TriangleMesh>("../../../asset/cornellbox_smallbox.obj");
 
 //  auto area_light =
 //      std::make_unique<beart::AreaLight>(std::make_unique<beart::Sphere>(beart::Point3f{0, 0, 1.9}, 0.05),
@@ -205,7 +206,7 @@ int main(int argc, char **argv) {
   beart::Primitive b{lwall.get(), diffuse_material_l};
   beart::Primitive c{rwall.get(), diffuse_material_r};
   beart::Primitive d{bigbox.get(), diffuse_material};
-  beart::Primitive e{smallbox.get(), diffuse_material};
+//  beart::Primitive e{smallbox.get(), diffuse_material};
 
   beart::Primitive light{area_light->shape(), area_light.get()};
 
@@ -214,7 +215,7 @@ int main(int argc, char **argv) {
   scene.AddPrimitive(&b);
   scene.AddPrimitive(&c);
   scene.AddPrimitive(&d);
-  scene.AddPrimitive(&e);
+//  scene.AddPrimitive(&e);
   scene.AddPrimitive(&light);
 
   scene.AddLight(area_light.get());

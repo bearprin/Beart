@@ -49,23 +49,23 @@ class Transform {
     return Transform{enoki::identity<Mat4f>()};
   }
 };
-inline static
+BERT_FORCEINLINE static
 Transform Inverse(const Transform &t) {
   return Transform{Inverse(t.matrix_)};
 }
-inline static
+BERT_FORCEINLINE static
 Transform Translate(const Vec3f &v) {
   return Transform{enoki::translate<Mat4f, Vec3f>(v)};
 }
-inline static
+BERT_FORCEINLINE static
 Transform Rotate(Vec3f axis, float angle) {
   return Transform{enoki::rotate<Mat4f, Vec3f>(axis, DegToRad(angle))};
 }
-inline static
+BERT_FORCEINLINE static
 Transform Scale(const Vec3f &v) {
   return Transform{enoki::scale<Mat4f, Vec3f>(v)};
 }
-inline static
+BERT_FORCEINLINE static
 Transform Perspective(float fov, float near, float far, float aspect = 1.0f) {
   /* Project vectors in camera space onto a plane at z=1:
   *
@@ -85,7 +85,7 @@ Transform Perspective(float fov, float near, float far, float aspect = 1.0f) {
   trafo(3, 2) = 1.f;
   return Transform{trafo};
 }
-inline static
+BERT_FORCEINLINE static
 Transform LookAt(const Vec3f &camera_pos, const Vec3f &target, const Vec3f &up) {
   Vec3f dir = Normalize(target - camera_pos);
   Vec3f left = Normalize(Cross(up, dir));

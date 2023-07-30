@@ -17,6 +17,5 @@
 #### Interaction Algorithms
 
 - Watertight Ray/Triangle Interection, Sven Woop, Carsten Benthin, Ingo Wald, 2013
-- An Efficient and Robust Ray-Box Intersection Algorithm, Amy Williams, Steve Barrus, R. Keith Morley, Peter Shirley,
-  2005
+- Robust BVH Ray Traversal, Thiago,  2013
 

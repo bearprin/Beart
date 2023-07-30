@@ -31,7 +31,7 @@ class Bxdf {
     return f(wo, wi);
   }
 
-  /// \brief BxDF Sampling
+  /// \brief Eval, and sampling with pdf
   /// \param wo
   /// \param wi
   /// \param u

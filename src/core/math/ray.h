@@ -33,6 +33,7 @@ class Ray {
   Vec3f ori_;
   Vec3f dir_;
   Vec3f inv_dir_;
+  Vec3f inv_dir_pad_;
   int sign_[3]{0, 0, 0};
   uint depth_ = 0u;
   float t_min_ = 0.f;  // the range of the ray
@@ -40,6 +41,9 @@ class Ray {
   bool is_primary_ray_;
  private:
   void InitInvDirSign() {
+    inv_dir_pad_.x() = AddUlpMagnitude(inv_dir_.x(), 2);  // add ulp to avoid 0
+    inv_dir_pad_.y() = AddUlpMagnitude(inv_dir_.y(), 2);  // add ulp to avoid 0
+    inv_dir_pad_.z() = AddUlpMagnitude(inv_dir_.z(), 2);  // add ulp to avoid 0
     sign_[0] = inv_dir_.x() < 0;
     sign_[1] = inv_dir_.y() < 0;
     sign_[2] = inv_dir_.z() < 0;
