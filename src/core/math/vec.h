@@ -129,14 +129,14 @@ static BERT_FORCEINLINE beart::Vec3f FaceForward(const beart::Vec3f &n, const be
 }
 static BERT_FORCEINLINE beart::Vec3f SphericalVec(float sintheta, float costheta, float phi) {
   float x = sintheta * cos(phi);
-  float y = costheta;
-  float z = sintheta * sin(phi);
+  float y = sintheta * sin(phi);
+  float z = costheta;
   return beart::Vec3f{x, y, z};
 }
 static BERT_FORCEINLINE beart::Vec3f SphericalVec(float theta, float phi) {
-  float x = sinf(theta) * cosf(theta);
-  float y = cosf(theta);
-  float z = sinf(theta) * sinf(phi);
+  float x = sinf(theta) * cosf(phi);
+  float y = sinf(theta) * sinf(phi);
+  float z = cosf(theta);
   return beart::Vec3f{x, y, z};
 }
 }

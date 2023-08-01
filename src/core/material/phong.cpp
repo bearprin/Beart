@@ -30,8 +30,9 @@ beart::Spectrum beart::Phong::sample_f(const beart::Vec3f &wo,
   if (bs.u_ < diff_max_comp || diff_max_comp == 1.0f) {
     wi = SampleCosineHemiSphere(bs.u_ / diff_max_comp, bs.v_);
   } else {
-    const auto cos_theta = pow(bs.v_, 1.0f / (phong_exponent_ + 2.0f));
-    const auto sin_theta = sqrt(1.0f - cos_theta * cos_theta);
+    // based on Microfacet models
+    const auto cos_theta = std::pow(bs.v_, 1.0f / (phong_exponent_ + 2.0f));
+    const auto sin_theta = std::sqrt(std::max(1.0f - cos_theta * cos_theta, 0.f));
     const auto phi = kTwoPi * (bs.u_ - diff_max_comp) / (1.0f - diff_max_comp);
     const auto dir = SphericalVec(sin_theta, cos_theta, phi);
     // naive way
