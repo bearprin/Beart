@@ -8,7 +8,7 @@
 #include "spectrum.h"
 namespace beart {
 // Note that conductor and dielectric are same equation for fresnel in theory
-BERT_FORCEINLINE Spectrum FresnelConductor(float cos_theta,
+static BERT_FORCEINLINE Spectrum FresnelConductor(float cos_theta,
                                            const Spectrum &eta,
                                            const Spectrum &k) {
   // snell 's law to get sin_theta_t and replace all cos to sin

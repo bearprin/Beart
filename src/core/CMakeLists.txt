@@ -3,6 +3,14 @@ set(BERT_CORE_SOURCES
         integrator/path_tracing.h
         shape/quad.cpp
         shape/quad.h
+        material/microfacet.cpp
+        material/microfacet.h
+        material/conductor.cpp
+        material/conductor.h
+        material/conductor_data.h
+        material/fresnel.h
+        material/rough_conductor.cpp
+        material/rough_conductor.h
 )
 
 list(

@@ -13,6 +13,8 @@
 #include "triangle_mesh.h"
 #include "path_tracing.h"
 #include "quad.h"
+#include "conductor.h"
+#include "rough_conductor.h"
 
 #include <nanothread/nanothread.h>
 #include <OpenImageDenoise/oidn.hpp>
@@ -183,10 +185,10 @@ int main(int argc, char **argv) {
   std::unique_ptr<beart::Shape> wall = std::make_unique<beart::TriangleMesh>("../../../asset/cornellbox_walls.obj");
   std::unique_ptr<beart::Shape> lwall = std::make_unique<beart::TriangleMesh>("../../../asset/cornellbox_lwall.obj");
   std::unique_ptr<beart::Shape> rwall = std::make_unique<beart::TriangleMesh>("../../../asset/cornellbox_rwall.obj");
-//  std::unique_ptr<beart::Shape> bigbox = std::make_unique<beart::TriangleMesh>("../../../asset/cornellbox_bigbox.obj");
-  std::unique_ptr<beart::Shape> bigbox = std::make_unique<beart::TriangleMesh>("../../../asset/bunny.obj");
-//  std::unique_ptr<beart::Shape>
-//      smallbox = std::make_unique<beart::TriangleMesh>("../../../asset/cornellbox_smallbox.obj");
+  std::unique_ptr<beart::Shape> bigbox = std::make_unique<beart::TriangleMesh>("../../../asset/cornellbox_bigbox.obj");
+//  std::unique_ptr<beart::Shape> bigbox = std::make_unique<beart::TriangleMesh>("../../../asset/bunny.obj");
+  std::unique_ptr<beart::Shape>
+      smallbox = std::make_unique<beart::TriangleMesh>("../../../asset/cornellbox_smallbox.obj");
 
 //  auto area_light =
 //      std::make_unique<beart::AreaLight>(std::make_unique<beart::Sphere>(beart::Point3f{0, 0, 1.9}, 0.05),
@@ -199,14 +201,15 @@ int main(int argc, char **argv) {
                                          beart::Spectrum{10});
 
   auto diffuse_material = std::make_shared<beart::Diffuse>(beart::Spectrum{0.725, 0.71, 0.68});
+  auto smooth_conductor = std::make_shared<beart::RoughConductor>("Au", 0.1, beart::DistributionType::GGX);
   auto diffuse_material_l = std::make_shared<beart::Diffuse>(beart::Spectrum{0.05, 0.21, 0.63});
   auto diffuse_material_r = std::make_shared<beart::Diffuse>(beart::Spectrum{0.63, 0.65, 0.05});
 
   beart::Primitive a{wall.get(), diffuse_material};
   beart::Primitive b{lwall.get(), diffuse_material_l};
   beart::Primitive c{rwall.get(), diffuse_material_r};
-  beart::Primitive d{bigbox.get(), diffuse_material};
-//  beart::Primitive e{smallbox.get(), diffuse_material};
+  beart::Primitive d{bigbox.get(), smooth_conductor};
+  beart::Primitive e{smallbox.get(), smooth_conductor};
 
   beart::Primitive light{area_light->shape(), area_light.get()};
 
@@ -215,7 +218,7 @@ int main(int argc, char **argv) {
   scene.AddPrimitive(&b);
   scene.AddPrimitive(&c);
   scene.AddPrimitive(&d);
-//  scene.AddPrimitive(&e);
+  scene.AddPrimitive(&e);
   scene.AddPrimitive(&light);
 
   scene.AddLight(area_light.get());
@@ -231,6 +234,10 @@ int main(int argc, char **argv) {
             auto L = beart::Spectrum{0.};
             auto normal = beart::Spectrum{0.};
             auto albendo = beart::Spectrum{0.};
+//            if (i == 482 && j == 626) {
+//              auto x = 2;
+//              std::cout << x << std::endl;
+//            }
             for (unsigned int k = 0; k < sample_count; ++k) {
               auto ps = beart::PixelSample{sampler->Next1D(), sampler->Next1D()};
               beart::Ray r = camera->GenerateRay(i, j, ps);

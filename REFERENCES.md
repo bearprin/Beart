@@ -4,6 +4,7 @@
 #### Materials
 
 - Using the modified Phong reflectance model for physically based rendering, EP Lafortune, 1994
+- Microfacet Models for Refraction through Rough Surfaces, Bruce Walter, Stephen R. Marschner, Hongsong Li, Kenneth E. Torrance, 2007
 
 #### Spatial Data Structures
 

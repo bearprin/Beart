@@ -8,6 +8,7 @@
 #include "samples.h"
 namespace beart {
 enum BxDFType {
+  // TODO: not very clear, need to be improved
   kBxDF_NONE = 0,
   kBxDF_DIFFUSE = 1,
   kBxDF_GLOSSY = 2,
