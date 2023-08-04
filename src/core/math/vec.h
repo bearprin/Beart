@@ -106,6 +106,9 @@ static BERT_FORCEINLINE float CosTheta(const Vec3f &v) {
 static BERT_FORCEINLINE beart::Vec3f Reflect(const Vec3f &v) {
   return {-v.x(), -v.y(), v.z()};
 }
+static BERT_FORCEINLINE beart::Vec3f Refract(const Vec3f &v, float eta, float cos_theta_t) {
+  return {-v.x() * eta, -v.y() * eta, -std::copysign(cos_theta_t, v.z())};
+}
 // General coordinate system implementation
 static BERT_FORCEINLINE beart::Vec3f Reflect(const Vec3f &v, const Vec3f &n) {
   return 2. * Dot(v, n) * n - v;

@@ -11,7 +11,7 @@ namespace beart {
 class Conductor : public Bxdf {
  public:
   explicit Conductor(std::string_view name, float eval_weight = 1.0) : name_(name),
-                                                                       Bxdf(static_cast<BxDFType>(BxDFType::kBXDF_REFLECTION),
+                                                                       Bxdf(static_cast<BxDFType>(BxDFType::kSpecularReflection),
                                                                             eval_weight) {
     auto res = LoadCondutorData(name_);
     eta_ = std::get<0>(res);

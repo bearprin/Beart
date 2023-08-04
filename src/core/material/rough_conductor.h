@@ -12,10 +12,10 @@ class RoughConductor : public Bxdf {
  public:
   explicit RoughConductor(std::string_view name,
                           float alpha = 0.1,
-                          DistributionType type = DistributionType::GGX,
+                          DistributionType type = DistributionType::kGGX,
                           float eval_weight = 1.0)
       : name_(name), alpha_(alpha), type_(type),
-        Bxdf(static_cast<BxDFType>(BxDFType::kBxDF_GLOSSY),
+        Bxdf(static_cast<BxDFType>(BxDFType::kGlossyReflection),
              eval_weight) {
     auto res = LoadCondutorData(name_);
     eta_ = std::get<0>(res);
@@ -28,7 +28,7 @@ class RoughConductor : public Bxdf {
  private:
   std::string name_;
   float alpha_ = 0.1; // roughness
-  DistributionType type_ = DistributionType::GGX;
+  DistributionType type_ = DistributionType::kGGX;
   Spectrum eta_; // index of refraction
   Spectrum k_;  // extinction coefficient
 };

@@ -44,7 +44,7 @@ beart::Spectrum beart::PathTracing::Li(const beart::Ray &ray,
     // Next-event estimation: direct sampling
     float multi_light_pdf{};
     const auto light_sample = LightSample(sampler.Next2D(), sampler.Next1D());
-    const auto bsdf_sample = BsdfSample(sampler.Next2D());
+    const auto bsdf_sample = BsdfSample(sampler.Next2D(), sampler.Next1D());
     auto light = scene.SampleLight(light_sample.t_, &multi_light_pdf); // sample multiple light sources
     if (multi_light_pdf > 0.f) {
       L += throughput * DirectIllumination(event, temp_r, scene, *light, light_sample, bsdf_sample) / multi_light_pdf;
@@ -54,7 +54,7 @@ beart::Spectrum beart::PathTracing::Li(const beart::Ray &ray,
     Vec3f wi;
     Vec3f wo = -temp_r.dir_;
     float bsdf_pdf{};
-    const auto bs = BsdfSample(sampler.Next2D());
+    const auto bs = BsdfSample(sampler.Next2D(), sampler.Next1D());
     auto f = event.SampleF(wo, wi, bs, &bsdf_pdf);  // sample bsdf get wi and pdf
     if (IsBlack(f) || bsdf_pdf <= 0.f) {
       break;

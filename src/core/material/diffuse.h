@@ -8,7 +8,7 @@ namespace beart {
 class Diffuse : public Bxdf {
  public:
   Diffuse(Spectrum reflectance, const float eval_weight = 1.0)
-      : Bxdf(static_cast<BxDFType>(BxDFType::kBxDF_DIFFUSE), eval_weight),
+      : Bxdf(static_cast<BxDFType>(BxDFType::kDiffuseReflection), eval_weight),
         diffuse_(std::move(reflectance)) {
 
   }

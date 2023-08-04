@@ -16,7 +16,7 @@ class Phong : public Bxdf {
                  Spectrum specular = {0.2f},
                  const float phong_exponent = 30.,
                  const float eval_weight = 1.0)
-      : Bxdf(static_cast<BxDFType>(BxDFType::kBxDF_DIFFUSE | BxDFType::kBXDF_REFLECTION), eval_weight),
+      : Bxdf(static_cast<BxDFType>(BxDFType::kDiffuseReflection | BxDFType::kGlossyReflection), eval_weight),
         diffuse_(std::move(diffuse)),
         specular_(std::move(specular)),
         phong_exponent_(phong_exponent) {

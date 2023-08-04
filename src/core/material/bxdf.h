@@ -10,12 +10,24 @@ namespace beart {
 enum BxDFType {
   // TODO: not very clear, need to be improved
   kBxDF_NONE = 0,
-  kBxDF_DIFFUSE = 1,
-  kBxDF_GLOSSY = 2,
-  kBXDF_REFLECTION = 8,
-  kBxDF_TRANSMISSION = 16,
-  kBXDF_ALL_TYPES = kBxDF_DIFFUSE | kBxDF_GLOSSY,
-  kBXDF_ALL_REFLECTION = kBXDF_ALL_TYPES | kBXDF_REFLECTION,
+  kGlossyReflection = 1 << 0,
+  kGlossyTransmission = 1 << 1,
+  kDiffuseReflection = 1 << 2,
+  kDiffuseTransmission = 1 << 3,
+  kSpecularReflection = 1 << 4,
+  kSpecularTransmission = 1 << 5,
+  kAnisotropic = 1 << 6,
+  kForward = 1 << 7,
+
+  kGlossyLobe = kGlossyReflection | kGlossyTransmission,
+  kDiffuseLobe = kDiffuseReflection | kDiffuseTransmission,
+  kSpecularLobe = kSpecularReflection | kSpecularTransmission,
+
+  kTransmissiveLobe = kGlossyTransmission | kDiffuseTransmission | kSpecularTransmission,
+  kReflectiveLobe = kGlossyReflection | kDiffuseReflection | kSpecularReflection,
+
+  kAllLobes = kTransmissiveLobe | kReflectiveLobe | kAnisotropic,
+  kAllButSpecular = ~(kSpecularLobe | kForward),
 };
 class Bxdf {
  public:

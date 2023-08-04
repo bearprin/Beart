@@ -42,8 +42,8 @@ beart::Spectrum beart::DirectIntegrator::Li(const beart::Ray &ray,
 //  }
   auto lights = scene.lights();
   for (const auto &light : lights) {
-    const auto light_sample = LightSample(sampler.Next2D());
-    const auto bsdf_sample = BsdfSample(sampler.Next2D());
+    const auto light_sample = LightSample(sampler.Next2D(), sampler.Next1D());
+    const auto bsdf_sample = BsdfSample(sampler.Next2D(), sampler.Next1D());
     L += DirectIllumination(event, ray, scene, *light, light_sample, bsdf_sample);
   }
   return L;

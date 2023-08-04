@@ -15,6 +15,7 @@
 #include "quad.h"
 #include "conductor.h"
 #include "rough_conductor.h"
+#include "dielectric.h"
 
 #include <nanothread/nanothread.h>
 #include <OpenImageDenoise/oidn.hpp>
@@ -201,7 +202,8 @@ int main(int argc, char **argv) {
                                          beart::Spectrum{10});
 
   auto diffuse_material = std::make_shared<beart::Diffuse>(beart::Spectrum{0.725, 0.71, 0.68});
-  auto smooth_conductor = std::make_shared<beart::RoughConductor>("Au", 0.1, beart::DistributionType::GGX);
+//  auto smooth_conductor = std::make_shared<beart::RoughConductor>("Au", 0.1, beart::DistributionType::kGGX);
+  auto smooth_conductor = std::make_shared<beart::Dielectric>("diamond");
   auto diffuse_material_l = std::make_shared<beart::Diffuse>(beart::Spectrum{0.05, 0.21, 0.63});
   auto diffuse_material_r = std::make_shared<beart::Diffuse>(beart::Spectrum{0.63, 0.65, 0.05});
 
@@ -209,7 +211,7 @@ int main(int argc, char **argv) {
   beart::Primitive b{lwall.get(), diffuse_material_l};
   beart::Primitive c{rwall.get(), diffuse_material_r};
   beart::Primitive d{bigbox.get(), smooth_conductor};
-  beart::Primitive e{smallbox.get(), smooth_conductor};
+  beart::Primitive e{smallbox.get(), diffuse_material};
 
   beart::Primitive light{area_light->shape(), area_light.get()};
 
