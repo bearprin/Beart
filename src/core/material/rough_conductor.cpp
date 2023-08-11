@@ -13,12 +13,13 @@ beart::Spectrum beart::RoughConductor::f(const beart::Vec3f &wo, const beart::Ve
   }
   auto L = Spectrum{0., 0., 0.};
   auto h = Normalize(wo + wi);
-  float roughness = Microfacet::AlphaToRoughness(type_, alpha_); // most cases alpha_ is identical to roughness
-  float D = Microfacet::D(type_, roughness, h);
+  float roughness =
+      Microfacet::AlphaToRoughness(distribution_type_, alpha_); // most cases alpha_ is identical to roughness
+  float D = Microfacet::D(distribution_type_, roughness, h);
   if (LIKELY(D == 0.f)) {
     return L;
   }
-  float G = Microfacet::G(type_, roughness, wo, wi, h);
+  float G = Microfacet::G(distribution_type_, roughness, wo, wi, h);
   auto F = FresnelConductor(Dot(h, wi), eta_, k_);
   L = F * G * D * 0.25 / (AbsCosTheta(wo));  // AbsCosTheta(wi) is ignore with render equations
   return L;
@@ -28,8 +29,9 @@ beart::Spectrum beart::RoughConductor::sample_f(const beart::Vec3f &wo,
                                                 const beart::BsdfSample &bs,
                                                 float *pdf) const {
 
-  float roughness = Microfacet::AlphaToRoughness(type_, alpha_); // most cases alpha_ is identical to roughness
-  auto m = Microfacet::sample(type_, roughness, bs);
+  float roughness =
+      Microfacet::AlphaToRoughness(distribution_type_, alpha_); // most cases alpha_ is identical to roughness
+  auto m = Microfacet::sample(distribution_type_, roughness, bs);
   wi = Reflect(wo, m);
   if (!PointingExterior(wi)) {  // reflection ray is not at the same side of wo
     if (pdf) {
@@ -49,10 +51,11 @@ float beart::RoughConductor::pdf(const beart::Vec3f &wo, const beart::Vec3f &wi)
   if (!PointingExterior(wo)) {
     return 0.f;
   }
-  float roughness = Microfacet::AlphaToRoughness(type_, alpha_); // most cases alpha_ is identical to roughness
+  float roughness =
+      Microfacet::AlphaToRoughness(distribution_type_, alpha_); // most cases alpha_ is identical to roughness
   auto h = Normalize(wo + wi);
-  float D_pdf = Microfacet::pdf(type_, roughness, h); // p(m) = D(m) * |cos(theta_m)|
+  float D_pdf = Microfacet::pdf(distribution_type_, roughness, h); // p(m) = D(m) * |cos(theta_m)|
   float pdf =
-      D_pdf / (4 * SafeDot(wi, h)); // p(wi) = p(m) / (4 * cos(wi, hr))
+      D_pdf / (4 * AbsDot(wo, h)); // p(wi) = p(m) / (4 * cos(wo, hr))
   return pdf;
 }

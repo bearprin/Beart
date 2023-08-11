@@ -21,20 +21,32 @@ static BERT_FORCEINLINE Spectrum FresnelConductor(float cos_theta,
   Spectrum Rperp2 = (tmp_f - t + cos_theta_2) / (tmp_f + t + cos_theta_2);
   return (Rparl2 + Rperp2) * 0.5f;
 }
-static BERT_FORCEINLINE float FresnelDielectric(float cos_theta_i, float eta, float &cos_theta_t) {
-  if (cos_theta_i < 0) { // ray from inside to outside
-    eta = 1.0f / eta;
-    cos_theta_i = -cos_theta_i; // cos_theta_i is always positive
+///
+/// \param cos_theta_i_
+/// \param eta in_ior / ext_ior
+/// \param cos_theta_t_
+/// \return
+static BERT_FORCEINLINE float FresnelDielectric(float cos_theta_i_, float eta, float &cos_theta_t_) {
+  // larger than 0, means outside to inside, switch in_ior/ext_ior to ext_ior/in_ior
+  float scale = (cos_theta_i_ > 0) ? 1 / eta : eta;
+  float cos_theta_t_2 = 1 - (1 - cos_theta_i_ * cos_theta_i_) * (scale * scale);
+
+  if (cos_theta_t_2 <= 0.0f) {
+    cos_theta_t_ = 0.0f;
+    return 1.0f;
   }
-  float sin_theta_i = std::sqrt(std::max(0.0f, 1.0f - cos_theta_i * cos_theta_i));
-  float sin_theta_t = eta * sin_theta_i;
-  if (sin_theta_t >= 1) {
-    cos_theta_t = 0.f;
-    return 1;
-  }
-  cos_theta_t = std::sqrt(std::max(0.0f, 1.0f - sin_theta_t * sin_theta_t));
-  float r_parl = (eta * cos_theta_i - cos_theta_t) / (eta * cos_theta_i + cos_theta_t);
-  float r_perp = (cos_theta_i - eta * cos_theta_t) / (cos_theta_i + eta * cos_theta_t);
-  return (r_parl * r_parl + r_perp * r_perp) / 2;
+  // cos_theta_i always to be positive
+  float cos_theta_i = std::abs(cos_theta_i_);
+  float cos_theta_t = std::sqrt(cos_theta_t_2);
+
+  float Rs = (cos_theta_i - eta * cos_theta_t)
+      / (cos_theta_i + eta * cos_theta_t);
+  float Rp = (eta * cos_theta_i - cos_theta_t)
+      / (eta * cos_theta_i + cos_theta_t);
+
+  // refraction will change the different sign compared to cos_theta_i
+  cos_theta_t_ = (cos_theta_i_ > 0) ? -cos_theta_t : cos_theta_t;
+
+  return 0.5f * (Rs * Rs + Rp * Rp);
 }
 }

@@ -16,6 +16,7 @@
 #include "conductor.h"
 #include "rough_conductor.h"
 #include "dielectric.h"
+#include "rough_dielectric.h"
 
 #include <nanothread/nanothread.h>
 #include <OpenImageDenoise/oidn.hpp>
@@ -195,23 +196,24 @@ int main(int argc, char **argv) {
 //      std::make_unique<beart::AreaLight>(std::make_unique<beart::Sphere>(beart::Point3f{0, 0, 1.9}, 0.05),
 //                                         beart::Spectrum{300});
   auto area_light =
-      std::make_unique<beart::AreaLight>(std::make_unique<beart::Quad>(1,
-                                                                       1,
+      std::make_unique<beart::AreaLight>(std::make_unique<beart::Quad>(.8,
+                                                                       .8,
                                                                        beart::Point3f{0, 0, 1.985},
                                                                        beart::Vec3f{0, 0, -1}),
                                          beart::Spectrum{10});
 
   auto diffuse_material = std::make_shared<beart::Diffuse>(beart::Spectrum{0.725, 0.71, 0.68});
-//  auto smooth_conductor = std::make_shared<beart::RoughConductor>("Au", 0.1, beart::DistributionType::kGGX);
-  auto smooth_conductor = std::make_shared<beart::Dielectric>("diamond");
+  auto rough_conductor = std::make_shared<beart::RoughConductor>("Au", 0.1, beart::DistributionType::kGGX);
+//  auto dielectric = std::make_shared<beart::Dielectric>("diamond");
+  auto rough_dielectric = std::make_shared<beart::RoughDielectric>("bk7", "air", 0.304, beart::DistributionType::kGGX);
   auto diffuse_material_l = std::make_shared<beart::Diffuse>(beart::Spectrum{0.05, 0.21, 0.63});
   auto diffuse_material_r = std::make_shared<beart::Diffuse>(beart::Spectrum{0.63, 0.65, 0.05});
 
   beart::Primitive a{wall.get(), diffuse_material};
   beart::Primitive b{lwall.get(), diffuse_material_l};
   beart::Primitive c{rwall.get(), diffuse_material_r};
-  beart::Primitive d{bigbox.get(), smooth_conductor};
-  beart::Primitive e{smallbox.get(), diffuse_material};
+  beart::Primitive d{bigbox.get(), rough_dielectric};
+  beart::Primitive e{smallbox.get(), rough_conductor};
 
   beart::Primitive light{area_light->shape(), area_light.get()};
 

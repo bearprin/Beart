@@ -5,14 +5,14 @@
 #include "dielectric.h"
 #include "fresnel.h"
 beart::Spectrum beart::Dielectric::f(const beart::Vec3f &wo, const beart::Vec3f &wi) const {
-  float eta = CosTheta(wo) < 0 ? eta_ : eta_inv_;   // less than 0 from exr to inter, use in_ior / ext_ior
-
   float cos_theta_t{};
-  float F = FresnelDielectric(AbsCosTheta(wo), eta, cos_theta_t);
+  // seek wo as the incident ray thus CosTheta(wo) > 0 means ray from outside to inside
+  float F = FresnelDielectric(CosTheta(wo), eta_, cos_theta_t);
   if (SameHemiSphere(wi, wo)) {
     return F * AbsCosTheta(wi) * Spectrum(1.f);
   } else if (!SameHemiSphere(wi, wo)) {
-    float factor = eta;
+    // TODO: LT and BDPT need do not need this
+    float factor = CosTheta(wo) > 0 ? eta_ : eta_inv_; // > 0, means outside to inside, use (n2 / n1) ** 2 = eta_ ** 2
     return (1.f - F) * AbsCosTheta(wi) * Spectrum(1.f) * factor * factor;
   }
   return {0.f};
@@ -20,16 +20,14 @@ beart::Spectrum beart::Dielectric::f(const beart::Vec3f &wo, const beart::Vec3f 
 beart::Spectrum beart::Dielectric::sample_f(const beart::Vec3f &wo,
                                             beart::Vec3f &wi,
                                             const beart::BsdfSample &bs, float *pdf) const {
-  float eta = CosTheta(wo) < 0 ? eta_ : eta_inv_;
   float cos_theta_t{};
-  float F = FresnelDielectric(AbsCosTheta(wo), eta, cos_theta_t);
-  if (bs.u_ < F) {
+  if (float F = FresnelDielectric(CosTheta(wo), eta_, cos_theta_t); bs.u_ < F) {
     wi = Reflect(wo);
     if (pdf) {
       *pdf = F;
     }
   } else {
-    wi = Refract(wo, eta, cos_theta_t);
+    wi = Refract(wo, eta_, cos_theta_t);
     if (pdf) {
       *pdf = 1.f - F;
     }
@@ -37,10 +35,8 @@ beart::Spectrum beart::Dielectric::sample_f(const beart::Vec3f &wo,
   return f(wo, wi);
 }
 float beart::Dielectric::pdf(const beart::Vec3f &wo, const beart::Vec3f &wi) const {
-  float eta = CosTheta(wo) < 0 ? eta_ : eta_inv_;   // less than 0 from exr to inter, use in_ior / ext_ior
-
   float cos_theta_t{};
-  float F = FresnelDielectric(AbsCosTheta(wo), eta, cos_theta_t);
+  float F = FresnelDielectric(CosTheta(wo), eta_, cos_theta_t);
   if (SameHemiSphere(wi, wo)) {
     return F;
   } else if (!SameHemiSphere(wi, wo)) {

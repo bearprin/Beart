@@ -1,5 +1,6 @@
 set(BERT_CORE_SOURCES)
 
+
 list(
         APPEND
         BERT_CORE_SOURCES
@@ -15,13 +16,12 @@ list(
         light/light.h light/point_light.h light/point_light.cpp light/directional_light.cpp light/directional_light.h light/area_light.h light/area_light.cpp
         accelerator/accelerator.h
         accelerator/bvh.h accelerator/bvh.cpp accelerator/bvh_common.h
-        material/bxdf.h material/phong.h material/phong.cpp material/event.h material/event.cpp   material/microfacet.cpp
+        material/bxdf.h material/phong.h material/phong.cpp material/event.h material/event.cpp material/microfacet.cpp
         material/microfacet.h material/conductor.cpp material/conductor.h material/conductor_data.h material/fresnel.h material/rough_conductor.cpp material/rough_conductor.h
-        material/ior_data.h material/dielectric.cpp material/dielectric.h
+        material/ior_data.h material/dielectric.cpp material/dielectric.h material/rough_dielectric.cpp material/rough_dielectric.h
         material/diffuse.h material/diffuse.cpp
         integrator/integrator.h integrator/integrator.cpp integrator/integrator_common.h integrator/ao.h integrator/ao.cpp
         integrator/direct.h integrator/direct.cpp integrator/path_tracing.cpp integrator/path_tracing.h
-
 
 
 )

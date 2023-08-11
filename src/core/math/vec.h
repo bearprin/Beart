@@ -106,12 +106,22 @@ static BERT_FORCEINLINE float CosTheta(const Vec3f &v) {
 static BERT_FORCEINLINE beart::Vec3f Reflect(const Vec3f &v) {
   return {-v.x(), -v.y(), v.z()};
 }
+/// shading coordinate optimization (Ns as axis z)
 static BERT_FORCEINLINE beart::Vec3f Refract(const Vec3f &v, float eta, float cos_theta_t) {
-  return {-v.x() * eta, -v.y() * eta, -std::copysign(cos_theta_t, v.z())};
+  // eta = n2 / n1
+  float scale = -(cos_theta_t < 0 ? 1. / eta : eta);  // cos_theta_t < 0 means from outside to inside
+  return {v.x() * scale, v.y() * scale, cos_theta_t};
 }
 // General coordinate system implementation
 static BERT_FORCEINLINE beart::Vec3f Reflect(const Vec3f &v, const Vec3f &n) {
   return 2. * Dot(v, n) * n - v;
+}
+static BERT_FORCEINLINE beart::Vec3f Refract(const Vec3f &v, const Vec3f &n, float eta, float cos_theta_t) {
+  // eta = n2 / n1
+  if (cos_theta_t < 0) {
+    eta = 1 / eta;
+  }
+  return n * (Dot(v, n) * eta + cos_theta_t) - v * eta;
 }
 static BERT_FORCEINLINE beart::Vec3f Lerp(const Vec3f &v1, const Vec3f &v2, float t) {
   return v1 * (1 - t) + v2 * t;

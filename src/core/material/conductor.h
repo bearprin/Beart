@@ -10,12 +10,16 @@
 namespace beart {
 class Conductor : public Bxdf {
  public:
-  explicit Conductor(std::string_view name, float eval_weight = 1.0) : name_(name),
-                                                                       Bxdf(static_cast<BxDFType>(BxDFType::kSpecularReflection),
-                                                                            eval_weight) {
-    auto res = LoadCondutorData(name_);
-    eta_ = std::get<0>(res);
-    k_ = std::get<1>(res);
+  explicit Conductor(std::string_view name, float eval_weight = 1.0)
+      : Bxdf(BxDFType::kSpecularReflection,
+             eval_weight),
+        name_(name) {
+//    auto res = LoadCondutorData(name_);
+    auto [eta, k] = LoadCondutorData(name_);
+    eta_ = eta;
+    k_ = k;
+//    eta_ = std::get<0>(res);
+//    k_ = std::get<1>(res);
   }
  protected:
   Spectrum f(const Vec3f &wo, const Vec3f &wi) const override;
