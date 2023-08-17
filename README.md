@@ -117,4 +117,4 @@ See [REFERENCES.md](REFERENCES.md) for a list of references.
 ### Acknowledgements
 Since scene data is very important for the render, I have transferred some scene files from other open-source renderers.
 
-I would like to thank the scenes files and models from [darts]("https://cs87-dartmouth.github.io/Fall2022/index.html"), [ecse689](https://www.cim.mcgill.ca/~derek/ecse689.html).
+I would like to thank the scenes files and models from [darts](https://cs87-dartmouth.github.io/Fall2022/index.html) and [ecse689](https://www.cim.mcgill.ca/~derek/ecse689.html).
