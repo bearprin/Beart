@@ -5,6 +5,7 @@
 #include "diffuse.h"
 #include "common.h"
 #include "sample_common.h"
+#include "factory.h"
 beart::Spectrum beart::Diffuse::f(const beart::Vec3f &wo, const beart::Vec3f &wi) const {
   if (!SameHemiSphere(wo, wi)) {
     return {0.0f, 0.f, 0.f};
@@ -37,5 +38,6 @@ float beart::Diffuse::pdf(const beart::Vec3f &wo, const beart::Vec3f &wi) const 
   const auto pdf_diff = SampleCosineHemiSpherePdf(wi);
   return pdf_diff;
 }
+BEART_REGISTER_CLASS_IN_FACTORY(Bxdf, Diffuse, "lambertian")
 
 

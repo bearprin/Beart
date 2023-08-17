@@ -14,9 +14,10 @@
 #include <memory>
 #include <vector>
 namespace beart {
-class Shape : public JsonSerializable {
+class Shape {
  public:
   Shape() = default;
+  explicit Shape(const json &j) {}
   explicit Shape(Transform obj_to_world) : obj_to_world_(std::move(obj_to_world)) {
     world_to_obj_ = Inverse(obj_to_world_);
   }
@@ -33,6 +34,12 @@ class Shape : public JsonSerializable {
                                Vec3f &wi,
                                Vec3f *n,
                                float *pdf_solid) const = 0;
+  /// directly sample an outgoing ray from the light source
+  virtual void SampleDirect(const LightSample &ls_pos,
+                            const LightSample &ls_dir,
+                            Ray &ray,
+                            Vec3f &n,
+                            float *pdf_solid) const = 0;
 
   // Given pdf of sampled point and direction
   /// \param p  intersection point

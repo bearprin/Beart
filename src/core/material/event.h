@@ -34,7 +34,7 @@ class Event {
   Vec3f b_;
   Vec3f t_;
   Vec3f local_ng_;
-  Vec3f local_ns_;
+  Vec3f local_ns_ = Vec3f{0, 0, 1};
   const SurfaceInterection &info_;
   const std::vector<std::shared_ptr<Bxdf>> *bxdfs_;
 };

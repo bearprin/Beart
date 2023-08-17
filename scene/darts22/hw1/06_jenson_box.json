@@ -1,0 +1,254 @@
+{
+  "camera": {
+    "type": "perspective",
+    "target": [
+      0,
+      0.4,
+      -0.19
+    ],
+    "camera_pos": [
+      0,
+      0.51,
+      2.89
+    ],
+    "up": [
+      0,
+      1,
+      0
+    ],
+    "fov": 35.0,
+    "image_width": 640,
+    "image_height": 480
+  },
+  "sampler": {
+    "type": "independent",
+    "samples": 16
+  },
+  "accelerator": {
+    "type": "bvh"
+  },
+  "integrator": {
+    "type": "pt",
+    "max_depth": 7
+  },
+  "lights": [
+    {
+      "type": "area",
+      "radiance": [
+        10,
+        10,
+        10
+      ],
+      "shape": {
+        "type": "quad",
+        "width": 0.34,
+        "height": 0.34,
+        "transform": [
+          {
+            "rotate": [
+              90,
+              1,
+              0,
+              0
+            ]
+          },
+          {
+            "translate": [
+              0,
+              0.838,
+              0.77
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "materials": [
+    {
+      "type": "lambertian",
+      "name": "white",
+      "reflectance": [
+        0.8,
+        0.8,
+        0.8
+      ]
+    },
+    {
+      "name": "left wall",
+      "type": "lambertian",
+      "reflectance": [
+        0.8,
+        0.28,
+        0.28
+      ]
+    },
+    {
+      "name": "right wall",
+      "type": "lambertian",
+      "reflectance": [
+        0.28,
+        0.28,
+        0.8
+      ]
+    },
+    {
+      "name": "glass",
+      "type": "dielectric",
+      "in_ior": "bk7",
+      "alpha": 0.001
+    },
+    {
+      "name": "chrome",
+      "type": "conductor",
+      "material_name": "Cr",
+      "alpha": 0.001
+    }
+  ],
+  "background": [
+    0,
+    0,
+    0
+  ],
+  "surfaces": [
+    {
+      "type": "sphere",
+      "material": "glass",
+      "radius": 0.168,
+      "transform": [
+        {
+          "translate": [
+            0.232,
+            0.168,
+            0.77
+          ]
+        }
+      ]
+    },
+    {
+      "type": "sphere",
+      "material": "chrome",
+      "radius": 0.168,
+      "transform": [
+        {
+          "translate": [
+            -0.235,
+            0.168,
+            0.45
+          ]
+        }
+      ]
+    },
+    {
+      "type": "quad",
+      "width": 1,
+      "height": 0.84,
+      "material": "white",
+      "name": "back wall",
+      "transform": [
+        {
+          "translate": [
+            0,
+            0.42,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "type": "quad",
+      "width": 1,
+      "height": 1.65,
+      "name": "ceiling",
+      "material": "white",
+      "transform": [
+        {
+          "rotate": [
+            90,
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "translate": [
+            0,
+            0.84,
+            0.825
+          ]
+        }
+      ]
+    },
+    {
+      "type": "quad",
+      "width": 1,
+      "height": 1.65,
+      "name": "floor",
+      "material": "white",
+      "transform": [
+        {
+          "rotate": [
+            -90,
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "translate": [
+            0,
+            0,
+            0.825
+          ]
+        }
+      ]
+    },
+    {
+      "type": "quad",
+      "name": "left wall",
+      "transform": [
+        {
+          "rotate": [
+            90,
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "translate": [
+            -0.5,
+            0.42,
+            0.825
+          ]
+        }
+      ],
+      "width": 1.65,
+      "height": 0.84,
+      "material": "left wall"
+    },
+    {
+      "type": "quad",
+      "name": "right wall",
+      "transform": [
+        {
+          "rotate": [
+            -90,
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "translate": [
+            0.5,
+            0.42,
+            0.825
+          ]
+        }
+      ],
+      "width": 1.65,
+      "height": 0.84,
+      "material": "right wall"
+    }
+  ]
+}

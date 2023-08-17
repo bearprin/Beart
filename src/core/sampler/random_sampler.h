@@ -3,11 +3,15 @@
 //
 #include <pcg_random.hpp>
 #include <random>
+#include "factory.h"
 namespace beart {
 class RandomSampler : public Sampler {
  public:
   RandomSampler() {}
   explicit RandomSampler(unsigned int sample_count) : Sampler(sample_count) {
+
+  }
+  explicit RandomSampler(const json &j) : Sampler(j) {
 
   }
   std::unique_ptr<Sampler> Clone(unsigned int seed) const override {
@@ -42,3 +46,5 @@ class RandomSampler : public Sampler {
   mutable pcg32 rng_;
 };
 }
+BEART_REGISTER_CLASS_IN_FACTORY(Sampler, RandomSampler, "independent")
+

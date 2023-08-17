@@ -4,6 +4,7 @@
 
 #include "bvh.h"
 #include "aabb.h"
+#include "factory.h"
 void beart::BVH::Build(const std::vector<const Primitive *> *primitives, const beart::AABB *bbox) {
   Accelerator::Build(primitives, bbox);
 
@@ -143,3 +144,4 @@ bool beart::BVH::IsOccupied(const beart::Ray &ray) const {
   SurfaceInterection info;
   return Intersect(ray, &info);
 }
+BEART_REGISTER_CLASS_IN_FACTORY(Accelerator, BVH, "bvh")

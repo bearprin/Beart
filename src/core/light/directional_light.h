@@ -11,7 +11,11 @@ namespace beart {
 class DirectionalLight : public beart::Light {
  public:
   DirectionalLight(Vec3f direction, Spectrum irradiance)
-      : direction_(std::move(direction)), irradiance_(std::move(irradiance)) {
+      : direction_(std::move(direction)), irradiance_(std::move(irradiance)), Light(LightType::kDirectional) {
+
+  }
+  DirectionalLight(const json &json) : DirectionalLight(json.value("dir", Vec3f{0.f, 0.f, 1.f}),
+                                                        json.value("irradiance", Spectrum{1.f})) {
 
   }
 
@@ -19,9 +23,15 @@ class DirectionalLight : public beart::Light {
                     const LightSample &ls,
                     Vec3f *wi,
                     float *pdf_solid,
+                    float *emission_pdf,
                     float *distance,
                     float *cos_light,
                     Visibility *visibility) const override;
+  Spectrum SampleLi(const LightSample &ls_pos, const LightSample &ls_dir,
+                    Ray &ray,
+                    float *pdf_solid,
+                    float *pdf_area,
+                    float *cos_light) const override;
   bool IsDelta() const override {
     return true;
   }

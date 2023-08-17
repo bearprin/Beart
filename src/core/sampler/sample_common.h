@@ -38,11 +38,22 @@ Vec3f SampleCosineHemiSphere(const float u, const float v) {
   return {x, y, z};
 }
 BERT_FORCEINLINE static
+Vec3f SampelCosineSphere(const float u, const float v) {
+  float z = 1 - 2 * u;
+  float r = std::sqrtf(std::fmax(0.f, 1.f - z * z));  // safe sqrt
+  float phi = 2 * kPi * v;
+  return {r * std::cosf(phi), r * std::sinf(phi), z};
+}
+BERT_FORCEINLINE static
 Vec3f SampleUniformCone(const float u, const float v, const float costhetamax) {
   float costheta = (1.f - u) + u * costhetamax;
   float sintheta = std::sqrtf(1.f - costheta * costheta);
   float phi = v * 2.f * kPi;
   return {std::cosf(phi) * sintheta, std::sinf(phi) * sintheta, costheta};
+}
+BERT_FORCEINLINE static
+float SampleUniformDiskPdf() {
+  return kInvPi;
 }
 BERT_FORCEINLINE static
 float SampleUniformSpherePdf() {
@@ -51,6 +62,10 @@ float SampleUniformSpherePdf() {
 BERT_FORCEINLINE static
 float SampleUniformHemiSpherePdf() {
   return kInvTwoPi;
+}
+BERT_FORCEINLINE static
+float SampleCosineSpherePdf(Vec3f v) {
+  return v.z() * kInvPi;
 }
 BERT_FORCEINLINE static
 float SampleCosineHemiSpherePdf(Vec3f v) {

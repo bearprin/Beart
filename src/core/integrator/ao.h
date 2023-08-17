@@ -10,6 +10,10 @@ namespace beart {
 
 class AOIntegrator : public Integrator {
  public:
+  AOIntegrator() = default;
+  AOIntegrator(const json &j) : Integrator(j), max_distance(j.value("max_distance", 10.0f)) {
+
+  }
   Spectrum Li(const Ray &ray,
               const Scene &scene,
               const Sampler &sampler,

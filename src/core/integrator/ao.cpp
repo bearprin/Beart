@@ -5,6 +5,7 @@
 #include "ao.h"
 #include "sample_common.h"
 #include "event.h"
+#include "factory.h"
 beart::Spectrum beart::AOIntegrator::Li(const beart::Ray &ray,
                                         const beart::Scene &scene,
                                         const beart::Sampler &sampler,
@@ -32,7 +33,7 @@ beart::Spectrum beart::AOIntegrator::Li(const beart::Ray &ray,
   float pdf = SampleCosineHemiSpherePdf(wi);
   wi = event.Local2World(wi); // transform to world space from local space
 
-  const float d = dot(wi, info.Ns);
+  const float d = Dot(wi, info.Ns);
   if (d <= 0.0f) {  //
     return {0.0f};
   }
@@ -46,3 +47,5 @@ beart::Spectrum beart::AOIntegrator::Li(const beart::Ray &ray,
   }
   return {0.f};
 }
+BEART_REGISTER_CLASS_IN_FACTORY(Integrator, AOIntegrator, "ao")
+

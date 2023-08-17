@@ -4,6 +4,8 @@
 
 #include "sphere.h"
 #include "sample_common.h"
+#include "factory.h"
+
 bool beart::Sphere::Intersect(const beart::Ray &ray) const {
   return Intersect(ray, nullptr);
 }
@@ -107,3 +109,22 @@ float beart::Sphere::DirectPdf(const beart::Point3f &p, const beart::Vec3f &wi) 
   float cos_theta_max = std::sqrtf(std::fmax(0.f, 1.f - sin_theta_max * sin_theta_max)); // sin^2 + cos^2 = 1
   return SampleUniformConePdf(cos_theta_max);
 }
+void beart::Sphere::SampleDirect(const beart::LightSample &ls_pos,
+                                 const beart::LightSample &ls_dir,
+                                 beart::Ray &ray,
+                                 beart::Vec3f &n,
+                                 float *pdf_solid) const {
+  // sample direction
+  auto ray_ori = SampleUniformSphere(ls_pos.u_, ls_pos.v_) * radius_ + center_;
+  auto ray_dir = SampleUniformSphere(ls_dir.v_, ls_dir.u_); // may have some problem
+  if (Dot(ray_dir, ray_ori - center_) < 0.f) {
+    ray_dir = -ray_dir;
+  }
+  n = Normalize(ray_ori - center_);
+  ray = Ray(ray_ori, ray_dir, ray.depth_, ray.is_primary_ray_, kEpsilon);
+  if (pdf_solid) {
+    *pdf_solid = 1.f / (8 * kPi * kPi * radius_ * radius_); // based on solid angle
+  }
+}
+BEART_REGISTER_CLASS_IN_FACTORY(Shape, Sphere, "sphere");
+

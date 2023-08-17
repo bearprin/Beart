@@ -7,7 +7,7 @@
 #include "common.h"
 #include "shape.h"
 #include "bxdf.h"
-
+#include "factory.h"
 #include <vector>
 
 namespace beart {
@@ -18,6 +18,22 @@ class Primitive {
   Primitive(const Shape *shape, const Light *light, std::shared_ptr<Bxdf> bxdf)
       : shape_(shape), light_(light), bxdfs_({bxdf}) {}
   Primitive(const Shape *shape, std::shared_ptr<Bxdf> bxdf) : shape_(shape), bxdfs_({bxdf}) {}
+
+//  Primitive(const json &j) {
+//    shape_ = BeartFactory<Shape>::Find(j, "shapes").get();
+////    if (j.contains("light")) {
+////      light_ = BeartFactory<Light>::CreateUnique(j["light"]).get();
+////    }
+//    if (j.contains("material")) {
+//      for (auto &b : j["material"]) {
+//        auto bxdf = BeartFactory<Bxdf>::Find(b);
+//        bxdfs_.emplace_back(std::move(bxdf));
+//      }
+//    } else if (!light_) {
+//      auto bxdf = BeartFactory<Bxdf>::CreateShared({{"type", "lambertian"}});
+//      bxdfs_.emplace_back(std::move(bxdf));
+//    }
+//  }
 
   bool Intersect(const Ray &ray) const {
     return shape_->Intersect(ray);
@@ -47,4 +63,6 @@ class Primitive {
   std::vector<std::shared_ptr<Bxdf>> bxdfs_;
 };
 }
+//BEART_REGISTER_CLASS_IN_FACTORY(Primitive, Primitive, "surface")
+
 

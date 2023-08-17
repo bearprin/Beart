@@ -31,6 +31,13 @@ class Triangle : public Shape {
                        float *pdf_solid) const override {
     return beart::Point3f();
   }
+  void SampleDirect(const LightSample &ls_pos,
+                    const LightSample &ls_dir,
+                    Ray &ray,
+                    Vec3f &n,
+                    float *pdf_solid) const override {
+
+  }
   float DirectPdf(const Point3f &p, const Vec3f &wi) const override {
     return Shape::DirectPdf(p, wi);
   }

@@ -3,6 +3,8 @@
 //
 
 #include "quad.h"
+#include "sample_common.h"
+#include "factory.h"
 beart::Point3f beart::Quad::SampleDirect(const beart::LightSample &ls,
                                          const beart::Point3f &inter_pos,
                                          beart::Vec3f &wi,
@@ -93,3 +95,27 @@ const beart::AABB &beart::Quad::bbox() const {
   }
   return *bbox_;
 }
+void beart::Quad::SampleDirect(const beart::LightSample &ls_pos,
+                               const beart::LightSample &ls_dir,
+                               beart::Ray &ray,
+                               beart::Vec3f &n,
+                               float *pdf_solid) const {
+  // map [0, 1] to [-1, 1]
+  float u = (2 * ls_pos.u_ - 1.0f);
+  float v = (2 * ls_pos.v_ - 1.0f);
+
+  // [-1, 1] to the world coordinates
+  Point3f pos = obj_to_world_.TransformPoint(Point3f(u, v, 0));
+  Vec3f dir = obj_to_world_.TransformVector(SampleCosineHemiSphere(ls_dir.u_, ls_dir.v_));
+  n = Normalize(obj_to_world_.TransformNormal(quad_normal_));
+  if (Dot(n, dir) < 0.f) {
+    dir = -dir;
+  }
+  ray = Ray{pos, dir, ray.depth_, ray.is_primary_ray_, kEpsilon};
+
+//  std::cerr << n << std::endl;
+  if (pdf_solid) {
+    *pdf_solid = SampleCosineHemiSpherePdf(dir) / SurfaceArea();
+  }
+}
+BEART_REGISTER_CLASS_IN_FACTORY(Shape, Quad, "quad")

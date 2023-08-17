@@ -1,0 +1,152 @@
+{
+  "camera": {
+    "type": "perspective",
+    "target": [
+      0,
+      0,
+      0
+    ],
+    "camera_pos": [
+      4,
+      4,
+      0
+    ],
+    "up": [
+      0,
+      0,
+      1
+    ],
+    "fov": 40.0,
+    "image_width": 768,
+    "image_height": 576
+  },
+  "sampler": {
+    "type": "independent",
+    "samples": 32
+  },
+  "accelerator": {
+    "type": "bvh"
+  },
+  "integrator": {
+    "type": "direct",
+    "max_depth": 7
+  },
+  "lights": [
+    {
+      "type": "area",
+      "radiance": [
+        300,
+        300,
+        300
+      ],
+      "shape": {
+        "type": "sphere",
+        "radius": 0.2,
+        "center": [
+          1,
+          2,
+          2
+        ]
+      }
+    }
+  ],
+  "materials": [
+    {
+      "type": "lambertian",
+      "name": "white",
+      "reflectance": [
+        0.5,
+        0.5,
+        0.5
+      ]
+    }
+  ],
+  "surfaces": [
+     {
+      "type": "mesh",
+      "filename": "../../../asset/bunny.obj",
+      "material": {
+        "type": "phong",
+        "diffuse": [
+          0.2,
+          0.2,
+          0.8
+        ],
+        "specular": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "phong_exponent": 40
+      },
+      "transform": [
+        {
+          "scale": [
+            0.7,
+            0.7,
+            0.7
+          ]
+        },
+        {
+          "rotate": [
+            90,
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "rotate": [
+            120,
+            0,
+            0,
+            1
+          ]
+        },
+        {
+          "translate": [
+            -0.3,
+            0,
+            -0.8
+          ]
+        }
+      ]
+    },
+    {
+      "type": "mesh",
+      "filename": "../../../asset/plane.obj",
+      "material": {
+        "type": "lambertian",
+        "reflectance": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "transform": [
+        {
+          "scale": [
+            100,
+            1,
+            100
+          ]
+        },
+        {
+          "rotate": [
+            90,
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "translate": [
+            0,
+            0,
+            -1
+          ]
+        }
+      ]
+    }
+  ]
+}

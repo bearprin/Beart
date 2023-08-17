@@ -6,6 +6,7 @@
 #include <limits>
 #include <tuple>
 #include <filesystem>
+#include <fstream>
 #include <numeric>
 
 #include <cmath>
@@ -15,8 +16,12 @@ namespace fs = std::filesystem;
 class Visibility;
 class Primitive;
 class Light;
-//class Camera;
-
+class Scene;
+class Camera;
+class Integrator;
+class Sampler;
+class Accelerator;
+class Shape;
 // used for gcc and clang
 // if-else predication
 #define UNLIKELY(EXP)       __builtin_expect((EXP),0)
@@ -77,5 +82,9 @@ constexpr std::tuple<bool, float, float> SolveQuadratic(const float &a, const fl
 static
 constexpr float Lerp(const float a, const float b, const float t) {
   return (1 - t) * a + t * b;
+}
+static
+constexpr float SafeSqrt(float x) {
+  return std::sqrt(std::max(0.0f, x));
 }
 }

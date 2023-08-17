@@ -8,6 +8,8 @@
 namespace beart {
 class PathTracing : public Integrator {
  public:
+  PathTracing() = default;
+  PathTracing(const json &j) : Integrator(j) {}
   Spectrum Li(const Ray &ray,
               const Scene &scene,
               const Sampler &sampler,

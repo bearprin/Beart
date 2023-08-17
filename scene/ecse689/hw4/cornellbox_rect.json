@@ -1,0 +1,111 @@
+{
+  "camera": {
+    "type": "perspective",
+    "target": [
+      0,
+      0,
+      1
+    ],
+    "camera_pos": [
+      0,
+      -4,
+      1
+    ],
+    "up": [
+      0,
+      0,
+      1
+    ],
+    "fov": 37.0,
+    "image_width": 768,
+    "image_height": 768
+  },
+  "sampler": {
+    "type": "independent",
+    "samples": 32
+  },
+  "accelerator": {
+    "type": "bvh"
+  },
+  "integrator": {
+    "type": "pt",
+    "max_depth": 7
+  },
+  "lights": [
+    {
+      "type": "area",
+      "radiance": [
+        10,
+        10,
+        10
+      ],
+      "shape": {
+        "type": "quad",
+        "width": 1,
+        "height": 1,
+        "normal": [
+          0,
+          0,
+          -1
+        ],
+        "center": [
+          0,
+          0,
+          1.985
+        ]
+      }
+    }
+  ],
+  "materials": [
+    {
+      "type": "lambertian",
+      "name": "white",
+      "reflectance": [
+        0.725,
+        0.71,
+        0.68
+      ]
+    }
+  ],
+  "surfaces": [
+    {
+      "type": "mesh",
+      "filename": "../../../asset/cornellbox_walls.obj",
+      "material": "white"
+    },
+    {
+      "type": "mesh",
+      "filename": "../../../asset/cornellbox_lwall.obj",
+      "material": {
+        "type": "lambertian",
+        "reflectance": [
+          0.05,
+          0.21,
+          0.63
+        ]
+      }
+    },
+    {
+      "type": "mesh",
+      "filename": "../../../asset/cornellbox_rwall.obj",
+      "material": {
+        "type": "lambertian",
+        "reflectance": [
+          0.63,
+          0.65,
+          0.05
+        ]
+      }
+    },
+    {
+      "type": "mesh",
+      "filename": "../../../asset/cornellbox_bigbox.obj",
+      "material": "white"
+    },
+    {
+      "type": "mesh",
+      "filename": "../../../asset/cornellbox_smallbox.obj",
+      "material": "white"
+    }
+  ]
+}

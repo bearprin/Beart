@@ -3,10 +3,9 @@
 //
 
 #include "phong.h"
-#include "common.h"
 #include "sample_common.h"
 #include "transform.h"
-#include <numeric>
+#include "factory.h"
 beart::Spectrum beart::Phong::f(const beart::Vec3f &wo, const beart::Vec3f &wi) const {
   if (!SameHemiSphere(wi, wo)) {
     return 0.;
@@ -66,3 +65,4 @@ float beart::Phong::pdf(const beart::Vec3f &wo, const beart::Vec3f &wi) const {
   const auto pdf_diff = SampleCosineHemiSpherePdf(wi);
   return Lerp(pdf_spec, pdf_diff, MaxComponent(diffuse_));  // interpolate diffuse and specular
 }
+BEART_REGISTER_CLASS_IN_FACTORY(Bxdf, Phong, "phong")

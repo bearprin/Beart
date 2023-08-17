@@ -4,6 +4,7 @@
 
 #include "path_tracing.h"
 #include "integrator_common.h"
+#include "factory.h"
 
 beart::Spectrum beart::PathTracing::Li(const beart::Ray &ray,
                                        const beart::Scene &scene,
@@ -59,7 +60,7 @@ beart::Spectrum beart::PathTracing::Li(const beart::Ray &ray,
     if (IsBlack(f) || bsdf_pdf <= 0.f) {
       break;
     }
-    // update throughput (f * cos_theta / pdf)
+    // update throughput (f * cos_theta / pdf), we merge cos_theta into f
     throughput *= f / bsdf_pdf;
     // update ray
     temp_r = Ray(info.intersect_pos, wi, temp_r.depth_ + 1, true, kEpsilon);
@@ -76,3 +77,4 @@ beart::Spectrum beart::PathTracing::Li(const beart::Ray &ray,
   }
   return L;
 }
+BEART_REGISTER_CLASS_IN_FACTORY(Integrator, PathTracing, "pt")

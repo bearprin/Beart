@@ -5,6 +5,7 @@
 #include "direct.h"
 #include "interection.h"
 #include "integrator_common.h"
+#include "factory.h"
 
 beart::Spectrum beart::DirectIntegrator::Li(const beart::Ray &ray,
                                             const beart::Scene &scene,
@@ -48,3 +49,4 @@ beart::Spectrum beart::DirectIntegrator::Li(const beart::Ray &ray,
   }
   return L;
 }
+BEART_REGISTER_CLASS_IN_FACTORY(Integrator, DirectIntegrator, "direct")

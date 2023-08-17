@@ -1,6 +1,6 @@
 #### Integration
-- Path Tracing
-- 
+
+
 #### Materials
 
 - Using the modified Phong reflectance model for physically based rendering, EP Lafortune, 1994

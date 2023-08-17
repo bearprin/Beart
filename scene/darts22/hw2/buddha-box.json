@@ -1,0 +1,283 @@
+{
+  "camera": {
+    "type": "perspective",
+    "camera_pos": [
+      0,
+      20,
+      1077.5
+    ],
+    "target": [
+      0,
+      -4,
+      0
+    ],
+    "up": [
+      0,
+      1,
+      0
+    ],
+    "fov": 40.0
+  },
+  "sampler": {
+    "type": "independent",
+    "samples": 512
+  },
+  "accelerator": {
+    "type": "bvh"
+  },
+  "integrator": {
+    "type": "pt",
+    "max_depth": 7
+  },
+  "lights": [
+    {
+      "type": "area",
+      "radiance": [
+        15,
+        15,
+        15
+      ],
+      "shape": {
+        "type": "quad",
+        "width": 130,
+        "height": 130,
+        "transform": [
+          {
+            "rotate": [
+              90,
+              1,
+              0,
+              0
+            ]
+          },
+          {
+            "translate": [
+              0,
+              277,
+              0
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "materials": [
+    {
+      "type": "lambertian",
+      "name": "white",
+      "reflectance": [
+        0.73,
+        0.73,
+        0.73
+      ]
+    },
+    {
+      "type": "lambertian",
+      "name": "red",
+      "reflectance": [
+        0.65,
+        0.05,
+        0.05
+      ]
+    },
+    {
+      "type": "lambertian",
+      "name": "green",
+      "reflectance": [
+        0.12,
+        0.45,
+        0.15
+      ]
+    },
+    {
+      "name": "glass",
+      "type": "dielectric",
+      "in_ior": "bk7",
+      "alpha": 0.001
+    },
+    {
+      "name": "chrome",
+      "type": "conductor",
+      "material_name": "Cr",
+      "alpha": 0.01
+    }
+  ],
+  "background": [
+    0,
+    0,
+    0
+  ],
+  "surfaces": [
+    {
+      "type": "quad",
+      "material": "white",
+      "width": 555,
+      "height": 555,
+      "transform": [
+        {
+          "translate": [
+            0,
+            0,
+            -277.5
+          ]
+        }
+      ]
+    },
+    {
+      "type": "quad",
+      "material": "white",
+      "width": 555,
+      "height": 555,
+      "transform": [
+        {
+          "rotate": [
+            90,
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "translate": [
+            0,
+            277.5,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "type": "quad",
+      "material": "white",
+      "width": 555,
+      "height": 555,
+      "transform": [
+        {
+          "rotate": [
+            -90,
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "translate": [
+            0,
+            -277.5,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "type": "quad",
+      "material": "green",
+      "width": 555,
+      "height": 555,
+      "transform": [
+        {
+          "rotate": [
+            90,
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "translate": [
+            -277.5,
+            0,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "type": "quad",
+      "material": "red",
+      "width": 555,
+      "height": 555,
+      "transform": [
+        {
+          "rotate": [
+            -90,
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "translate": [
+            277.5,
+            0,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "type": "mesh",
+      "material": "glass",
+      "filename": "../../../asset/buddha.obj",
+      "transform": [
+        {
+          "translate": [
+            -1.02949,
+            0.006185,
+            -0.03784
+          ]
+        },
+        {
+          "scale": 500
+        },
+        {
+          "rotate": [
+            90,
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "translate": [
+            140,
+            -277.5,
+            100
+          ]
+        }
+      ]
+    },
+    {
+      "type": "mesh",
+      "material": "white",
+      "filename": "../../../asset/buddha.obj",
+      "transform": [
+        {
+          "translate": [
+            -1.02949,
+            0.006185,
+            -0.03784
+          ]
+        },
+        {
+          "scale": 500
+        },
+        {
+          "rotate": [
+            90,
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "translate": [
+            -140,
+            -277.5,
+            -100
+          ]
+        }
+      ]
+    }
+  ]
+}

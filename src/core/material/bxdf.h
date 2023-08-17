@@ -6,9 +6,9 @@
 
 #include "spectrum.h"
 #include "samples.h"
+#include "json_serializable.h"
 namespace beart {
 enum BxDFType {
-  // TODO: not very clear, need to be improved
   kBxDF_NONE = 0,
   kGlossyReflection = 1 << 0,
   kGlossyTransmission = 1 << 1,
@@ -32,6 +32,8 @@ enum BxDFType {
 class Bxdf {
  public:
   explicit Bxdf() = default;
+  Bxdf(const json &j) : eval_weight_(j.value("eval_weight", 1.0)) {}
+
   Bxdf(BxDFType type, float eval_weight) : type_(type), eval_weight_(eval_weight) {
   }
   virtual ~Bxdf() = default;

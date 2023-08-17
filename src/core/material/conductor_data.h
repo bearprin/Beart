@@ -57,8 +57,7 @@ static std::tuple<Vec3f, Vec3f> LoadCondutorData(std::string_view name) {
     return std::get<0>(data) == name;
   });
   if (iter == std::end(ConductorData)) {
-    // TODO: log warning
-    std::cerr << "Warning: " << name << " is not found in conductor data\n";
+    spdlog::warn("Warning: {} is not found in IORData\n", name);
     return {{1.0, 1.0, 1.0}, {0.0, 0.0, 0.0}};
   }
   return {std::get<1>(*iter), std::get<2>(*iter)};

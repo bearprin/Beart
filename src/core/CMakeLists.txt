@@ -14,18 +14,21 @@ list(
         film/film.h film/film.cpp
         sampler/sample_common.h sampler/sampler.h sampler/sampler.cpp sampler/random_sampler.h
         light/light.h light/point_light.h light/point_light.cpp light/directional_light.cpp light/directional_light.h light/area_light.h light/area_light.cpp
+        light/constant_light.cpp light/constant_light.h
         accelerator/accelerator.h
         accelerator/bvh.h accelerator/bvh.cpp accelerator/bvh_common.h
         material/bxdf.h material/phong.h material/phong.cpp material/event.h material/event.cpp material/microfacet.cpp
-        material/microfacet.h material/conductor.cpp material/conductor.h material/conductor_data.h material/fresnel.h material/rough_conductor.cpp material/rough_conductor.h
-        material/ior_data.h material/dielectric.cpp material/dielectric.h material/rough_dielectric.cpp material/rough_dielectric.h
+        material/microfacet.h material/conductor.cpp material/conductor.h material/conductor_data.h
+        material/ior_data.h material/dielectric.cpp material/dielectric.h
         material/diffuse.h material/diffuse.cpp
         integrator/integrator.h integrator/integrator.cpp integrator/integrator_common.h integrator/ao.h integrator/ao.cpp
         integrator/direct.h integrator/direct.cpp integrator/path_tracing.cpp integrator/path_tracing.h
-
-
+        integrator/bid_tracing.cpp integrator/bid_tracing.h integrator/bidpath/path_vertex.h integrator/light_tracing.cpp integrator/light_tracing.h
+        io/scene_parser.cpp io/scene_parser.h io/factory.h
 )
 
 add_executable(Beart ${BERT_CORE_SOURCES})
 target_include_directories(Beart PRIVATE . math shape io camera film sampler spectrum light material accelerator integrator)
 target_link_libraries(Beart PRIVATE ${BERT_PRIVATE_LIBS})
+# change Beart position
+set_target_properties(Beart PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)

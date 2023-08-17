@@ -14,6 +14,8 @@ class TriangleMesh : public Shape {
  public:
   TriangleMesh(fs::path filename, Transform obj_to_world_);
   explicit TriangleMesh(fs::path filename) : TriangleMesh(std::move(filename), Transform{Mat4f{1.0}}) {}
+  explicit TriangleMesh(const json &j) : TriangleMesh(j.value("filename", fs::path("")),
+                                                      j.value("transform", Transform{Mat4f{1.0f}})) {}
   ~TriangleMesh() override {
     for (auto &tri_pri : triangles_child_prim_) {
       delete tri_pri;
@@ -30,6 +32,13 @@ class TriangleMesh : public Shape {
                        Vec3f *n,
                        float *pdf_solid) const override {
     return beart::Point3f();
+  }
+  void SampleDirect(const LightSample &ls_pos,
+                    const LightSample &ls_dir,
+                    Ray &ray,
+                    Vec3f &n,
+                    float *pdf_solid) const override {
+
   }
   float DirectPdf(const Point3f &p, const Vec3f &wi) const override {
     return Shape::DirectPdf(p, wi);

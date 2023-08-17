@@ -8,6 +8,9 @@
 #include <enoki/array.h>
 
 namespace beart {
+template<class T, unsigned long N>
+using Vec = enoki::Array<T, N>;
+
 using Vec4f = enoki::Array<float, 4>;
 
 using Vec3f = enoki::Array<float, 3>;
@@ -16,6 +19,7 @@ using Vec3u = enoki::Array<uint32_t, 3>;
 using Vec3b = enoki::Array<uint8_t, 3>;
 
 using Vec2f = enoki::Array<float, 2>;
+using Vec2i = enoki::Array<int, 2>;
 
 using Point3f = enoki::Array<float, 3>;
 using Point3i = enoki::Array<int, 3>;
@@ -49,6 +53,10 @@ Vec3f Clamp(const Vec3f &v, float min, float max) {
 BERT_FORCEINLINE static
 float Norm(const Vec3f &v) {
   return enoki::norm(v);
+}
+BERT_FORCEINLINE static
+float SquareNorm(const Vec3f &v) {
+  return enoki::squared_norm(v);
 }
 BERT_FORCEINLINE static
 Point3f Min(const Point3f &lhs, const Point3f &rhs) {

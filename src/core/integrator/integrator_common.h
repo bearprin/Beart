@@ -26,7 +26,7 @@ static Spectrum DirectIllumination(const Event &event,
   Vec3f wo = -ray.dir_;
   Vec3f wi;
   // light sampling based solid angle
-  auto li = light.SampleLi(event.info(), ls, &wi, &light_pdf, &distance, &cos_light, &vis_test);
+  auto li = light.SampleLi(event.info(), ls, &wi, &light_pdf, nullptr, &distance, &cos_light, &vis_test);
   if (light_pdf > 0.f && !IsBlack(li) && cos_light > 0.f) {
     // evaluate BSDF * cos(theta)
     auto f = event.EvaluateBxDF(wo, wi);
@@ -57,7 +57,6 @@ static Spectrum DirectIllumination(const Event &event,
           Ray{event.info().intersect_pos, wi, ray.depth_ + 1, false, kEpsilon, shadow_info.t_curr - kEpsilon};
       if (!IsBlack(li) && vis_test.IsVisible()) {
         radiance += li * f * Mis(bsdf_pdf, light_pdf) / bsdf_pdf;
-//        radiance += li * f / bsdf_pdf;
       }
     }
   }

@@ -1,0 +1,176 @@
+{
+  "camera": {
+    "type": "perspective",
+    "target": [
+      0,
+      0,
+      1
+    ],
+    "camera_pos": [
+      0,
+      -4,
+      1
+    ],
+    "up": [
+      0,
+      0,
+      1
+    ],
+    "fov": 37.0,
+    "image_width": 768,
+    "image_height": 768,
+    "near_clip": 0.01,
+    "far_clip": 1000.0
+  },
+  "sampler": {
+    "type": "independent",
+    "samples": 1
+  },
+  "accelerator": {
+    "type": "bvh"
+  },
+  "integrator": {
+    "type": "direct",
+    "max_depth": 7
+  },
+  "lights": [
+    {
+      "type": "point",
+      "pos": [
+        0,
+        0,
+        1
+      ],
+      "intensity": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "type": "direction",
+      "dir": [
+        0,
+        0,
+        -1
+      ],
+      "irradiance": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "type": "area",
+      "shape": {
+        "type": "quad",
+        "center": [
+          0,
+          0,
+          1
+        ],
+        "normal": [
+          0,
+          0,
+          1
+        ],
+        "width": 1,
+        "height": 1
+      },
+      "radiance": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "type": "area",
+      "shape": {
+        "type": "sphere",
+        "center": [
+          0,
+          0,
+          1
+        ]
+      },
+      "radiance": [
+        1,
+        1,
+        1
+      ]
+    }
+  ],
+  "materials": [
+    {
+      "type": "lambertian",
+      "name": "white",
+      "reflectance": [
+        0.6,
+        0.4,
+        0.4
+      ]
+    },
+    {
+      "type": "phong",
+      "name": "phong",
+      "phong_exponent": 10
+    },
+    {
+      "type": "conductor",
+      "name": "Au",
+      "material": "Au"
+    },
+    {
+      "type": "rough_conductor",
+      "name": "rough_Au",
+      "material": "Au",
+      "alpha": 0.1,
+      "distribution": "ggx"
+    },
+    {
+      "type": "dielectric",
+      "name": "diamond",
+      "in_ior": "diamond",
+      "ext_ior": "air"
+    },
+    {
+      "type": "rough_dielectric",
+      "name": "rough_diamond",
+      "in_ior": "diamond",
+      "ext_ior": "air",
+      "alpha": 0.1,
+      "distribution": "ggx"
+    }
+  ],
+  "surfaces": [
+    {
+      "type": "sphere",
+      "radius": 1,
+      "center": [
+        0,
+        0,
+        1
+      ],
+      "name": "sphere1",
+      "material": {
+        "type": "lambertian",
+        "reflectance": [
+          0.6,
+          0.4,
+          0.4
+        ]
+      }
+    },
+    {
+      "type": "sphere",
+      "name": "sphere2",
+      "radius": 1,
+      "center": [
+        0,
+        0,
+        1
+      ],
+      "material": "white"
+    }
+  ]
+}

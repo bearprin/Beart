@@ -15,7 +15,7 @@ beart::TriangleMesh::TriangleMesh(std::filesystem::path filename, beart::Transfo
   Assimp::Importer importer;
   const aiScene *scene = importer.ReadFile(filename.string(), aiProcess_Triangulate);
   if (!scene || !scene->mRootNode) {
-    std::cerr << "Failed to load mesh: " << filename << std::endl;   // TODO
+    spdlog::critical("Failed to load mesh: {}", filename.string());
   }
   bbox_ = std::make_unique<AABB>();
   // assuming only one mesh now
@@ -118,5 +118,6 @@ const beart::AABB &beart::TriangleMesh::bbox() const {
   }
   return *bbox_;
 }
+BEART_REGISTER_CLASS_IN_FACTORY(Shape, TriangleMesh, "mesh");
 
 

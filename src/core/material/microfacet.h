@@ -6,11 +6,18 @@
 
 #include "vec.h"
 #include "samples.h"
+
+#include <unordered_map>
 namespace beart {
 enum class DistributionType {
   kBeckmann,
   kPhong,
   kGGX,
+};
+static std::unordered_map<std::string, DistributionType> kDistributionTypeMap = {
+    {"beckmann", DistributionType::kBeckmann},
+    {"phong", DistributionType::kPhong},
+    {"ggx", DistributionType::kGGX},
 };
 class Microfacet {
   // Microfacet Models for Refraction through Rough Surfaces
@@ -28,13 +35,16 @@ class Microfacet {
     return 0.0f;
   }
   static BERT_FORCEINLINE float G(DistributionType distribution_type,
-                 const float alpha,
-                 const Vec3f &wi,
-                 const Vec3f &wo,
-                 const Vec3f &m) {
+                                  const float alpha,
+                                  const Vec3f &wi,
+                                  const Vec3f &wo,
+                                  const Vec3f &m) {
     return G1(distribution_type, alpha, wi, m) * G1(distribution_type, alpha, wo, m);
   }
-  static BERT_FORCEINLINE float G1(DistributionType distribution_type, const float alpha, const Vec3f &v, const Vec3f &m) {
+  static BERT_FORCEINLINE float G1(DistributionType distribution_type,
+                                   const float alpha,
+                                   const Vec3f &v,
+                                   const Vec3f &m) {
     if (Dot(v, m) / CosTheta(v) <= 0.0f) {
       return 0.0f;
     }
@@ -49,8 +59,8 @@ class Microfacet {
     return D(distribution_type, alpha, m) * AbsCosTheta(m); // pdf(m) = D(m) * |m * n|
   }
   static BERT_FORCEINLINE Vec3f sample(DistributionType distribution_type,
-                      const float alpha,
-                      const BsdfSample &bs) {
+                                       const float alpha,
+                                       const BsdfSample &bs) {
     float phi = kTwoPi * bs.v_;
     float cos_theta{};
     switch (distribution_type) {

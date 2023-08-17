@@ -5,6 +5,7 @@
 #pragma once
 
 #include "vec.h"
+#include "json_serializable.h"
 
 #include <vector>
 namespace beart {
@@ -12,6 +13,7 @@ class Sampler {
  public:
   Sampler() = default;
   explicit Sampler(unsigned int sample_count) : sample_count_(sample_count) {}
+  Sampler(const json &j) : sample_count_(j.value("samples", 1)) {}
   virtual ~Sampler() = default;
   /// \brief request a space(size) for 1D samples
   /// \param size
@@ -34,6 +36,10 @@ class Sampler {
 
   virtual float Next1D() const = 0;
   virtual Point2f Next2D() const = 0;
+
+  unsigned int sample_count() const {
+    return sample_count_;
+  }
 
   ///
   /// \param size

@@ -8,6 +8,8 @@
 namespace beart {
 class DirectIntegrator : public Integrator {
  public:
+  DirectIntegrator() = default;
+  DirectIntegrator(const json &j) : Integrator(j) {}
   virtual Spectrum Li(const Ray &ray,
                       const Scene &scene,
                       const Sampler &sampler,

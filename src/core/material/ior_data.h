@@ -44,7 +44,7 @@ static float LoadIORData(std::string_view name) {
   });
   if (iter == std::end(IORData)) {
     // TODO: log warning
-    std::cerr << "Warning: " << name << " is not found in DielectricData\n";
+    spdlog::warn("Warning: {} is not found in IORData\n", name);
     return 1.0;
   }
   return std::get<1>(*iter);

@@ -1,0 +1,119 @@
+{
+  "camera": {
+    "type": "perspective",
+    "camera_pos": [
+      0,
+      0,
+      4
+    ],
+    "fov": 60.0,
+    "image_width": 640,
+    "image_height": 480
+  },
+  "sampler": {
+    "type": "independent",
+    "samples": 32
+  },
+  "accelerator": {
+    "type": "bvh"
+  },
+  "integrator": {
+    "type": "pt",
+    "max_depth": 7
+  },
+  "lights": [
+    {
+      "type": "constant",
+      "radiance": [
+        10,
+        10,
+        10
+      ]
+    }
+  ],
+  "materials": [
+    {
+      "type": "lambertian",
+      "name": "white",
+      "reflectance": [
+        0.6,
+        0.6,
+        0.6
+      ]
+    },
+    {
+      "name": "glass",
+      "type": "dielectric",
+      "in_ior": 1.1
+    },
+    {
+      "name": "green",
+      "type": "lambertian",
+      "reflectance": [
+        0.4,
+        0.6,
+        0.4
+      ]
+    }
+  ],
+  "background": [
+    0,
+    0,
+    0
+  ],
+  "surfaces": [
+    {
+      "type": "sphere",
+      "radius": 1,
+      "center": [
+        0.5,
+        0,
+        0
+      ],
+      "material": "glass"
+    },
+    {
+      "type": "sphere",
+      "material": "green",
+      "transform": [
+        {
+          "translate": [
+            -0.3,
+            -0.25,
+            -1.8
+          ]
+        },
+        {
+          "scale": [
+            0.75,
+            0.75,
+            0.75
+          ]
+        }
+      ]
+    },
+    {
+      "type": "quad",
+      "width": 100,
+      "height": 100,
+      "material": "white",
+      "transform": [
+        {
+          "rotate": [
+            -90,
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "translate": [
+            0,
+            -1,
+            0
+          ]
+        }
+      ]
+    }
+  ]
+}

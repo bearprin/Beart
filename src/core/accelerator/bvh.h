@@ -11,6 +11,8 @@
 namespace beart {
 class BVH : public Accelerator {
  public:
+  BVH() = default;
+  BVH(const json &j) : Accelerator(j) {}
   struct BvhNode {
     unsigned int prim_num = 0;  // the num of primitives
     unsigned int prim_offset = 0; // the offset of the bvh_prim_ptr (1D array)

@@ -99,5 +99,9 @@ Transform LookAt(const Vec3f &camera_pos, const Vec3f &target, const Vec3f &up) 
   );
   return Transform{res};
 }
+BERT_FORCEINLINE static
+Transform FromColVec4f(const Vec4f &v1, const Vec4f &v2, const Vec4f &v3, const Vec4f &v4) {
+  return Transform{Mat4f::from_cols(v1, v2, v3, v4)};
+}
 
 } // namespace beart

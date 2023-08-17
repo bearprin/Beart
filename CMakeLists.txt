@@ -51,6 +51,17 @@ set(NANOTHREAD_INCLUDE_DIRS third_party/nanothread/include)
 include_directories(${NANOTHREAD_INCLUDE_DIRS})
 list(APPEND BERT_PRIVATE_LIBS nanothread)
 
-add_subdirectory(src)
+# nlohmann json
+set(JSON_BuildTests OFF CACHE INTERNAL "")
+add_subdirectory(third_party/json)
+list(APPEND BERT_PRIVATE_LIBS nlohmann_json::nlohmann_json)
 
+# spdlog
+add_subdirectory(third_party/spdlog)
+list(APPEND BERT_PRIVATE_LIBS spdlog::spdlog)
+
+# CLI11
+add_subdirectory(third_party/CLI11)
+list(APPEND BERT_PRIVATE_LIBS CLI11::CLI11)
+add_subdirectory(src)
 

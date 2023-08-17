@@ -1,0 +1,104 @@
+{
+  "camera": {
+    "type": "perspective",
+    "camera_pos": [
+      24,
+      10,
+      0
+    ],
+    "target": [
+      0,
+      3.5,
+      0
+    ],
+    "up": [0, 1, 0],
+    "fov": 10.0,
+    "image_width": 720,
+    "image_height": 1280
+  },
+  "sampler": {
+    "type": "independent",
+    "samples": 64
+  },
+  "accelerator": {
+    "type": "bvh"
+  },
+  "integrator": {
+    "type": "pt",
+    "max_depth": 7
+  },
+  "lights": [
+    {
+      "type": "constant",
+      "radiance": [
+        100,
+        100,
+        100
+      ]
+    }
+  ],
+  "materials": [
+    {
+      "type": "lambertian",
+      "name": "white",
+      "reflectance": [
+        0.4,
+        0.4,
+        0.4
+      ]
+    }
+  ],
+  "background": [
+    1,
+    1,
+    1
+  ],
+  "surfaces": [
+    {
+      "type": "mesh",
+      "material": "white",
+      "filename": "../../../asset/ajax.obj",
+      "transform": [
+        {
+          "translate": [
+            -0.053126335,
+            0.030193329,
+            17.283958
+          ]
+        },
+        {
+          "scale": 0.2
+        },
+        {
+          "rotate": [
+            150,
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "translate": [
+            0,
+            0,
+            -0.25
+          ]
+        }
+      ]
+    },
+    {
+      "type": "mesh",
+      "material": "white",
+      "filename": "../../../asset/plane.obj",
+      "transform": [
+        {
+          "scale": [
+            1000,
+            1,
+            1000
+          ]
+        }
+      ]
+    }
+  ]
+}

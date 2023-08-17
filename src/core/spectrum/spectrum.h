@@ -8,7 +8,7 @@
 namespace beart {
 
 using RGBSpectrum = Vec3f;
-using RGBASpectrum = Vec4f;
+using RGBASpectrum = beart::Vec4f;
 
 using Spectrum = RGBSpectrum;  // TODO: add spectrum type
 

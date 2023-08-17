@@ -24,6 +24,12 @@ class Phong : public Bxdf {
     assert(diffuse_.y() + specular_.y() <= 1.0f);
     assert(diffuse_.z() + specular_.z() <= 1.0f);
   }
+  Phong(const json &j) : Phong(j.value("diffuse", Spectrum{0.5}),
+                               j.value("specular", Spectrum{0.2}),
+                               j.value("phong_exponent", 30.),
+                               j.value("eval_weight", 1.0)) {
+
+  }
  protected:
   [[nodiscard]] Spectrum f(const Vec3f &wo, const Vec3f &wi) const override;
   Spectrum sample_f(const Vec3f &wo, Vec3f &wi, const BsdfSample &bs, float *pdf) const override;

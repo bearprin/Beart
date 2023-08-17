@@ -19,3 +19,12 @@
 [submodule "third_party/nanothread"]
 	path = third_party/nanothread
 	url = https://github.com/mitsuba-renderer/nanothread
+[submodule "third_party/json"]
+	path = third_party/json
+	url = https://github.com/nlohmann/json
+[submodule "third_party/spdlog"]
+	path = third_party/spdlog
+	url = https://github.com/gabime/spdlog
+[submodule "third_party/CLI11"]
+	path = third_party/CLI11
+	url = https://github.com/CLIUtils/CLI11
