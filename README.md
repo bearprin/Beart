@@ -2,7 +2,7 @@
 
 ---
 
-Beart is my personal Ray Tracing Render for studying. It is inspired by many open source renderers.
+Beart is my personal Ray Tracing Render for studying. It is inspired by many open-source renderers.
 The project is still under development.
 
 ### Building the project
@@ -31,7 +31,7 @@ Find the executable file in `build/bin` directory.
 $ ./build/bin/beart -s scenes/{scenes_file_path} -o {output_file_path}
 ```
 
-where -s is the scenes file path, -o is the output file path.
+where -s is the scene file path, -o is the output file path.
 
 The default output file path is the "output/{scenes_file_name}_{timestamp}.exr"
 
@@ -54,7 +54,7 @@ image.
     - [ ] VolPath Tracing
     - [ ] Modern Volume Rendering,
 - Light Tracing
-- Bidirectional Path Tracing (may some bugs, fix later)
+- Bidirectional Path Tracing (may be some bugs, fix later)
     - [ ] Light Transport Simulation with Vertex Connection and Merging, Georgiev, 2012
 -[ ] Photon Mapping
 
@@ -97,7 +97,7 @@ image.
 
 
 
-### Denpendencies
+### Dependencies
 
 - [assimp](https://github.com/assimp/assimp)
 - [CLI11](https://github.com/CLIUtils/CLI11)
@@ -115,6 +115,6 @@ image.
 See [REFERENCES.md](REFERENCES.md) for a list of references.
 
 ### Acknowledgements
-Since scenes data is very important for the render, I have transferred some scenes files from other open source renderers.
+Since scene data is very important for the render, I have transferred some scene files from other open-source renderers.
 
 I would like to thank the scenes files and models from [darts]("https://cs87-dartmouth.github.io/Fall2022/index.html"), [ecse689](https://www.cim.mcgill.ca/~derek/ecse689.html).
