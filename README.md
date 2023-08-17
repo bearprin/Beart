@@ -104,7 +104,7 @@ image.
 - [enoki](https://github.com/mitsuba-renderer/enoki)
 - [nlohmann-json](https://github.com/nlohmann/json)
 - [nanothread](https://github.com/mitsuba-renderer/nanothread)
-- [oidn](https://github.com/OpenImageDenoise/oidn)
+- [oidn](https://github.com/OpenImageDenoise/oidn)  (optional, install [tbb](https://github.com/oneapi-src/oneTBB) first)
 - [pcg-cpp](https://github.com/imneme/pcg-cpp)
 - [spdlog](https://github.com/gabime/spdlog)
 - [stb](https://github.com/nothings/stb)

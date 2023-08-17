@@ -20,7 +20,7 @@
   },
   "sampler": {
     "type": "independent",
-    "samples": 512
+    "samples": 4
   },
   "accelerator": {
     "type": "bvh"

@@ -7,6 +7,8 @@ set(CMAKE_CXX_STANDARD 17)
 set(BERT_PUBLIC_LIBS)
 set(BERT_PRIVATE_LIBS)
 
+option(BERT_ENABLE_OIDN "Enable OpenImageDenoise" OFF)
+
 # Enoki
 add_subdirectory(third_party/enoki)
 set(ENOKI_INCLUDE_DIRS third_party/enoki/include)
@@ -33,12 +35,6 @@ add_library(pcg INTERFACE IMPORTED)
 target_include_directories(pcg INTERFACE ${PCG_INCLUDE_DIRS})
 list(APPEND BERT_PRIVATE_LIBS pcg)
 
-# oidn
-add_subdirectory(third_party/oidn)
-set(OIDN_INCLUDE_DIRS third_party/oidn/include)
-include_directories(${OIDN_INCLUDE_DIRS})
-list(APPEND BERT_PRIVATE_LIBS OpenImageDenoise OpenImageDenoise_device_cpu)
-
 # assimp
 add_subdirectory(third_party/assimp)
 set(ASSIMP_INCLUDE_DIRS third_party/assimp/include)
@@ -64,4 +60,16 @@ list(APPEND BERT_PRIVATE_LIBS spdlog::spdlog)
 add_subdirectory(third_party/CLI11)
 list(APPEND BERT_PRIVATE_LIBS CLI11::CLI11)
 add_subdirectory(src)
+
+
+# oidn
+if (BERT_ENABLE_OIDN)
+    add_definitions(-DBERT_ENABLE_OIDN)
+    add_subdirectory(third_party/oidn)
+    set(OIDN_INCLUDE_DIRS third_party/oidn/include)
+    include_directories(${OIDN_INCLUDE_DIRS})
+    list(APPEND BERT_PRIVATE_LIBS OpenImageDenoise OpenImageDenoise_device_cpu)
+endif ()
+
+
 

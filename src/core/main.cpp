@@ -6,7 +6,9 @@
 #include <spdlog/fmt/chrono.h>
 #include <CLI/CLI.hpp>
 #include <nanothread/nanothread.h>
+#ifdef BERT_ENABLE_OIDN
 #include <OpenImageDenoise/oidn.hpp>
+#endif
 namespace dr = drjit;
 int main(int argc, char **argv) {
   CLI::App app{"Beart Ray tracing", "Beart"};
@@ -68,6 +70,7 @@ int main(int argc, char **argv) {
   spdlog::info("Save normal to normal.exr");
   camera->normal()->Save(fmt::format("{}_normal.exr", output_path.substr(0, output_path.find_last_of('.'))));
 
+#ifdef BERT_ENABLE_OIDN
 
   // Create an Open Image Denoise device
   oidn::DeviceRef device = oidn::newDevice(); // CPU or GPU if available
@@ -122,4 +125,5 @@ int main(int argc, char **argv) {
   spdlog::info("Save denoise image to {}", denoise_path);
   camera->image()->Save(denoise_path);
   return 0;
+#endif
 }
