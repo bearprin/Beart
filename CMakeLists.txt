@@ -7,7 +7,13 @@ set(CMAKE_CXX_STANDARD 17)
 set(BERT_PUBLIC_LIBS)
 set(BERT_PRIVATE_LIBS)
 
-option(BERT_ENABLE_OIDN "Enable OpenImageDenoise" OFF)
+option(BERT_ENABLE_OIDN "Enable OpenImageDenoise" ON)
+
+find_package(TBB)
+# if not found tbb, set BERT_ENABLE_OIDN OFF
+if (NOT TBB_FOUND)
+    set(BERT_ENABLE_OIDN OFF)
+endif ()
 
 # Enoki
 add_subdirectory(third_party/enoki)
