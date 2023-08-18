@@ -10,6 +10,7 @@
 #include <numeric>
 
 #include <cmath>
+#include <cstring>
 namespace beart {
 namespace fs = std::filesystem;
 // forward declare
@@ -50,7 +51,7 @@ static
 constexpr OUT_T reinterpret_type(const IN_T in) {
 // Good compiler should optimize memcpy away.
   OUT_T out;
-  memcpy(&out, &in, sizeof(out));
+  std::memcpy(&out, &in, sizeof(out));
   return out;
 }
 static
