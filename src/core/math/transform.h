@@ -76,7 +76,7 @@ Transform Perspective(float fov, float near, float far, float aspect = 1.0f) {
   *  Camera-space depths are not mapped linearly!
   */
   float recip = 1.0f / (far - near);
-  float cot = 1.0 / std::tanf(DegToRad(fov) * 0.5f);
+  float cot = 1.0 / std::tan(DegToRad(fov) * 0.5f);
 
   Mat4f trafo = enoki::diag<Mat4f>(
       enoki::column_t<Mat4f>(cot / aspect, cot, far * recip, 0));

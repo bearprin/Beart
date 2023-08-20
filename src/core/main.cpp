@@ -71,7 +71,7 @@ int main(int argc, char **argv) {
   camera->normal()->Save(fmt::format("{}_normal.exr", output_path.substr(0, output_path.find_last_of('.'))));
 
 #ifdef BERT_ENABLE_OIDN
-
+spdlog::info("Denoise image");
   // Create an Open Image Denoise device
   oidn::DeviceRef device = oidn::newDevice(); // CPU or GPU if available
   device.commit();

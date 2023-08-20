@@ -12,7 +12,10 @@ option(BERT_ENABLE_OIDN "Enable OpenImageDenoise" ON)
 find_package(TBB)
 # if not found tbb, set BERT_ENABLE_OIDN OFF
 if (NOT TBB_FOUND)
-    set(BERT_ENABLE_OIDN OFF)
+    message(WARNING "TBB not found, disable OpenImageDenoise")
+    set(BERT_ENABLE_OIDN OFF CACHE FORCE)
+else ()
+    message(STATUS "TBB found, enable OpenImageDenoise")
 endif ()
 
 # Enoki
@@ -68,13 +71,11 @@ list(APPEND BERT_PRIVATE_LIBS CLI11::CLI11)
 add_subdirectory(src)
 
 
-# oidn
-if (BERT_ENABLE_OIDN)
-    add_definitions(-DBERT_ENABLE_OIDN)
+# add_subdirectory oidn
+if (${BERT_ENABLE_OIDN})
+    message(STATUS "OpenImageDenoise enabled")
+    add_compile_definitions(BERT_ENABLE_OIDN)
     add_subdirectory(third_party/oidn)
-    set(OIDN_INCLUDE_DIRS third_party/oidn/include)
-    include_directories(${OIDN_INCLUDE_DIRS})
-    list(APPEND BERT_PRIVATE_LIBS OpenImageDenoise OpenImageDenoise_device_cpu)
 endif ()
 
 

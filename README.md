@@ -90,11 +90,11 @@ image.
 - Random Sampler
 - [ ] Stratified Sampler
 
-[//]: # (### Image Gallery)
+### Image Gallery
 
-[//]: # ()
-[//]: # (![buddha-box]&#40;gallery/buddha-box&#41;)
+<img src="gallery/odyssey_nee.png" alt="odyssey_nee" height="400"/>
 
+<img src="gallery/loewenfeld-in-box.png" alt="loewenfeld-in-box" width="400"/>
 
 
 ### Dependencies
