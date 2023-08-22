@@ -95,13 +95,13 @@
       "name": "glass",
       "type": "dielectric",
       "in_ior": "bk7",
-      "alpha": 0.001
+      "alpha": 0.1
     },
     {
       "name": "chrome",
       "type": "conductor",
       "material_name": "Cr",
-      "alpha": 0.001
+      "alpha": 0.1
     }
   ],
   "background": [
