@@ -1,4 +1,6 @@
-set(BERT_CORE_SOURCES)
+set(BERT_CORE_SOURCES
+        material/orennayar.cpp
+        material/orennayar.h)
 
 
 list(
@@ -30,12 +32,12 @@ list(
 add_executable(Beart ${BERT_CORE_SOURCES})
 target_include_directories(Beart PRIVATE . math shape io camera film sampler spectrum light material accelerator integrator)
 target_link_libraries(Beart PRIVATE ${BERT_PRIVATE_LIBS})
-target_compile_definitions(Beart PRIVATE BERT_ENABLE_OIDN)
-# change Beart position
+# change Beart binary position
 set_target_properties(Beart PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 if (BERT_ENABLE_OIDN)
     set(OIDN_INCLUDE_DIRS ${CMAKE_HOME_DIRECTORY}/third_party/oidn/include)
     target_include_directories(Beart PRIVATE ${OIDN_INCLUDE_DIRS})
     target_link_libraries(Beart PRIVATE OpenImageDenoise OpenImageDenoise_device_cpu)
+    target_compile_definitions(Beart PRIVATE BERT_ENABLE_OIDN)
 endif ()

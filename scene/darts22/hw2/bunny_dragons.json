@@ -1,0 +1,495 @@
+{
+  "camera": {
+    "type": "perspective",
+    "camera_pos": [
+      0,
+      0.5,
+      4
+    ],
+    "target": [
+      0,
+      0,
+      2.5
+    ],
+    "up": [
+      0,
+      1,
+      0
+    ],
+    "fov": 45.0,
+    "image_width": 512,
+    "image_height": 512
+  },
+  "sampler": {
+    "type": "independent",
+    "samples": 64
+  },
+  "accelerator": {
+    "type": "bvh"
+  },
+  "integrator": {
+    "type": "pt",
+    "max_depth": 7
+  },
+  "lights": [
+    {
+      "type": "constant",
+      "radiance": [
+        30,
+        30,
+        30
+      ]
+    }
+  ],
+  "materials": [
+    {
+      "type": "lambertian",
+      "name": "white",
+      "reflectance": [
+        0.6,
+        0.6,
+        0.6
+      ]
+    },
+    {
+      "type": "oren",
+      "name": "green",
+      "reflectance": [
+        0.4,
+        0.6,
+        0.4
+      ]
+    },
+    {
+      "type": "oren",
+      "name": "red",
+      "reflectance": [
+        0.6,
+        0.4,
+        0.4
+      ]
+    }
+  ],
+  "background": [
+    1,
+    1,
+    1
+  ],
+  "surfaces": [
+    {
+      "type": "quad",
+      "transform": {
+        "o": [
+          0,
+          -1,
+          0
+        ],
+        "x": [
+          1,
+          0,
+          0
+        ],
+        "y": [
+          0,
+          0,
+          -1
+        ],
+        "z": [
+          0,
+          1,
+          0
+        ]
+      },
+      "width": 100,
+      "height": 100,
+      "material": {
+        "type": "lambertian",
+        "reflectance": [
+          0.7,
+          0.7,
+          0.7
+        ]
+      }
+    },
+    {
+      "type": "mesh",
+      "material": "green",
+      "filename": "../../../asset/bunny-fine.obj",
+      "transform": [
+        {
+          "translate": [
+            0,
+            -1,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "type": "mesh",
+      "material": "green",
+      "filename": "../../../asset/bunny-fine.obj",
+      "transform": [
+        {
+          "rotate": [
+            43,
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "translate": [
+            2,
+            -1.0,
+            -2
+          ]
+        }
+      ]
+    },
+    {
+      "type": "mesh",
+      "material": "white",
+      "filename": "../../../asset/bunny-fine.obj",
+      "transform": [
+        {
+          "rotate": [
+            120,
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "translate": [
+            1,
+            0,
+            -5
+          ]
+        }
+      ]
+    },
+    {
+      "type": "mesh",
+      "material": "white",
+      "filename": "../../../asset/bunny-fine.obj",
+      "transform": [
+        {
+          "rotate": [
+            -52,
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "translate": [
+            -2,
+            0,
+            -4
+          ]
+        }
+      ]
+    },
+    {
+      "type": "mesh",
+      "material": "white",
+      "filename": "../../../asset/bunny-fine.obj",
+      "transform": [
+        {
+          "rotate": [
+            -52,
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "translate": [
+            2,
+            -1.0,
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "type": "mesh",
+      "material": "white",
+      "filename": "../../../asset/bunny-fine.obj",
+      "transform": [
+        {
+          "rotate": [
+            -52,
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "translate": [
+            4,
+            -1.0,
+            -8
+          ]
+        }
+      ]
+    },
+    {
+      "type": "mesh",
+      "material": "white",
+      "filename": "../../../asset/bunny-fine.obj",
+      "transform": [
+        {
+          "rotate": [
+            -82,
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "translate": [
+            1,
+            -1.0,
+            -12
+          ]
+        }
+      ]
+    },
+    {
+      "type": "mesh",
+      "filename": "../../../asset/dragon.obj",
+      "material": "red",
+      "transform": [
+        {
+          "scale": [
+            0.65,
+            0.65,
+            0.65
+          ]
+        },
+        {
+          "rotate": [
+            155,
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "translate": [
+            -1.5,
+            -1.0,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "type": "mesh",
+      "filename": "../../../asset/dragon.obj",
+      "material": "red",
+      "transform": [
+        {
+          "scale": [
+            0.65,
+            0.65,
+            0.65
+          ]
+        },
+        {
+          "rotate": [
+            155,
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "translate": [
+            -1.5,
+            -1.0,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "type": "mesh",
+      "filename": "../../../asset/dragon.obj",
+      "material": "red",
+      "transform": [
+        {
+          "scale": [
+            0.65,
+            0.65,
+            0.65
+          ]
+        },
+        {
+          "rotate": [
+            155,
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "translate": [
+            -1.5,
+            -1.0,
+            0
+          ]
+        },
+        {
+          "rotate": [
+            25,
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "translate": [
+            0,
+            0,
+            -7
+          ]
+        }
+      ]
+    },
+    {
+      "type": "mesh",
+      "filename": "../../../asset/dragon.obj",
+      "material": "white",
+      "transform": [
+        {
+          "scale": [
+            0.65,
+            0.65,
+            0.65
+          ]
+        },
+        {
+          "rotate": [
+            155,
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "translate": [
+            -1.5,
+            -1.0,
+            0
+          ]
+        },
+        {
+          "rotate": [
+            -120,
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "translate": [
+            0,
+            0,
+            3.5
+          ]
+        }
+      ]
+    },
+    {
+      "type": "mesh",
+      "filename": "../../../asset/dragon.obj",
+      "material": "green",
+      "transform": [
+        {
+          "scale": [
+            0.65,
+            0.65,
+            0.65
+          ]
+        },
+        {
+          "rotate": [
+            155,
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "translate": [
+            -1.5,
+            -1.0,
+            0
+          ]
+        },
+        {
+          "rotate": [
+            -120,
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "translate": [
+            1.5,
+            0,
+            -8
+          ]
+        }
+      ]
+    },
+    {
+      "type": "mesh",
+      "filename": "../../../asset/dragon.obj",
+      "material": "green",
+      "transform": [
+        {
+          "scale": [
+            0.65,
+            0.65,
+            0.65
+          ]
+        },
+        {
+          "rotate": [
+            155,
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "translate": [
+            -1.5,
+            -1.0,
+            0
+          ]
+        },
+        {
+          "rotate": [
+            -80,
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "translate": [
+            -5,
+            0,
+            -9
+          ]
+        }
+      ]
+    }
+  ]
+}

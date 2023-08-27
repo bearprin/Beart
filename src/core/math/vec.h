@@ -108,6 +108,15 @@ static BERT_FORCEINLINE float AbsCosTheta(const Vec3f &v) {
 static BERT_FORCEINLINE float CosTheta(const Vec3f &v) {
   return v.z();
 }
+static BERT_FORCEINLINE float SafeAcos(const Vec3f &v) {
+  return std::acos(std::clamp(v.z(), -1.0f, 1.0f));
+}
+static BERT_FORCEINLINE float SafeAcos(const float &v) {
+  return std::acos(std::clamp(v, -1.0f, 1.0f));
+}
+static BERT_FORCEINLINE float SinTheta(const Vec3f &v) {
+  return std::sqrt(std::max(0.f, 1.f - v.z() * v.z()));
+}
 /// shading coordinate optimization (Ns as axis z)
 /// \param v
 /// \return

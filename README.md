@@ -54,14 +54,15 @@ image.
     - [ ] VolPath Tracing
     - [ ] Modern Volume Rendering,
 - Light Tracing
-- Bidirectional Path Tracing (may be some bugs, fix later)
+- Bidirectional Path Tracing (may some bugs, fix later)
     - [ ] Light Transport Simulation with Vertex Connection and Merging, Georgiev, 2012
+
 -[ ] Photon Mapping
 
 #### Material
 
 - Lambertian Diffuse
-- [ ] Oran Nayar Diffuse
+- Oran Nayar Diffuse
 - Modified Phong model
 - Microfacet model
     - conductor 

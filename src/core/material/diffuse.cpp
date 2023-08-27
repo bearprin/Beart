@@ -7,7 +7,7 @@
 #include "sample_common.h"
 #include "factory.h"
 beart::Spectrum beart::Diffuse::f(const beart::Vec3f &wo, const beart::Vec3f &wi) const {
-  if (!SameHemiSphere(wo, wi)) {
+  if (!SameHemiSphere(wi, wo)) {
     return {0.0f, 0.f, 0.f};
   }
   if (!PointingExterior(wo)) {  // wo is not pointing to exterior, return
@@ -29,7 +29,7 @@ beart::Spectrum beart::Diffuse::sample_f(const beart::Vec3f &wo,
   return f(wo, wi);
 }
 float beart::Diffuse::pdf(const beart::Vec3f &wo, const beart::Vec3f &wi) const {
-  if (!SameHemiSphere(wo, wi)) {
+  if (!SameHemiSphere(wi, wo)) {
     return 0.f;
   }
   if (!PointingExterior(wo)) {
