@@ -37,6 +37,9 @@ beart::Spectrum beart::PathTracing::Li(const beart::Ray &ray,
     if (local_bounce == 0 && normal) {
       *normal += (info.Ns + 1.f) * 0.5f;
     }
+    if (local_bounce == 0 && albedos) {
+      *albedos += info.albedo;
+    }
     if (info.primitive->bxdfs()->empty()) {
       return L;
     }

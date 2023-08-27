@@ -82,6 +82,10 @@ class Bxdf {
     return !(PointingExterior(wi) ^ PointingExterior(wo));
   }
 
+  virtual Spectrum Albedo(const Vec3f &wo, const Vec3f &Ns) {
+    return Spectrum(1.0f);
+  }
+
  protected:
   virtual Spectrum f(const Vec3f &wo, const Vec3f &wi) const = 0;
 

@@ -103,5 +103,9 @@ void beart::RoughDielectric::ParseIOR_(const beart::json &j) {
   eta_ = in_ior_ / ext_ior_;
   eta_inv_ = ext_ior_ / in_ior_;
 }
+beart::Spectrum beart::RoughDielectric::Albedo(const beart::Vec3f &wo, const beart::Vec3f &Ns) {
+  float cos_theta_t{};
+  return {FresnelDielectric(Dot(wo, Ns), eta_inv_, cos_theta_t)};
+}
 BEART_REGISTER_CLASS_IN_FACTORY(Bxdf, RoughDielectric, "dielectric")
 

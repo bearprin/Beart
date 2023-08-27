@@ -65,4 +65,7 @@ float beart::Phong::pdf(const beart::Vec3f &wo, const beart::Vec3f &wi) const {
   const auto pdf_diff = SampleCosineHemiSpherePdf(wi);
   return Lerp(pdf_spec, pdf_diff, MaxComponent(diffuse_));  // interpolate diffuse and specular
 }
+beart::Spectrum beart::Phong::Albedo(const Vec3f &wo, const Vec3f &Ns) {
+    return diffuse_;
+}
 BEART_REGISTER_CLASS_IN_FACTORY(Bxdf, Phong, "phong")

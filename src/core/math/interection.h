@@ -18,6 +18,8 @@ struct SurfaceInterection {
   Vec3f view;
   Point3f intersect_pos;
 
+  Spectrum albedo;
+
   // get the emissive
   Spectrum Le(const Vec3f &wo, float *pdf_area = nullptr, float *pdf_solid = nullptr) const;
 };

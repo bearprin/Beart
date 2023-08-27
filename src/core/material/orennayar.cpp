@@ -74,4 +74,7 @@ float beart::Orennayar::pdf(const beart::Vec3f &wo, const beart::Vec3f &wi) cons
   const auto pdf_cosine = SampleCosineHemiSpherePdf(wi);
   return pdf_uniform * alpha_ + pdf_cosine * (1.0f - alpha_);
 }
+beart::Spectrum beart::Orennayar::Albedo(const beart::Vec3f &wo, const beart::Vec3f &Ns) {
+  return diffuse_;
+}
 BEART_REGISTER_CLASS_IN_FACTORY(Bxdf, Orennayar, "oren")

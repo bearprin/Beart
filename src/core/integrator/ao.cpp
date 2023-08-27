@@ -26,6 +26,9 @@ beart::Spectrum beart::AOIntegrator::Li(const beart::Ray &ray,
     // map the normal to [0, 1]
     *normal += (info.Ns + 1.f) * 0.5f;
   }
+  if (albedos) {
+    *albedos += info.albedo;
+  }
 //  info.Ns = Dot(info.Ns, ray.dir_) >= 0.f ? -info.Ns : info.Ns; // make sure the normal is in the same side of the ray
   Event event(info);
   // sample the hemisphere with cosine importance sampling

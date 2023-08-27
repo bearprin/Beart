@@ -42,6 +42,7 @@ class RoughDielectric : public Bxdf {
     alpha_ = j.value("alpha", 0.1f);
     distribution_type_ = kDistributionTypeMap.at(j.value("distribution", "ggx"));
   }
+  Spectrum Albedo(const Vec3f &wo, const Vec3f &Ns) override;
  protected:
   Spectrum f(const Vec3f &wo, const Vec3f &wi) const override;
   Spectrum sample_f(const Vec3f &wo, Vec3f &wi, const BsdfSample &bs, float *pdf) const override;

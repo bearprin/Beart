@@ -50,6 +50,7 @@ int main(int argc, char **argv) {
             albendo = albendo / sample_count;
             camera->image()->set_color(i, j, L);
             camera->normal()->set_color(i, j, normal);
+            camera->albedo()->set_color(i, j, albendo);
           }
         });
   }
@@ -69,9 +70,11 @@ int main(int argc, char **argv) {
   camera->image()->Save(output_path);
   spdlog::info("Save normal to normal.exr");
   camera->normal()->Save(fmt::format("{}_normal.exr", output_path.substr(0, output_path.find_last_of('.'))));
+  spdlog::info("Save albedo to albedo.exr");
+  camera->albedo()->Save(fmt::format("{}_albedo.exr", output_path.substr(0, output_path.find_last_of('.'))));
 
 #ifdef BERT_ENABLE_OIDN
-spdlog::info("Denoise image");
+  spdlog::info("Denoise image");
   // Create an Open Image Denoise device
   oidn::DeviceRef device = oidn::newDevice(); // CPU or GPU if available
   device.commit();
@@ -82,8 +85,8 @@ spdlog::info("Denoise image");
   oidn::FilterRef filter = device.newFilter("RT");
   filter.setImage("color", colorBuf, oidn::Format::Float3, camera->image_width(), camera->image_height());
   filter.setImage("output", colorBuf, oidn::Format::Float3, camera->image_width(), camera->image_height());
-//  filter.setImage("normal", normalBuf, oidn::Format::Float3, camera->image_width(), camera->image_height());
-//  filter.setImage("albedo", normalBuf, oidn::Format::Float3, camera->image_width(), camera->image_height());
+  filter.setImage("normal", normalBuf, oidn::Format::Float3, camera->image_width(), camera->image_height());
+  filter.setImage("albedo", normalBuf, oidn::Format::Float3, camera->image_width(), camera->image_height());
   filter.set("hdr", true);
   filter.commit();
 
@@ -100,11 +103,15 @@ spdlog::info("Denoise image");
 
       auto normal = camera->normal()->color(i, j);
       // map [0, 1] to [-1, 1]
-//      normal = normal * 2 - 1;
-//      std::cout << normal << std::endl;
+      normal = normal * 2 - 1;
       normalPtr[(j * camera->image_width() + i) * 3 + 0] = normal.x();
       normalPtr[(j * camera->image_width() + i) * 3 + 1] = normal.y();
       normalPtr[(j * camera->image_width() + i) * 3 + 2] = normal.z();
+
+      auto albedo = camera->albedo()->color(i, j);
+      normalPtr[(j * camera->image_width() + i) * 3 + 0] = albedo.x();
+      normalPtr[(j * camera->image_width() + i) * 3 + 1] = albedo.y();
+      normalPtr[(j * camera->image_width() + i) * 3 + 2] = albedo.z();
 
     }
   }

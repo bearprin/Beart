@@ -62,4 +62,7 @@ float beart::RoughConductor::pdf(const beart::Vec3f &wo, const beart::Vec3f &wi)
       D_pdf / (4 * AbsDot(wo, h)); // p(wi) = p(m) / (4 * cos(wo, hr))
   return pdf;
 }
+beart::Spectrum beart::RoughConductor::Albedo(const Vec3f &wo, const Vec3f &Ns) {
+  return FresnelConductor(Dot(wo, Ns), eta_, k_);
+}
 BEART_REGISTER_CLASS_IN_FACTORY(Bxdf, RoughConductor, "conductor")

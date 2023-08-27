@@ -41,6 +41,8 @@ class Primitive {
   bool Intersect(const Ray &ray, SurfaceInterection *info) const {
     if (shape_->Intersect(ray, info)) {
       info->primitive = this;
+      // TODO: assuming one bxdf now
+      info->albedo = bxdfs_.empty() ? Spectrum(1.f, 1.f, 1.f) : bxdfs_[0]->Albedo(-info->view, info->Ns);
       return true;
     }
     return false;

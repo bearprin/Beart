@@ -28,6 +28,7 @@ class Camera {
         inv_image_height_(1.f / static_cast<float>(image_height)), target_(target), camera_pos_(camera_pos), up_(up) {
     image_ptr_ = std::make_unique<Film<RGBSpectrum>>(image_width_, image_height_);
     normal_ptr_ = std::make_unique<Film<RGBSpectrum>>(image_width_, image_height_);
+    albedo_ptr_ = std::make_unique<Film<RGBSpectrum>>(image_width_, image_height_);
 
     camera_to_world_ = LookAt(camera_pos, target, up);
     world_to_camera_ = Inverse(camera_to_world_);
@@ -68,6 +69,9 @@ class Camera {
   Film<RGBSpectrum> *normal() const {
     return normal_ptr_.get();
   }
+  Film<RGBSpectrum> *albedo() const {
+    return albedo_ptr_.get();
+  }
   virtual Ray GenerateRay(const float &x, const float &y, const PixelSample &pixel_sample) const noexcept = 0;
   virtual Vec2i GetScreenCoord(const SurfaceInterection &inter,
                                beart::Visibility &visibility,
@@ -90,5 +94,6 @@ class Camera {
 
   std::unique_ptr<Film<RGBSpectrum>> image_ptr_;  // image buffer
   std::unique_ptr<Film<RGBSpectrum>> normal_ptr_;  // normal buffer
+  std::unique_ptr<Film<RGBSpectrum>> albedo_ptr_;  // normal buffer
 };
 }

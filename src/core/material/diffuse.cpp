@@ -38,6 +38,9 @@ float beart::Diffuse::pdf(const beart::Vec3f &wo, const beart::Vec3f &wi) const 
   const auto pdf_diff = SampleCosineHemiSpherePdf(wi);
   return pdf_diff;
 }
+beart::Spectrum beart::Diffuse::Albedo(const Vec3f &wo, const Vec3f &Ns) {
+  return diffuse_;
+}
 BEART_REGISTER_CLASS_IN_FACTORY(Bxdf, Diffuse, "lambertian")
 
 

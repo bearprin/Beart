@@ -26,6 +26,9 @@ beart::Spectrum beart::DirectIntegrator::Li(const beart::Ray &ray,
   if (normal) {
     *normal += (info.Ns + 1.f) * 0.5f;
   }
+  if (albedos) {
+    *albedos += info.albedo;
+  }
   // accumulate the light emitted by intersection itself
   L += info.Le(-ray.dir_);
   if (info.primitive->bxdfs()->empty()) {
